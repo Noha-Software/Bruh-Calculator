@@ -6,6 +6,7 @@ using TMPro;
 
 public class Calculator : MonoBehaviour
 {
+	#region Field get-set
 	public bool SystemConvertEnabled
 	{
 		get { return systemConvertEnabled; }
@@ -16,7 +17,24 @@ public class Calculator : MonoBehaviour
 		get { return primeFactorEnabled; }
 		set { primeFactorEnabled = value; }
 	}
+	public bool PlainEnabled
+	{
+		get { return plainEnabled; }
+		set { plainEnabled = value; }
+	}
+	public bool GCDEnabled
+	{
+		get { return gcdEnabled; }
+		set { gcdEnabled = value; }
+	}
+	public bool LCMEnabled
+	{
+		get { return lcmEnabled; }
+		set { lcmEnabled = value; }
+	}
+	#endregion
 
+	#region Fields
 	[Header("System Converter Attributes")]
 	public bool systemConvertEnabled = false;
 	[Range(1,36)]
@@ -25,24 +43,49 @@ public class Calculator : MonoBehaviour
 	public int systemConvertTargetSystem;
 	public string systemConvertInputNumber;
 
+	[Space]
 	public Button systemConvertButton;
 	public TMP_Text systemConvertOutputText;
 	public TMP_InputField systemConvertOriginSystemField;
 	public TMP_InputField systemConvertInputNumberField;
 	public TMP_InputField systemConvertTargetSystemField;
 
-
+	[Space]
 	[Header("Prime Factorizator Attributes")]
 	public bool primeFactorEnabled = false;
 	public bool primeFactorVisualizerEnabled = false;
-	[Min(1)]
-	public int factorInputNumber;
+	public bool plainEnabled;
+	public bool gcdEnabled;
+	public bool lcmEnabled;
+	
+	[Space]
+	[Min(1)] public int factorInputNumber;
+	public int[] gcdInputNumbers;
+	public int[] lcmInputNumbers;
 
+	[Space]
 	public PrimeFactorVisualizer primeFactorVisualizer;
-
 	public Button factorizeButton;
 	public TMP_Text factorOutputText;
 	public TMP_InputField factorInputNumberField;
+
+	[Space]
+	public Button gcdButton;
+	public TMP_Text gcdOutputText;
+	public TMP_InputField[] gcdInputNumberFields;
+
+	[Space]
+	public Button lcmButton;
+	public TMP_Text lcmOutputText;
+	public TMP_InputField[] lcmInputNumberFields;
+
+	#endregion
+
+	private void Start()
+	{
+		gcdInputNumbers = new int[gcdInputNumberFields.Length];
+		lcmInputNumbers = new int[lcmInputNumberFields.Length];
+	}
 
 	private void Update()
 	{
@@ -63,18 +106,50 @@ public class Calculator : MonoBehaviour
 
 		if (primeFactorEnabled)
 		{
-			try
+			if (plainEnabled)
 			{
-				int.TryParse(factorInputNumberField.text, out factorInputNumber);
+				try
+				{
+					int.TryParse(factorInputNumberField.text, out factorInputNumber);
+				}
+				catch (System.Exception)
+				{
+					Debug.LogWarning("Error parsing data from primeFactor input fields");
+					throw;
+				}
+				primeFactorVisualizerEnabled = primeFactorVisualizer.gameObject.activeSelf;
 			}
-			catch (System.Exception)
+			else if (gcdEnabled)
 			{
-				Debug.LogWarning("Error parsing data from primeFactor input fields");
-				throw;
+				try
+				{
+					for (int i = 0; i < gcdInputNumberFields.Length; i++)
+					{
+						int.TryParse(gcdInputNumberFields[i].text, out gcdInputNumbers[i]);
+					}
+				}
+				catch (System.Exception)
+				{
+					Debug.LogWarning("Error parsing data from GCD input fields");
+					throw;
+				}
+			}
+			else if (lcmEnabled)
+			{
+				try
+				{
+					for (int i = 0; i < lcmInputNumberFields.Length; i++)
+					{
+						int.TryParse(lcmInputNumberFields[i].text, out lcmInputNumbers[i]);
+					}
+				}
+				catch (System.Exception)
+				{
+					Debug.LogWarning("Error parsing data from LCM input fields");
+					throw;
+				}
 			}
 		}
-
-		primeFactorVisualizerEnabled = primeFactorVisualizer.gameObject.activeSelf;
 	}
 
 
@@ -101,6 +176,22 @@ public class Calculator : MonoBehaviour
 				}
 				primeFactorVisualizer.Visualize(factorVisualizeResult);
 			}
+		}
+	}
+
+	public void GreatestCommonDivisor()
+	{
+		if (gcdEnabled)
+		{
+			gcdOutputText.text = PrimeFactorizator.FindGCD(gcdInputNumbers).ToString();
+		}
+	}
+
+	public void LeastCommonMultiple()
+	{
+		if (lcmEnabled)
+		{
+			lcmOutputText.text = PrimeFactorizator.FindLCM(lcmInputNumbers).ToString();
 		}
 	}
 	#endregion
