@@ -4,7 +4,7 @@
 	Version 1.0 - 2021.12.27
 
 ## Usage
-The Noha Development License may be used on projects that are under closed developement and are not yet revealed, or disclosed to the public.  
+The Noha Development License may be used on projects that are under closed development and are not yet revealed, or disclosed to the public.  
 
 ## Definitions
 * **Noha Company**, the owner may be referred to as "Noha Co", "company", "owner", "licensor", and means the owner and publisher of the software
