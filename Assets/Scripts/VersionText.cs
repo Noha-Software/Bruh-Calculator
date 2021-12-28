@@ -5,8 +5,23 @@ using UnityEditor;
 [ExecuteInEditMode]
 public class VersionText : MonoBehaviour
 {
-    void Start()
+    private void Start()
     {
-        GetComponent<Text>().text = PlayerSettings.bundleVersion;
+		UpdateVersionText();
     }
+
+	private void Awake()
+	{
+		UpdateVersionText();
+	}
+
+	private void Reset()
+	{
+		UpdateVersionText();
+	}
+
+	void UpdateVersionText()
+	{
+		GetComponent<Text>().text = PlayerSettings.bundleVersion;
+	}
 }
