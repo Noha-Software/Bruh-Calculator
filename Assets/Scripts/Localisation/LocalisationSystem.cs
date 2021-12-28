@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class LocalisationSystem : MonoBehaviour
@@ -10,7 +11,13 @@ public class LocalisationSystem : MonoBehaviour
 		Hungarian
 	}
 
-	public static Language language = Language.English;
+	public static Language CurrentLanguage
+	{
+		get { return language; }
+		set { language = value; }
+	}
+
+	static Language language = Language.English;
 
 	private static Dictionary<string, string> localisedEN;
 	private static Dictionary<string, string> localisedHU;
@@ -35,10 +42,24 @@ public class LocalisationSystem : MonoBehaviour
 		localisedHU = csvLoader.GetDictionaryValues("hu");
 	}
 
+	public static void SetLanguage(Language newLanguage)
+	{
+		language = newLanguage;
+		Init();
+	}
+
 	public static Dictionary<string, string> GetDictionaryForEditor()
 	{
 		if(!isInit) { Init(); }
-		return localisedEN;
+		switch (language)
+		{
+			default:
+				return localisedEN;
+			case Language.English:
+				return localisedEN;
+			case Language.Hungarian:
+				return localisedHU;
+		}
 	}
 
 	public static string GetLocalisedValue(string key)
@@ -49,6 +70,9 @@ public class LocalisationSystem : MonoBehaviour
 
 		switch (language)
 		{
+			default:
+				localisedEN.TryGetValue(key, out value);
+				break;
 			case Language.English:
 				localisedEN.TryGetValue(key, out value);
 				break;

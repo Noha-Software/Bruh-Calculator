@@ -12,16 +12,16 @@ using System.Linq;
 public class CSVLoader
 {
 	TextAsset csvFile;
-    char lineSeparator = '\n';
-    char surround = '"';
-    string[] fieldSeparator = { "\",\"" };
+    readonly char lineSeparator = '\n';
+    readonly char surround = '"';
+    readonly string[] fieldSeparator = { "\",\"" };
 
     public void LoadCSV()
 	{
 		csvFile = Resources.Load<TextAsset>("localisation");
 	}
 
-    public Dictionary<string, string> GetDictionaryValues(string attributeId)
+    public Dictionary<string, string> GetDictionaryValues(string languageId)
 	{
         Dictionary<string, string> dictionary = new Dictionary<string, string>();
 
@@ -33,7 +33,7 @@ public class CSVLoader
 
 		for (int i = 0; i < headers.Length; i++)
 		{
-			if (headers[i].Contains(attributeId))
+			if (headers[i].Contains(languageId))
 			{
                 attributeIndex = i;
                 break;
@@ -60,6 +60,7 @@ public class CSVLoader
 
 				if (dictionary.ContainsKey(key)) { continue; }
 
+				if(fields.Length <= attributeIndex) { continue; }
 				var value = fields[attributeIndex];
 
 				dictionary.Add(key, value);
