@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -7,8 +8,8 @@ public class LocalisationSystem : MonoBehaviour
 {
     public enum Language
 	{
-		English,
-		Hungarian
+		English = 0,
+		Hungarian = 1
 	}
 
 	public static Language CurrentLanguage
@@ -16,7 +17,6 @@ public class LocalisationSystem : MonoBehaviour
 		get { return language; }
 		set { language = value; }
 	}
-
 	static Language language = Language.English;
 
 	private static Dictionary<string, string> localisedEN;
@@ -38,14 +38,31 @@ public class LocalisationSystem : MonoBehaviour
 
 	public static void UpdateDictionaries()
 	{
-		localisedEN = csvLoader.GetDictionaryValues("en");
-		localisedHU = csvLoader.GetDictionaryValues("hu");
+		localisedEN = csvLoader.GetDictionaryValues(Language.English);
+		localisedHU = csvLoader.GetDictionaryValues(Language.Hungarian);
 	}
 
 	public static void SetLanguage(Language newLanguage)
 	{
 		language = newLanguage;
-		Init();
+	}
+
+	public static string GetLanguageID(Language language)
+	{
+		string id;
+		switch (language)
+		{
+			case Language.English:
+				id = "en";
+				break;
+			case Language.Hungarian:
+				id = "hu";
+				break;
+			default:
+				id = "en";
+				break;
+		}
+		return id;
 	}
 
 	public static Dictionary<string, string> GetDictionaryForEditor()
@@ -80,30 +97,25 @@ public class LocalisationSystem : MonoBehaviour
 				localisedHU.TryGetValue(key, out value);
 				break;
 		}
-
 		return value;
 	}
-
-	public static void Add(string key, string value)
+	public static string GetLocalisedValue(string key, Language language)
 	{
-		if (value.Contains("\""))
-		{
-			value.Replace('"', '\"');
-		}
+		if (!isInit) { Init(); }
+		if (csvLoader == null) { csvLoader = new CSVLoader(); }
 
-		if (csvLoader == null)
-		{
-			csvLoader = new CSVLoader();
-		}
-
-		csvLoader.LoadCSV();
-		csvLoader.Add(key, value);
-		csvLoader.LoadCSV();
-
-		UpdateDictionaries();
+		return csvLoader.GetDictionaryValues(language)[key];
 	}
 
-	public static void Replace(string key, string value)
+	public static string GetLocalisedValue(string key, int languageIndex)
+	{
+		if (!isInit) { Init(); }
+		if (csvLoader == null) { csvLoader = new CSVLoader(); }
+
+		return csvLoader.GetDictionaryValues((Language)languageIndex)[key];
+	}
+
+	public static void Edit(string key, string value)
 	{
 		if (value.Contains("\""))
 		{
@@ -116,7 +128,7 @@ public class LocalisationSystem : MonoBehaviour
 		}
 
 		csvLoader.LoadCSV();
-		csvLoader.Edit(key, value);
+		csvLoader.Edit(key, value, language);
 		csvLoader.LoadCSV();
 
 		UpdateDictionaries();
@@ -129,8 +141,20 @@ public class LocalisationSystem : MonoBehaviour
 			csvLoader = new CSVLoader();
 		}
 
-	
 		csvLoader.Remove(key);
+		csvLoader.LoadCSV();
+
+		UpdateDictionaries();
+	}
+	public static void Remove(string key, Language language)
+	{
+		if (csvLoader == null)
+		{
+			csvLoader = new CSVLoader();
+		}
+
+		csvLoader.LoadCSV();
+		csvLoader.Edit(key, "", language);
 		csvLoader.LoadCSV();
 
 		UpdateDictionaries();

@@ -21,28 +21,38 @@ public class CSVLoader
 		csvFile = Resources.Load<TextAsset>("localisation");
 	}
 
-    public Dictionary<string, string> GetDictionaryValues(string languageId)
+	public int GetLanguageIndex(LocalisationSystem.Language language)
 	{
-        Dictionary<string, string> dictionary = new Dictionary<string, string>();
+		string languageId = LocalisationSystem.GetLanguageID(language);
 
-        string[] lines = csvFile.text.Split(lineSeparator);
+		string[] lines = csvFile.text.Split(lineSeparator);
 
-        int attributeIndex = -1;
-
-        string[] headers = lines[0].Split(fieldSeparator, StringSplitOptions.None);
+		string[] headers = lines[0].Split(fieldSeparator, StringSplitOptions.None);
 
 		for (int i = 0; i < headers.Length; i++)
 		{
 			if (headers[i].Contains(languageId))
 			{
-                attributeIndex = i;
-                break;
+				return i;
 			}
 		}
 
+		return -1;
+	}
+
+    public Dictionary<string, string> GetDictionaryValues(LocalisationSystem.Language language)
+	{
+		string languageId = LocalisationSystem.GetLanguageID(language);
+
+        Dictionary<string, string> dictionary = new Dictionary<string, string>();
+
+        string[] lines = csvFile.text.Split(lineSeparator);
+
+		int languageIndex = GetLanguageIndex(language);
+
         Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
 
-		for (int i = 0; i < lines.Length; i++)
+		for (int i = 1; i < lines.Length; i++)
 		{
             string line = lines[i];
 
@@ -54,14 +64,13 @@ public class CSVLoader
 				fields[f] = fields[f].TrimEnd(surround);
 			}
 
-			if (fields.Length > attributeIndex)
+			if (fields.Length > languageIndex)
 			{
 				var key = fields[0];
 
 				if (dictionary.ContainsKey(key)) { continue; }
 
-				if(fields.Length <= attributeIndex) { continue; }
-				var value = fields[attributeIndex];
+				var value = fields[languageIndex];
 
 				dictionary.Add(key, value);
 			}
@@ -71,9 +80,28 @@ public class CSVLoader
 	}
 
 #if UNITY_EDITOR
-	public void Add(string key, string value)
+	public void Edit(string key, string value, LocalisationSystem.Language language = LocalisationSystem.Language.English)
 	{
-		string appended = string.Format("\n\"{0}\",\"{1}\",\"\"", key, value);
+		string[] args = new string[Enum.GetNames(typeof(LocalisationSystem.Language)).Length + 1];
+
+		for (int i = 1; i < args.Length; i++)
+		{
+			args[i] = LocalisationSystem.GetLocalisedValue(key, i - 1);
+		}
+		args[0] = key;
+		args[GetLanguageIndex(language)] = value;
+
+		string[] result = new string[args.Length];
+
+		for (int i = 0; i < args.Length; i++)
+		{
+			result[i] = args[i];
+		}
+		result[0] = "\n\"" + result[0];
+		result[result.Length - 1] += "\"";
+
+		Remove(key);
+		string appended = string.Format(string.Join("\",\"", result));
 		File.AppendAllText("Assets/Resources/localisation.csv", appended);
 
 		AssetDatabase.Refresh();
@@ -110,12 +138,5 @@ public class CSVLoader
 			File.WriteAllText("Assets/Resources/localisation.csv", replaced);
 		}
 	}
-
-	public void Edit(string key, string value)
-	{
-		Remove(key);
-		Add(key, value);
-	}
 #endif
-
 }
