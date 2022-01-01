@@ -5,8 +5,10 @@ using UnityEditor;
 
 public class TextLocaliserEditWindow : EditorWindow
 {
-	public static void Open(string key)
+	static bool close;
+	public static void Open(string key, bool closeOnEdit = false)
 	{
+		close = closeOnEdit;
 		var window = EditorWindow.GetWindow<TextLocaliserEditWindow>();
 		window.titleContent = new GUIContent("Localiser Window", (Texture)Resources.Load("plus"), "Edit window for easy access to manipulate localisation");
 		window.ShowUtility();
@@ -27,28 +29,48 @@ public class TextLocaliserEditWindow : EditorWindow
 
 	public void OnGUI()
 	{
-		EditorGUILayout.BeginHorizontal();
-		key = EditorGUILayout.TextField("Key:", key);
-		LocalisationSystem.SetLanguage(selectedLanguage = (LocalisationSystem.Language)EditorGUILayout.EnumPopup(selectedLanguage));
-		EditorGUILayout.EndHorizontal();
-		EditorGUILayout.LabelField("Current Value: ", LocalisationSystem.GetLocalisedValue(key));
-		EditorGUILayout.BeginHorizontal();
-		EditorGUILayout.LabelField("Value:", GUILayout.MaxWidth(50));
-		EditorStyles.textArea.wordWrap = true;
-		value = EditorGUILayout.TextArea(value, EditorStyles.textArea, GUILayout.Height(100), GUILayout.Width(400)); 
-		EditorGUILayout.EndHorizontal();
+		string buttonText = "Add | Edit";
 
-		if(GUILayout.Button("Add"))
+		EditorGUILayout.BeginHorizontal();
+		if (close)
 		{
-			if(LocalisationSystem.GetLocalisedValue(key, selectedLanguage) != string.Empty || LocalisationSystem.GetLocalisedValue(key, selectedLanguage) != string.Empty)
+			EditorGUILayout.LabelField("Key:", key);
+			buttonText = "Edit";
+		}
+		else
+		{
+			key = EditorGUILayout.TextField("Key:", key);
+
+			if (LocalisationSystem.GetDictionaryForEditor().ContainsKey(key))
 			{
-				if (value != string.Empty && value != null && key != string.Empty && key != null) { LocalisationSystem.Edit(key, value); }
+				buttonText = "Edit";
 			}
 			else
 			{
-				if (value != string.Empty && value != null && key != string.Empty && key != null) { LocalisationSystem.Edit(key, value); }
+				buttonText = "Add";
 			}
-			//EditorWindow.GetWindow<TextLocaliserEditWindow>().Close();
+		}
+		LocalisationSystem.SetLanguage(selectedLanguage = (LocalisationSystem.Language)EditorGUILayout.EnumPopup(selectedLanguage));
+		EditorGUILayout.EndHorizontal();
+
+		if (LocalisationSystem.GetDictionaryForEditor().ContainsKey(key)) { EditorGUILayout.LabelField("Current Value: ", LocalisationSystem.GetLocalisedValue(key)); }
+		else { EditorGUILayout.LabelField("Current Value: ", ""); }
+
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Value:", GUILayout.MaxWidth(50));
+		EditorStyles.textArea.wordWrap = true;
+
+		if (value == null || value == string.Empty) { value = ""; }
+		value = EditorGUILayout.TextArea(value, EditorStyles.textArea, GUILayout.Height(100), GUILayout.Width(400)); 
+		EditorGUILayout.EndHorizontal();
+
+		if (GUILayout.Button(buttonText))
+		{
+			if (value != string.Empty && value != null && key != string.Empty && key != null)
+			{
+				LocalisationSystem.Edit(key, value);
+			}
+			if (close) { EditorWindow.GetWindow<TextLocaliserEditWindow>().Close(); }
 		}
 
 		minSize = new Vector2(460, 250);
@@ -58,29 +80,26 @@ public class TextLocaliserEditWindow : EditorWindow
 
 public class TextLocaliserSearchWindow : EditorWindow
 {
+	static string value; // search value
+
 	[MenuItem("Window/Localisation/Text Localiser Search Window")]
 	public static void Open()
 	{
 		var window = EditorWindow.GetWindow<TextLocaliserSearchWindow>();
 		window.titleContent = new GUIContent("Localisation Search", (Texture)Resources.Load("magnify"), "Search window for easy access to localisation fields");
-
-		Vector2 mouse = GUIUtility.ScreenToGUIPoint(Input.mousePosition);
-		Rect r = new Rect(mouse.x - 450, mouse.y + 10, 10, 10);
-		window.ShowAsDropDown(r, new Vector2(500, 300));
+		value = "";
+		window.Show();
 	}
-	public static void Open(TextLocaliserUI textLocaliserUI)
+	public static void Open(string searchFor)
 	{
 		var window = EditorWindow.GetWindow<TextLocaliserSearchWindow>();
 		window.titleContent = new GUIContent("Localisation Search", (Texture)Resources.Load("magnify"), "Search window for easy access to localisation fields");
-
-		Vector2 mouse = GUIUtility.ScreenToGUIPoint(Input.mousePosition);
-		Rect r = new Rect(mouse.x, mouse.y, 10, 10);
-		window.ShowAsDropDown(r, new Vector2(500, 300));
+		value = searchFor;
+		window.Show();
 	}
 
-	public string value;
-	public Vector2 scroll;
-	public Dictionary<string, string> dictionary;
+	Vector2 scroll;
+	Dictionary<string, string> dictionary;
 	LocalisationSystem.Language selectedLanguage = LocalisationSystem.CurrentLanguage;
 
 	private void OnEnable()
@@ -102,25 +121,13 @@ public class TextLocaliserSearchWindow : EditorWindow
 
 	private void GetSearchResults()
 	{
-		if (value == null) { return; }
-
-		EditorGUILayout.BeginVertical();
-		scroll = EditorGUILayout.BeginScrollView(scroll);
-
-		foreach (KeyValuePair<string, string> element in dictionary)
+		if (value == null || value == string.Empty)
 		{
-			/*if (element.Key.ToLower().Contains("key"))
-			{
-				continue;
-			}*/
-			if (element.Key.ToLower().Contains(value.ToLower()) || element.Value.ToLower().Contains(value.ToLower()))
+			foreach (KeyValuePair<string, string> element in dictionary)
 			{
 				EditorGUILayout.BeginHorizontal("Box");
-				Texture closeIcon = (Texture)Resources.Load("close");
 
-				GUIContent content = new GUIContent(closeIcon);
-
-				if (GUILayout.Button(content,GUILayout.MaxWidth(20),GUILayout.MaxHeight(20)))
+				if (GUILayout.Button((Texture)Resources.Load("close"), GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
 				{
 					if (EditorUtility.DisplayDialog("Remove Key " + element.Key + "?", "This will remove the element from localisation, are you sure?", "Do it", "Nevermind"))
 					{
@@ -133,72 +140,27 @@ public class TextLocaliserSearchWindow : EditorWindow
 
 				EditorGUILayout.LabelField(element.Key);
 				EditorGUILayout.LabelField(element.Value);
+
+				if (GUILayout.Button((Texture)Resources.Load("edit"), GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
+				{
+					TextLocaliserEditWindow.Open(element.Key, true);
+				}
+
 				EditorGUILayout.EndHorizontal();
 			}
+			return;
 		}
-		EditorGUILayout.EndScrollView();
-		EditorGUILayout.EndVertical();
-	}
-}
-
-public class LocalisationEditWindow : EditorWindow
-{
-	[MenuItem("Window/Localisation/Edit Window")]
-	public static void Open()
-	{
-		var window = EditorWindow.GetWindow<LocalisationEditWindow>();
-		window.titleContent = new GUIContent("Localisation Fields Editor", (Texture)Resources.Load("magnify"), "Edit window for easy access to localisation fields");
-		window.Show();
-	}
-
-	public string searchValue;
-	public Vector2 scroll;
-	public Dictionary<string, string> dictionary;
-
-	LocalisationSystem.Language selectedLanguage = LocalisationSystem.CurrentLanguage;
-
-	private void OnEnable()
-	{
-		dictionary = LocalisationSystem.GetDictionaryForEditor();
-	}
-
-	public void OnGUI()
-	{
-		EditorGUILayout.BeginHorizontal("Box");
-		EditorGUILayout.LabelField("Search: ", EditorStyles.boldLabel);
-		searchValue = EditorGUILayout.TextField(searchValue);
-		LocalisationSystem.SetLanguage(selectedLanguage = (LocalisationSystem.Language)EditorGUILayout.EnumPopup(selectedLanguage));
-		dictionary = LocalisationSystem.GetDictionaryForEditor();
-		EditorGUILayout.EndHorizontal();
-
-		GetSearchResults();
-
-		if (GUILayout.Button(new GUIContent("Add new field")))
-		{
-			LocalisationSystem.Edit("", "");
-			AssetDatabase.Refresh();
-			LocalisationSystem.Init();
-			dictionary = LocalisationSystem.GetDictionaryForEditor();
-		}
-	}
-
-	private void GetSearchResults()
-	{
-		if (searchValue == null) { return; }
 
 		EditorGUILayout.BeginVertical();
 		scroll = EditorGUILayout.BeginScrollView(scroll);
 
 		foreach (KeyValuePair<string, string> element in dictionary)
 		{
-			if (element.Key.ToLower().Contains(searchValue.ToLower()) || element.Value.ToLower().Contains(searchValue.ToLower()))
+			if (element.Key.ToLower().Contains(value.ToLower()) || element.Value.ToLower().Contains(value.ToLower()))
 			{
 				EditorGUILayout.BeginHorizontal("Box");
-				Texture closeIcon = (Texture)Resources.Load("close");
 
-				GUIContent content = new GUIContent(closeIcon);
-
-				if (GUILayout.Button(content, GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
+				if (GUILayout.Button((Texture)Resources.Load("close"), GUILayout.MaxWidth(20),GUILayout.MaxHeight(20)))
 				{
 					if (EditorUtility.DisplayDialog("Remove Key " + element.Key + "?", "This will remove the element from localisation, are you sure?", "Do it", "Nevermind"))
 					{
@@ -209,8 +171,14 @@ public class LocalisationEditWindow : EditorWindow
 					}
 				}
 
-				EditorGUILayout.TextField(element.Key);
-				EditorGUILayout.TextField(element.Value);
+				EditorGUILayout.LabelField(element.Key);
+				EditorGUILayout.LabelField(element.Value);
+
+				if (GUILayout.Button((Texture)Resources.Load("edit"), GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
+				{
+					TextLocaliserEditWindow.Open(element.Key, true);
+				}
+
 				EditorGUILayout.EndHorizontal();
 			}
 		}

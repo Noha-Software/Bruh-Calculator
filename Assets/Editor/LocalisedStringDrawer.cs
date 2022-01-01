@@ -49,7 +49,7 @@ public class LocalisedStringDrawer : PropertyDrawer
 
 		if(GUI.Button(position, searchContent))
 		{
-			TextLocaliserSearchWindow.Open();
+			TextLocaliserSearchWindow.Open(key.stringValue);
 		}
 
 		position.x += position.width + 2;
@@ -70,10 +70,12 @@ public class LocalisedStringDrawer : PropertyDrawer
 
 			valueRect.height = height;
 			valueRect.y += 21;
-			EditorGUI.LabelField(valueRect, value, EditorStyles.wordWrappedLabel);
+			EditorGUILayout.BeginHorizontal();
+			EditorGUILayout.LabelField(value, EditorStyles.wordWrappedLabel);
+			EditorGUILayout.LabelField(LocalisationSystem.CurrentLanguage.ToString());
+			EditorGUILayout.EndHorizontal();
 		}
 
 		EditorGUI.EndProperty();
-
 	}
 }

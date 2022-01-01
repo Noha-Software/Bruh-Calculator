@@ -12,7 +12,13 @@ public class TextLocaliserUI : MonoBehaviour
 
     void Start()
     {
+        LocalisationSystem.current.onLanguageChange += OnLanguageChange;
         textField = GetComponent<TextMeshProUGUI>();
+        textField.text = localisedString.value;
+    }
+
+    void OnLanguageChange()
+	{
         textField.text = localisedString.value;
     }
 }

@@ -5,8 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public struct LocalisedString
 {
-    public string key;
-
+	public string key;
     public LocalisedString(string key)
 	{
 		this.key = key;
@@ -16,7 +15,11 @@ public struct LocalisedString
 	{
 		get
 		{
-			return LocalisationSystem.GetLocalisedValue(key);
+			return LocalisationSystem.GetLocalisedValue(key, LocalisationSystem.CurrentLanguage);
+		}
+		set
+		{
+			LocalisationSystem.Edit(key, value);
 		}
 	}
 
@@ -24,5 +27,4 @@ public struct LocalisedString
 	{
 		return new LocalisedString(key);
 	}
-
 }

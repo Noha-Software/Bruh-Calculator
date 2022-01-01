@@ -83,28 +83,53 @@ public class CSVLoader
 	public void Edit(string key, string value, LocalisationSystem.Language language = LocalisationSystem.Language.English)
 	{
 		string[] args = new string[Enum.GetNames(typeof(LocalisationSystem.Language)).Length + 1];
-
-		for (int i = 1; i < args.Length; i++)
-		{
-			args[i] = LocalisationSystem.GetLocalisedValue(key, i - 1);
-		}
-		args[0] = key;
-		args[GetLanguageIndex(language)] = value;
-
 		string[] result = new string[args.Length];
+		string appended;
 
-		for (int i = 0; i < args.Length; i++)
+		if (!LocalisationSystem.GetDictionaryForEditor().ContainsKey(key))
 		{
-			result[i] = args[i];
+			for (int i = 1; i < args.Length; i++)
+			{
+				args[i] = "";
+			}
+			args[0] = key;
+			args[GetLanguageIndex(language)] = value;
+
+			for (int i = 0; i < args.Length; i++)
+			{
+				result[i] = args[i];
+			}
+			result[0] = "\n\"" + result[0];
+			result[result.Length - 1] += "\"";
+
+			appended = string.Format(string.Join("\",\"", result));
+			File.AppendAllText("Assets/Resources/localisation.csv", appended);
+
+			AssetDatabase.Refresh();
+			return;
 		}
-		result[0] = "\n\"" + result[0];
-		result[result.Length - 1] += "\"";
+		else
+		{
+			for (int i = 1; i < args.Length; i++)
+			{
+				args[i] = LocalisationSystem.GetLocalisedValue(key, i - 1);
+			}
+			args[0] = key;
+			args[GetLanguageIndex(language)] = value;
 
-		Remove(key);
-		string appended = string.Format(string.Join("\",\"", result));
-		File.AppendAllText("Assets/Resources/localisation.csv", appended);
+			for (int i = 0; i < args.Length; i++)
+			{
+				result[i] = args[i];
+			}
+			result[0] = "\n\"" + result[0];
+			result[result.Length - 1] += "\"";
 
-		AssetDatabase.Refresh();
+			Remove(key);
+			appended = string.Format(string.Join("\",\"", result));
+			File.AppendAllText("Assets/Resources/localisation.csv", appended);
+
+			AssetDatabase.Refresh();
+		}
 	}
 
 	public void Remove(string key)
