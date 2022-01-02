@@ -1,4 +1,4 @@
->	**Copyright 2021** [Kevlaris](https://github.com/Kevlaris), **Noha Company**  
+>	**Copyright 2021** [Kevlaris](https://github.com/Kevlaris), **Noha Software**  
 >	Bruh Calculator is licensed under the **Noha Development License** (v1.0), which can be read below.
 # Noha Development License
 	Version 1.0 - 2021.12.27
@@ -7,8 +7,8 @@
 The Noha Development License may be used on projects that are under closed development and are not yet revealed, or disclosed to the public.  
 
 ## Definitions
-* **Noha Company**, the owner may be referred to as "Noha Co", "company", "owner", "licensor", and means the owner and publisher of the software
-* **You**, the contributor may be referred to as "contributor", "user", "developer", and means an employee or affiliate of Noha Company who has access to the software
+* **Noha Software**, the owner may be referred to as "Noha Co", "company", "owner", "licensor", and means the owner and publisher of the software
+* **You**, the contributor may be referred to as "contributor", "user", "developer", and means an employee or affiliate of Noha Software who has access to the software
 * **The Software**, Bruh Calculator may be referred to as "Bruh Calculator", "Software", "repo", "repository" and means the licensed software.
 
 ## The user may:
