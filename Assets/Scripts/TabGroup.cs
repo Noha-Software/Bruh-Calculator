@@ -21,6 +21,7 @@ public class TabGroup : MonoBehaviour
 		}
 
 		tabButtons.Add(button);
+		objectsToSwap.Add(button.objectToSwap);
 	}
 
 	public void OnTabEnter(TabButton button)
@@ -50,15 +51,15 @@ public class TabGroup : MonoBehaviour
 
 		ResetTabs();
 		button.background.color = tabActive;
-		int index = button.transform.GetSiblingIndex();
-		for(int i=0; i<objectsToSwap.Count; i++)
+		foreach (GameObject obj in objectsToSwap)
 		{
-			if (i == index)
+			if (obj == button.objectToSwap)
 			{
-				objectsToSwap[i].SetActive(true);
-			} else
+				obj.SetActive(true);
+			}
+			else
 			{
-				objectsToSwap[i].SetActive(false);
+				obj.SetActive(false);
 			}
 		}
 	}

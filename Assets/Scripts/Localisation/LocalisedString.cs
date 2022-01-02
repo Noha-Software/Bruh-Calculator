@@ -19,7 +19,7 @@ public struct LocalisedString
 		}
 		set
 		{
-			LocalisationSystem.Edit(key, value);
+			LocalisationSystem.Edit(key, value, LocalisationSystem.CurrentLanguage);
 		}
 	}
 

@@ -23,9 +23,9 @@ public class LocalisationSystem
 	public static Language CurrentLanguage
 	{
 		get { return language; }
-		set { language = value; }
+		set { SetLanguage(value); }
 	}
-	static Language language = Language.English;
+	static Language language = (Language)PlayerPrefs.GetInt("language");
 
 	private static Dictionary<string, string> localisedEN;
 	private static Dictionary<string, string> localisedHU;
@@ -35,6 +35,8 @@ public class LocalisationSystem
 
 	public static void Init()
 	{
+		language = (Language)PlayerPrefs.GetInt("language");
+
 		csvLoader = new CSVLoader();
 		csvLoader.LoadCSV();
 		UpdateDictionaries();
@@ -53,6 +55,8 @@ public class LocalisationSystem
 	public static void SetLanguage(Language newLanguage)
 	{
 		language = newLanguage;
+		PlayerPrefs.SetInt("language", (int)newLanguage);
+		PlayerPrefs.Save();
 		current.LanguageChanged();
 	}
 
@@ -67,20 +71,14 @@ public class LocalisationSystem
 	/// <returns>Returns the language's two-letter identifier code.</returns>
 	public static string GetLanguageID(Language language)
 	{
-		string id;
 		switch (language)
 		{
 			case Language.English:
-				id = "en";
-				break;
+				return "en";
 			case Language.Hungarian:
-				id = "hu";
-				break;
-			default:
-				id = "en";
-				break;
+				return "hu";
 		}
-		return id;
+		return "en";
 	}
 
 	/// <summary>
@@ -92,13 +90,12 @@ public class LocalisationSystem
 		if(!isInit) { Init(); }
 		switch (language)
 		{
-			default:
-				return localisedEN;
 			case Language.English:
 				return localisedEN;
 			case Language.Hungarian:
 				return localisedHU;
 		}
+		return localisedEN;
 	}
 
 	/// <summary>
@@ -109,18 +106,18 @@ public class LocalisationSystem
 	{
 		if(!isInit) { Init(); }
 
-		string value = key;
+		string value;
 
 		switch (language)
 		{
-			default:
-				localisedEN.TryGetValue(key, out value);
-				break;
 			case Language.English:
 				localisedEN.TryGetValue(key, out value);
 				break;
 			case Language.Hungarian:
 				localisedHU.TryGetValue(key, out value);
+				break;
+			default:
+				localisedEN.TryGetValue(key, out value);
 				break;
 		}
 		return value;
@@ -134,7 +131,8 @@ public class LocalisationSystem
 	{
 		if (!isInit) { Init(); }
 		if (csvLoader == null) { csvLoader = new CSVLoader(); }
-		return csvLoader.GetDictionaryValues(language)[key];
+		csvLoader.GetDictionaryValues(language).TryGetValue(key, out string value);
+		return value;
 	}
 	/// <summary>
 	/// Get the localised value of an entry in given language.
@@ -145,7 +143,8 @@ public class LocalisationSystem
 	{
 		if (!isInit) { Init(); }
 		if (csvLoader == null) { csvLoader = new CSVLoader(); }
-		return csvLoader.GetDictionaryValues((Language)languageIndex)[key];
+		csvLoader.GetDictionaryValues((Language)languageIndex).TryGetValue(key, out string value);
+		return value;
 	}
 
 	/// <summary>
