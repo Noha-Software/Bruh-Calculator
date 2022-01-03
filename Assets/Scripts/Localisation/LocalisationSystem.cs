@@ -147,6 +147,7 @@ public class LocalisationSystem
 		return value;
 	}
 
+#if UNITY_EDITOR
 	/// <summary>
 	/// Edit an existent localisation entry or create a new one.
 	/// </summary>
@@ -283,4 +284,5 @@ public class LocalisationSystem
 
 		UpdateDictionaries();
 	}
+#endif
 }

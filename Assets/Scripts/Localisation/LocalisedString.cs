@@ -17,10 +17,12 @@ public struct LocalisedString
 		{
 			return LocalisationSystem.GetLocalisedValue(key, LocalisationSystem.CurrentLanguage);
 		}
+#if UNITY_EDITOR
 		set
 		{
 			LocalisationSystem.Edit(key, value, LocalisationSystem.CurrentLanguage);
 		}
+#endif
 	}
 
 	public static implicit operator LocalisedString(string key)

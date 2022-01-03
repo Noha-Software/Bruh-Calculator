@@ -5,17 +5,18 @@ using UnityEditor;
 [ExecuteInEditMode]
 public class VersionText : MonoBehaviour
 {
-    private void Start()
+#if UNITY_EDITOR
+	private void Start()
     {
 		UpdateVersionText();
     }
 
-	private void Awake()
+	private void Reset()
 	{
 		UpdateVersionText();
 	}
 
-	private void Reset()
+	private void OnEnable()
 	{
 		UpdateVersionText();
 	}
@@ -24,4 +25,5 @@ public class VersionText : MonoBehaviour
 	{
 		GetComponent<Text>().text = PlayerSettings.bundleVersion;
 	}
+#endif
 }
