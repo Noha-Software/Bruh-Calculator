@@ -11,6 +11,8 @@
 /[Mm]emoryCaptures/
 /[Aa]ssets/_Heathen Engineering/
 
+/[Aa]ssets/_Heathen Engineering/
+
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
 
