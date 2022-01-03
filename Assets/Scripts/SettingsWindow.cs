@@ -14,9 +14,6 @@ public class SettingsWindow : MonoBehaviour
 	private void Awake()
 	{
 		int languageCache = PlayerPrefs.GetInt("language");
-		Debug.Log("PlayerPref: " + PlayerPrefs.GetInt("language"));
-		Debug.Log("CurrentLanguage: " + LocalisationSystem.CurrentLanguage.ToString());
-
 		List<TMP_Dropdown.OptionData> optionDataList = new List<TMP_Dropdown.OptionData>();
 		languageDropdown.ClearOptions();
 
