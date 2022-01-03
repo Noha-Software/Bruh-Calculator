@@ -13,7 +13,7 @@ public class SettingsWindow : MonoBehaviour
 
 	private void Awake()
 	{
-		languageDropdown.value = PlayerPrefs.GetInt("language");
+		int languageCache = PlayerPrefs.GetInt("language");
 		Debug.Log("PlayerPref: " + PlayerPrefs.GetInt("language"));
 		Debug.Log("CurrentLanguage: " + LocalisationSystem.CurrentLanguage.ToString());
 
@@ -26,12 +26,9 @@ public class SettingsWindow : MonoBehaviour
 		}
 
 		languageDropdown.options = optionDataList;
-		languageDropdown.value = PlayerPrefs.GetInt("language");
-	}
 
-	void Start()
-	{
-		languageDropdown.value = PlayerPrefs.GetInt("language");
+		languageDropdown.value = languageCache;
+		PlayerPrefs.SetInt("language", languageCache);
 	}
 
 	public void OnLanguageValueChanged()
