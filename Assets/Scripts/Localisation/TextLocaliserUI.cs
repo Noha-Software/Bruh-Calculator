@@ -8,6 +8,7 @@ public class TextLocaliserUI : MonoBehaviour
 {
     TextMeshProUGUI textField;
 
+    [Tooltip("Key of field in localisation file")]
     public LocalisedString localisedString;
 
     void Start()

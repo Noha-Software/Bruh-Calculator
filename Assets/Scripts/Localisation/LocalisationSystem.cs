@@ -25,7 +25,13 @@ public class LocalisationSystem
 		get { return language; }
 		set { SetLanguage(value); }
 	}
-	static Language language = (Language)PlayerPrefs.GetInt("language");
+	static Language language;
+
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
+	public static void InitializeLanguage()
+	{
+		language = (Language)PlayerPrefs.GetInt("language");
+	}
 
 	private static Dictionary<string, string> localisedEN;
 	private static Dictionary<string, string> localisedHU;
@@ -87,7 +93,7 @@ public class LocalisationSystem
 	/// <returns>Returns a dictionary with a key and value of strings.</returns>
 	public static Dictionary<string, string> GetDictionaryForEditor()
 	{
-		if(!isInit) { Init(); }
+		Init();
 		switch (language)
 		{
 			case Language.English:

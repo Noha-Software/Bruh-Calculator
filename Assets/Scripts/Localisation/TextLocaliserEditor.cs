@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+[ExecuteInEditMode]
 public class TextLocaliserEditWindow : EditorWindow
 {
 	static bool close;
