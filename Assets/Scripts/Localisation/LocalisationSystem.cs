@@ -14,7 +14,8 @@ public class LocalisationSystem
 	public enum Language
 	{
 		English = 0,
-		Hungarian = 1
+		Hungarian = 1,
+		German = 2,
 	}
 
 	/// <summary>
@@ -35,6 +36,7 @@ public class LocalisationSystem
 
 	private static Dictionary<string, string> localisedEN;
 	private static Dictionary<string, string> localisedHU;
+	private static Dictionary<string, string> localisedDE;
 
 	public static bool isInit;
 	public static CSVLoader csvLoader;
@@ -53,6 +55,7 @@ public class LocalisationSystem
 	{
 		localisedEN = csvLoader.GetDictionaryValues(Language.English);
 		localisedHU = csvLoader.GetDictionaryValues(Language.Hungarian);
+		localisedDE = csvLoader.GetDictionaryValues(Language.German);
 	}
 
 	/// <summary>
@@ -83,6 +86,8 @@ public class LocalisationSystem
 				return "en";
 			case Language.Hungarian:
 				return "hu";
+			case Language.German:
+				return "de";
 		}
 		return "en";
 	}
@@ -100,6 +105,8 @@ public class LocalisationSystem
 				return localisedEN;
 			case Language.Hungarian:
 				return localisedHU;
+			case Language.German:
+				return localisedDE;
 		}
 		return localisedEN;
 	}
@@ -121,6 +128,9 @@ public class LocalisationSystem
 				break;
 			case Language.Hungarian:
 				localisedHU.TryGetValue(key, out value);
+				break;
+			case Language.German:
+				localisedDE.TryGetValue(key, out value);
 				break;
 			default:
 				localisedEN.TryGetValue(key, out value);
@@ -155,7 +165,7 @@ public class LocalisationSystem
 
 #if UNITY_EDITOR
 	/// <summary>
-	/// Edit an existent localisation entry or create a new one.
+	/// Edit an existent localisation entry or create a new one in the current version.
 	/// </summary>
 	/// <param name="key">Key of entry to edit.</param>
 	/// <param name="value">Value of entry to edit.</param>
@@ -197,32 +207,6 @@ public class LocalisationSystem
 
 		csvLoader.LoadCSV();
 		csvLoader.Edit(key, value, language);
-		csvLoader.LoadCSV();
-
-		UpdateDictionaries();
-	}
-	public static void EditKey(string oldKey, string newKey)
-	{
-		if (newKey.Contains("\""))
-		{
-			newKey.Replace('"', '\"');
-		}
-
-		if (csvLoader == null)
-		{
-			csvLoader = new CSVLoader();
-		}
-
-		List<string> values = new List<string>();
-
-		csvLoader.LoadCSV();
-
-		for (int i = 0; i < Enum.GetNames(typeof(Language)).Length; i++)
-		{
-			csvLoader.Edit(newKey, csvLoader.GetDictionaryValues((Language)i)[oldKey], (Language)i);
-		}
-		csvLoader.Remove(oldKey);
-
 		csvLoader.LoadCSV();
 
 		UpdateDictionaries();
