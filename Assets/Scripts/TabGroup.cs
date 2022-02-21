@@ -8,6 +8,7 @@ public class TabGroup : MonoBehaviour
     public List<TabButton> tabButtons;
 	public TabButton selectedTab;
 	public List<GameObject> objectsToSwap;
+	public GameObject currentPageOpen;
 
 	public Color tabIdle;
 	public Color tabHover;
@@ -56,10 +57,11 @@ public class TabGroup : MonoBehaviour
 			if (obj == button.objectToSwap)
 			{
 				obj.SetActive(true);
+				currentPageOpen = obj;
 			}
 			else
 			{
-				obj.SetActive(false);
+				obj.SetActive(false);				
 			}
 		}
 	}
