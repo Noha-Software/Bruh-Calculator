@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class RemarkableIdentities : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void ClosePage()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        GameObject currentPageOpen = GameObject.Find("Tab 3 - Remarkable Identities/Tabs").GetComponent<TabGroup>().currentPageOpen;
+        currentPageOpen.SetActive(false);
     }
 }
