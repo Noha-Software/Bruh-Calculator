@@ -21,6 +21,7 @@ public class RemarkableIdentities : MonoBehaviour
     private void Start()
     {
         aNumbers = new List<string>();
+        aVariables = new List<string>();
     }
     public void GetInputs()
     {
@@ -30,43 +31,59 @@ public class RemarkableIdentities : MonoBehaviour
         aInputField = GameObject.Find(aInputName).GetComponent<TMP_InputField>().text;
         bInputField = GameObject.Find(bInputName).GetComponent<TMP_InputField>().text;
         //Debug.Log(aInputField + bINputField);
-
     }
     public void SortData()
     {
         GetInputs();
         //Send the inputs to their respectable lists
-        //Get the numbers of 'a'
         int idxTracker = 0;
-        string currentString = "";
+        string currentNumbers = "";
+        string currentLetters = "";
 
         foreach(char c in aInputField)
         {
             if((int)c <= 57 && (int)c >= 48 && idxTracker < 2)
             {
-                isNumberOfA = true;
-                currentString += c;
-                Debug.Log(idxTracker);
+                if (isVariableOfB == false)
+                {
+                    isNumberOfA = true;
+                    currentNumbers += c;
+                }
+                else currentLetters += c;
+                //Debug.Log(idxTracker);
+            }
+            else if((int)c <= 90 && (int)c >= 65 && (int)c <= 122 && (int)c >= 97 && idxTracker < 2 && (int)c != 94)
+            {
+                isVariableOfB = true;
+                currentLetters += c;
             }
             else if ((int)c == 94)
             {
-                //debug needed
-                currentString += c;
+                if (isNumberOfA == true)
+                    currentNumbers += c;
+                else currentLetters += c;
                 ++idxTracker;
-                Debug.Log(idxTracker);
+                //Debug.Log(idxTracker);
             }
             if (idxTracker > 1)
             {
-                aNumbers.Add(currentString);                
-                Debug.Log("Is number of a? : " + isNumberOfA);
-                Debug.Log("Is varuable of a? : " + isVariableOfA);
-                Debug.Log("is number of b? : " + isNumberOfB);
-                Debug.Log("Is variable of b? : " + isVariableOfB);
+                aNumbers.Add(currentNumbers);
+                aVariables.Add(currentLetters);
+                //bNumbers.Add(currentLetters);                
                 foreach (string s in aNumbers)
                 {
-                    Debug.Log("Index" + aNumbers.IndexOf(s) + "of aNumbers : " + s);
+                    Debug.Log("Index " + aNumbers.IndexOf(s) + "of aNumbers : " + s);
                 }
-                currentString = "";
+                foreach(string s in aVariables)
+                {
+                    Debug.Log("Index " + aVariables.IndexOf(s) + "of aVariables : " + s);
+                }
+                isNumberOfA = false;
+                isVariableOfA = false;
+                isNumberOfB = false;
+                isVariableOfB = false;
+                currentNumbers = "";
+                currentLetters = "";
                 idxTracker = 0;
             }                                                     
         }
