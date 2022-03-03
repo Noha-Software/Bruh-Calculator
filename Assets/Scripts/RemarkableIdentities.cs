@@ -32,37 +32,49 @@ public class RemarkableIdentities : MonoBehaviour
         bInputField = GameObject.Find(bInputName).GetComponent<TMP_InputField>().text;
         //Debug.Log(aInputField + bINputField);
     }
-    public void SortData()
+    public void SortData(/*string[] numbers, string[] letters>*/)
     {
         GetInputs();
+        //numberList.Clear();
+
         //Send the inputs to their respectable lists
         int idxTracker = 0;
         string currentNumber = "";
         string currentLetter = "";
-
+        
         foreach(char c in aInputField)
         {
-                    
             if ((int)c <= 57 && (int)c >= 48 && idxTracker < 2)
             {
                 if (isVariableOfA == false)
                 {
                     isNumberOfA = true;
                     currentNumber += c;
-                    Debug.Log("Number");
                 }
-                else 
+                else if (isVariableOfA && idxTracker > 0)
                 {
                     currentLetter += c;
-                    Debug.Log("Number => Letters");
-                }           
+                }
+                else
+                {
+                    currentNumber += c;
+                    aVariables.Add(currentLetter);
+                    currentLetter = "";
+                    isVariableOfA = false;
+                }
             }
             else if(((int)c <= 90 && (int)c >= 65) || ((int)c <= 122 && (int)c >= 97) && idxTracker < 2 && (int)c != 94)
             {
+                if (isNumberOfA) 
+                {
+                    aNumbers.Add(currentNumber);
+                    currentNumber = "";
+                    idxTracker = 0;
+                    isNumberOfA = false;
+                } 
                 isVariableOfA = true;
-                Debug.Log(isVariableOfA);
-                Debug.Log("Variable");
-                currentLetter += c;               
+                currentLetter += c;
+                
             }
             else if ((int)c == 94)
             {               
@@ -78,25 +90,9 @@ public class RemarkableIdentities : MonoBehaviour
             }
             if (idxTracker > 1)
             {
-                aNumbers.Add(currentNumber);
-                aVariables.Add(currentLetter);
-
-                //Debug
+                if (currentNumber != "") aNumbers.Add(currentNumber);
+                if (currentLetter != "") aVariables.Add(currentLetter);
                 
-                    foreach (string s in aNumbers)
-                    {
-                        Debug.Log("Index " + aNumbers.IndexOf(s) + "of aNumbers : " + s);
-                    }
-                
-                
-                    foreach (string s in aVariables)
-                    {
-                        Debug.Log("Index " + aVariables.IndexOf(s) + "of aVariables : " + s);
-                    }
-                
-                Debug.Log("Gatya");
-                //
-           
                 isNumberOfA = false;
                 isVariableOfA = false;
                 isNumberOfB = false;
@@ -105,8 +101,25 @@ public class RemarkableIdentities : MonoBehaviour
                 currentLetter = "";
                 idxTracker = 0;
             }
-        }       
-    }  
+        }
+        if (currentNumber != "") aNumbers.Add(currentNumber);
+        if (currentLetter != "") aVariables.Add(currentLetter);
+        //Debug
+
+        foreach (string s in aNumbers)
+        {
+            Debug.Log("Index " + aNumbers.IndexOf(s) + "of aNumbers : " + s);
+        }
+
+
+        foreach (string s in aVariables)
+        {
+            Debug.Log("Index " + aVariables.IndexOf(s) + "of aVariables : " + s);
+        }
+
+        Debug.Log("Gatya");
+        //
+    }
     public void ClosePage()
     {
         GameObject currentPageOpen = GameObject.Find("Tab 3 - Remarkable Identities/Tabs").GetComponent<TabGroup>().currentPageOpen;
