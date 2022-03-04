@@ -5,11 +5,9 @@ using TMPro;
 
 public class RemarkableIdentities : MonoBehaviour
 {
-    bool isNumberOfA;
-    bool isVariableOfA;
-    bool isNumberOfB;
-    bool isVariableOfB;
-
+    bool isNumber;
+    bool isVariable;
+    
     public string aInputField;
     public string bInputField;
 
@@ -22,6 +20,8 @@ public class RemarkableIdentities : MonoBehaviour
     {
         aNumbers = new List<string>();
         aVariables = new List<string>();
+        bNumbers = new List<string>();
+        bVariables = new List<string>();
     }
     public void GetInputs()
     {
@@ -29,96 +29,94 @@ public class RemarkableIdentities : MonoBehaviour
         string aInputName = GameObject.Find("Tab 3 - Remarkable Identities/Tabs").GetComponent<TabGroup>().currentPageOpen.name + "/aInput";
         string bInputName = GameObject.Find("Tab 3 - Remarkable Identities/Tabs").GetComponent<TabGroup>().currentPageOpen.name + "/bInput";
         aInputField = GameObject.Find(aInputName).GetComponent<TMP_InputField>().text;
-        bInputField = GameObject.Find(bInputName).GetComponent<TMP_InputField>().text;
-        //Debug.Log(aInputField + bINputField);
+        bInputField = GameObject.Find(bInputName).GetComponent<TMP_InputField>().text;        
+    }   
+    public void Calculate()
+    {
+        SortData(aInputField, aNumbers, aVariables);
+        SortData(bInputField, bNumbers, bVariables);        
     }
-    public void SortData(/*string[] numbers, string[] letters>*/)
+    public void SortData(string input, List<string> numberList, List<string> variableList)
     {
         GetInputs();
-        //numberList.Clear();
+        numberList.Clear();
+        variableList.Clear();
 
         //Send the inputs to their respectable lists
         int idxTracker = 0;
         string currentNumber = "";
         string currentLetter = "";
-        
-        foreach(char c in aInputField)
+
+        foreach (char c in input)
         {
             if ((int)c <= 57 && (int)c >= 48 && idxTracker < 2)
             {
-                if (isVariableOfA == false)
+                if (isVariable == false)
                 {
-                    isNumberOfA = true;
+                    isNumber = true;
                     currentNumber += c;
                 }
-                else if (isVariableOfA && idxTracker > 0)
+                else if (isVariable && idxTracker > 0)
                 {
                     currentLetter += c;
                 }
                 else
                 {
                     currentNumber += c;
-                    aVariables.Add(currentLetter);
+                    variableList.Add(currentLetter);
                     currentLetter = "";
-                    isVariableOfA = false;
+                    isVariable = false;
                 }
             }
-            else if(((int)c <= 90 && (int)c >= 65) || ((int)c <= 122 && (int)c >= 97) && idxTracker < 2 && (int)c != 94)
+            else if (((int)c <= 90 && (int)c >= 65) || ((int)c <= 122 && (int)c >= 97) && idxTracker < 2 && (int)c != 94)
             {
-                if (isNumberOfA) 
+                if (isNumber)
                 {
-                    aNumbers.Add(currentNumber);
+                    numberList.Add(currentNumber);
                     currentNumber = "";
                     idxTracker = 0;
-                    isNumberOfA = false;
-                } 
-                isVariableOfA = true;
+                    isNumber = false;
+                }
+                isVariable = true;
                 currentLetter += c;
-                
+
             }
             else if ((int)c == 94)
-            {               
-                if (isNumberOfA == true) 
+            {
+                if (isNumber == true)
                 {
-                    currentNumber += c;                    
-                } 
+                    currentNumber += c;
+                }
                 else
                 {
-                    currentLetter += c;                   
+                    currentLetter += c;
                 }
                 ++idxTracker;
             }
             if (idxTracker > 1)
             {
-                if (currentNumber != "") aNumbers.Add(currentNumber);
-                if (currentLetter != "") aVariables.Add(currentLetter);
-                
-                isNumberOfA = false;
-                isVariableOfA = false;
-                isNumberOfB = false;
-                isVariableOfB = false;
+                if (currentNumber != "") numberList.Add(currentNumber);
+                if (currentLetter != "") variableList.Add(currentLetter);
+
+                isNumber = false;
+                isVariable = false;
+
                 currentNumber = "";
                 currentLetter = "";
                 idxTracker = 0;
             }
         }
-        if (currentNumber != "") aNumbers.Add(currentNumber);
-        if (currentLetter != "") aVariables.Add(currentLetter);
-        //Debug
-
-        foreach (string s in aNumbers)
+        if (currentNumber != "") numberList.Add(currentNumber);
+        if (currentLetter != "") variableList.Add(currentLetter);
+        foreach (string s in numberList)
         {
             Debug.Log("Index " + aNumbers.IndexOf(s) + "of aNumbers : " + s);
         }
-
-
-        foreach (string s in aVariables)
+        foreach (string s in variableList)
         {
             Debug.Log("Index " + aVariables.IndexOf(s) + "of aVariables : " + s);
         }
 
-        Debug.Log("Gatya");
-        //
     }
     public void ClosePage()
     {
