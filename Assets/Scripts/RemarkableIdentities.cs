@@ -33,12 +33,12 @@ public class RemarkableIdentities : MonoBehaviour
     }   
     public void Calculate()
     {
+        GetInputs();
         SortData(aInputField, aNumbers, aVariables);
         SortData(bInputField, bNumbers, bVariables);        
     }
     public void SortData(string input, List<string> numberList, List<string> variableList)
-    {
-        GetInputs();
+    {      
         numberList.Clear();
         variableList.Clear();
 
@@ -46,6 +46,9 @@ public class RemarkableIdentities : MonoBehaviour
         int idxTracker = 0;
         string currentNumber = "";
         string currentLetter = "";
+        string aOrBOrC = "";
+        if (input == aInputField) aOrBOrC = "a";
+        else if (input == bInputField) aOrBOrC = "b";
 
         foreach (char c in input)
         {
@@ -63,7 +66,7 @@ public class RemarkableIdentities : MonoBehaviour
                 else
                 {
                     currentNumber += c;
-                    variableList.Add(currentLetter);
+                    if (currentLetter != "") variableList.Add(currentLetter);
                     currentLetter = "";
                     isVariable = false;
                 }
@@ -72,7 +75,7 @@ public class RemarkableIdentities : MonoBehaviour
             {
                 if (isNumber)
                 {
-                    numberList.Add(currentNumber);
+                    if (currentNumber != "") numberList.Add(currentNumber);
                     currentNumber = "";
                     idxTracker = 0;
                     isNumber = false;
@@ -110,11 +113,11 @@ public class RemarkableIdentities : MonoBehaviour
         if (currentLetter != "") variableList.Add(currentLetter);
         foreach (string s in numberList)
         {
-            Debug.Log("Index " + aNumbers.IndexOf(s) + "of aNumbers : " + s);
+            Debug.Log("Index " + numberList.IndexOf(s) + "of" + aOrBOrC + "numbers: " + s);
         }
         foreach (string s in variableList)
         {
-            Debug.Log("Index " + aVariables.IndexOf(s) + "of aVariables : " + s);
+            Debug.Log("Index " + variableList.IndexOf(s) + "of" + aOrBOrC + "variables: " + s);
         }
 
     }
