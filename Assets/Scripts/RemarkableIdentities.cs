@@ -5,6 +5,11 @@ using TMPro;
 
 public class RemarkableIdentities : MonoBehaviour
 {
+    public GameObject currentTextSelcted;
+
+    string aInputName;
+    string bInputName;
+
     bool isNumber;
     bool isVariable;
     
@@ -26,8 +31,8 @@ public class RemarkableIdentities : MonoBehaviour
     public void GetInputs()
     {
         //Get the inputs as strings
-        string aInputName = GameObject.Find("Tab 3 - Remarkable Identities/Tabs").GetComponent<TabGroup>().currentPageOpen.name + "/aInput";
-        string bInputName = GameObject.Find("Tab 3 - Remarkable Identities/Tabs").GetComponent<TabGroup>().currentPageOpen.name + "/bInput";
+        aInputName = GameObject.Find("Tab 3 - Remarkable Identities/Tabs").GetComponent<TabGroup>().currentPageOpen.name + "/aInput";
+        bInputName = GameObject.Find("Tab 3 - Remarkable Identities/Tabs").GetComponent<TabGroup>().currentPageOpen.name + "/bInput";
         aInputField = GameObject.Find(aInputName).GetComponent<TMP_InputField>().text;
         bInputField = GameObject.Find(bInputName).GetComponent<TMP_InputField>().text;        
     }   
@@ -125,5 +130,15 @@ public class RemarkableIdentities : MonoBehaviour
     {
         GameObject currentPageOpen = GameObject.Find("Tab 3 - Remarkable Identities/Tabs").GetComponent<TabGroup>().currentPageOpen;
         currentPageOpen.SetActive(false);
+    }   
+    public void AddUpperIndex()
+    {
+        currentTextSelcted = gameObject;
+        currentTextSelcted.GetComponent<TMP_InputField>().text += "^";
+    }
+    public void AddDoubleUpperIndex()
+    {
+        currentTextSelcted = gameObject;
+        currentTextSelcted.GetComponent<TMP_InputField>().text += "^^";
     }
 }
