@@ -21,6 +21,8 @@ public class RemarkableIdentities : MonoBehaviour
     List<string> bNumbers;
     List<string> bVariables;
 
+
+
     private void Start()
     {
         aNumbers = new List<string>();
@@ -31,8 +33,8 @@ public class RemarkableIdentities : MonoBehaviour
     public void GetInputs()
     {
         //Get the inputs as strings
-        aInputName = GameObject.Find("Tab 3 - Remarkable Identities/Tabs").GetComponent<TabGroup>().currentPageOpen.name + "/aInput";
-        bInputName = GameObject.Find("Tab 3 - Remarkable Identities/Tabs").GetComponent<TabGroup>().currentPageOpen.name + "/bInput";
+        aInputName = GameObject.Find("Tab 3 - Remarkable Identities/Tabs/").GetComponent<TabGroup>().currentPageOpen.name + "/aInput";
+        bInputName = GameObject.Find("Tab 3 - Remarkable Identities/Tabs/").GetComponent<TabGroup>().currentPageOpen.name + "/bInput";
         aInputField = GameObject.Find(aInputName).GetComponent<TMP_InputField>().text;
         bInputField = GameObject.Find(bInputName).GetComponent<TMP_InputField>().text;        
     }   
@@ -51,9 +53,9 @@ public class RemarkableIdentities : MonoBehaviour
         int idxTracker = 0;
         string currentNumber = "";
         string currentLetter = "";
-        string aOrBOrC = "";
+        /*string aOrBOrC = "";
         if (input == aInputField) aOrBOrC = "a";
-        else if (input == bInputField) aOrBOrC = "b";
+        else if (input == bInputField) aOrBOrC = "b";*/
 
         foreach (char c in input)
         {
@@ -116,14 +118,14 @@ public class RemarkableIdentities : MonoBehaviour
         }
         if (currentNumber != "") numberList.Add(currentNumber);
         if (currentLetter != "") variableList.Add(currentLetter);
-        foreach (string s in numberList)
+        /*foreach (string s in numberList)
         {
             Debug.Log("Index " + numberList.IndexOf(s) + "of" + aOrBOrC + "numbers: " + s);
         }
         foreach (string s in variableList)
         {
             Debug.Log("Index " + variableList.IndexOf(s) + "of" + aOrBOrC + "variables: " + s);
-        }
+        }*/
 
     }
     public void ClosePage()
@@ -132,13 +134,15 @@ public class RemarkableIdentities : MonoBehaviour
         currentPageOpen.SetActive(false);
     }   
     public void AddUpperIndex()
-    {
-        currentTextSelcted = gameObject;
+    {        
         currentTextSelcted.GetComponent<TMP_InputField>().text += "^";
     }
     public void AddDoubleUpperIndex()
-    {
-        currentTextSelcted = gameObject;
+    {        
         currentTextSelcted.GetComponent<TMP_InputField>().text += "^^";
+    }
+    public void SetThisSelectedTab(GameObject input)
+    {
+        currentTextSelcted = input;
     }
 }
