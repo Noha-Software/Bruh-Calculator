@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class RemarkableIdentities : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class RemarkableIdentities : MonoBehaviour
 
     string aInputName;
     string bInputName;
+    string aOutput;
+    string bOutput;
 
     bool isNumber;
     bool isVariable;
@@ -20,6 +23,9 @@ public class RemarkableIdentities : MonoBehaviour
     List<string> aVariables;
     List<string> bNumbers;
     List<string> bVariables;
+    List<string> aNumbersOutput;
+    List<string> aIndexesOutput;
+    
 
 
 
@@ -29,6 +35,8 @@ public class RemarkableIdentities : MonoBehaviour
         aVariables = new List<string>();
         bNumbers = new List<string>();
         bVariables = new List<string>();
+        aNumbersOutput = new List<string>();
+        aIndexesOutput = new List<string>();
     }
     public void GetInputs()
     {
@@ -38,11 +46,12 @@ public class RemarkableIdentities : MonoBehaviour
         aInputField = GameObject.Find(aInputName).GetComponent<TMP_InputField>().text;
         bInputField = GameObject.Find(bInputName).GetComponent<TMP_InputField>().text;        
     }   
-    public void Calculate()
+    public void RIOutput()
     {
         GetInputs();
         SortData(aInputField, aNumbers, aVariables);
-        SortData(bInputField, bNumbers, bVariables);        
+        SortData(bInputField, bNumbers, bVariables);
+        Calculate(aNumbers, aNumbersOutput);
     }
     public void SortData(string input, List<string> numberList, List<string> variableList)
     {      
@@ -126,7 +135,19 @@ public class RemarkableIdentities : MonoBehaviour
         {
             Debug.Log("Index " + variableList.IndexOf(s) + "of" + aOrBOrC + "variables: " + s);
         }*/
-
+    }
+    public void Calculate(List<string> numbers, List<string> output)
+    {
+        output.Clear();
+        int i;
+        int idx = 0;
+        foreach (string s in numbers)
+        {            
+            i = Int32.Parse(s);
+            output.Add((i*i).ToString());
+            Debug.Log(output[idx]);
+            ++idx;
+        }
     }
     public void ClosePage()
     {
