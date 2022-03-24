@@ -12,10 +12,12 @@ public class RemarkableIdentities : MonoBehaviour
     string bInputName;
     string aOutput;
     string bOutput;
+    int listIndexIdx = 0;
 
     bool isNumber;
     bool isVariable;
-    
+    bool isIndex;
+
     public string aInputField;
     public string bInputField;
 
@@ -24,11 +26,11 @@ public class RemarkableIdentities : MonoBehaviour
     List<string> bNumbers;
     List<string> bVariables;
     List<string> aNumbersOutput;
-    List<string> aIndexesOutput;
+    List<List<string>> indexedListA;
+    List<int> aIndexes;
+    List<List<string>> indexedListB;
+    List<int> bIndexes;
     
-
-
-
     private void Start()
     {
         aNumbers = new List<string>();
@@ -36,7 +38,8 @@ public class RemarkableIdentities : MonoBehaviour
         bNumbers = new List<string>();
         bVariables = new List<string>();
         aNumbersOutput = new List<string>();
-        aIndexesOutput = new List<string>();
+        indexedListA = new List<List<string>>();
+        aIndexes = new List<int>();
     }
     public void GetInputs()
     {
@@ -52,19 +55,17 @@ public class RemarkableIdentities : MonoBehaviour
         SortData(aInputField, aNumbers, aVariables);
         SortData(bInputField, bNumbers, bVariables);
         Calculate(aNumbers, aNumbersOutput);
+        listIndexIdx = 0;
     }
     public void SortData(string input, List<string> numberList, List<string> variableList)
     {      
         numberList.Clear();
         variableList.Clear();
 
-        //Send the inputs to their respectable lists
         int idxTracker = 0;
         string currentNumber = "";
         string currentLetter = "";
-        /*string aOrBOrC = "";
-        if (input == aInputField) aOrBOrC = "a";
-        else if (input == bInputField) aOrBOrC = "b";*/
+        
 
         foreach (char c in input)
         {
@@ -84,7 +85,10 @@ public class RemarkableIdentities : MonoBehaviour
                     currentNumber += c;
                     if (currentLetter != "") variableList.Add(currentLetter);
                     currentLetter = "";
+                    isIndex = false;
                     isVariable = false;
+                    Debug.Log(listIndexIdx);
+                    listIndexIdx++;
                 }
             }
             else if (((int)c <= 90 && (int)c >= 65) || ((int)c <= 122 && (int)c >= 97) && idxTracker < 2 && (int)c != 94)
@@ -94,7 +98,10 @@ public class RemarkableIdentities : MonoBehaviour
                     if (currentNumber != "") numberList.Add(currentNumber);
                     currentNumber = "";
                     idxTracker = 0;
+                    isIndex = false;
                     isNumber = false;
+                    Debug.Log(listIndexIdx);
+                    listIndexIdx++;
                 }
                 isVariable = true;
                 currentLetter += c;
@@ -102,6 +109,7 @@ public class RemarkableIdentities : MonoBehaviour
             }
             else if ((int)c == 94)
             {
+                isIndex = true;
                 if (isNumber == true)
                 {
                     currentNumber += c;
@@ -123,18 +131,13 @@ public class RemarkableIdentities : MonoBehaviour
                 currentNumber = "";
                 currentLetter = "";
                 idxTracker = 0;
+                Debug.Log(listIndexIdx);
+                listIndexIdx++;
             }
         }
         if (currentNumber != "") numberList.Add(currentNumber);
         if (currentLetter != "") variableList.Add(currentLetter);
-        /*foreach (string s in numberList)
-        {
-            Debug.Log("Index " + numberList.IndexOf(s) + "of" + aOrBOrC + "numbers: " + s);
-        }
-        foreach (string s in variableList)
-        {
-            Debug.Log("Index " + variableList.IndexOf(s) + "of" + aOrBOrC + "variables: " + s);
-        }*/
+
     }
     public void Calculate(List<string> numbers, List<string> output)
     {
