@@ -152,6 +152,12 @@ public class RemarkableIdentities : MonoBehaviour
             ++idx;
         }
     }
+    public void SendToLists(string currentComponent, List<string> list, bool boolean, int idxTracker)
+    {
+        if (currentComponent != "") list.Add(currentComponent);
+        boolean = false;
+        idxTracker = 0;
+    }
     public void ClosePage()
     {
         GameObject currentPageOpen = GameObject.Find("Tab 3 - Remarkable Identities/Tabs").GetComponent<TabGroup>().currentPageOpen;
