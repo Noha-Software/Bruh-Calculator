@@ -13,6 +13,8 @@ public class RemarkableIdentities : MonoBehaviour
     string aOutput;
     string bOutput;
     int listIndexIdx = 0;
+    int idxTracker = 0;
+    string currentComponent = "";
 
     bool isNumber;
     bool isVariable;
@@ -27,7 +29,7 @@ public class RemarkableIdentities : MonoBehaviour
     List<string> bVariables;
     List<string> aNumbersOutput;
     List<List<string>> indexedListA;
-    List<int> aIndexes;
+    List<string> aIndexes;
     List<List<string>> indexedListB;
     List<int> bIndexes;
     
@@ -39,7 +41,7 @@ public class RemarkableIdentities : MonoBehaviour
         bVariables = new List<string>();
         aNumbersOutput = new List<string>();
         indexedListA = new List<List<string>>();
-        aIndexes = new List<int>();
+        aIndexes = new List<string>();
     }
     public void GetInputs()
     {
@@ -54,7 +56,7 @@ public class RemarkableIdentities : MonoBehaviour
         GetInputs();
         SortData(aInputField, aNumbers, aVariables);
         SortData(bInputField, bNumbers, bVariables);
-        Calculate(aNumbers, aNumbersOutput);
+        //Calculate(aNumbers, aNumbersOutput);
         listIndexIdx = 0;
     }
     public void SortData(string input, List<string> numberList, List<string> variableList)
@@ -62,85 +64,57 @@ public class RemarkableIdentities : MonoBehaviour
         numberList.Clear();
         variableList.Clear();
 
-        int idxTracker = 0;
-        string currentNumber = "";
-        string currentLetter = "";
-        
-
+        idxTracker = 0;
+                       
         foreach (char c in input)
         {
             if ((int)c <= 57 && (int)c >= 48 && idxTracker < 2)
             {
+               
                 if (isVariable == false)
                 {
                     isNumber = true;
-                    currentNumber += c;
+                    continue;
                 }
                 else if (isVariable && idxTracker > 0)
                 {
-                    currentLetter += c;
+                    continue;
                 }
                 else
                 {
-                    currentNumber += c;
-                    if (currentLetter != "") variableList.Add(currentLetter);
-                    currentLetter = "";
-                    isIndex = false;
-                    isVariable = false;
-                    Debug.Log(listIndexIdx);
-                    listIndexIdx++;
+                    SendToLists(variableList);
                 }
             }
             else if (((int)c <= 90 && (int)c >= 65) || ((int)c <= 122 && (int)c >= 97) && idxTracker < 2 && (int)c != 94)
             {
                 if (isNumber)
                 {
-                    if (currentNumber != "") numberList.Add(currentNumber);
-                    currentNumber = "";
-                    idxTracker = 0;
-                    isIndex = false;
-                    isNumber = false;
-                    Debug.Log(listIndexIdx);
-                    listIndexIdx++;
+                    SendToLists(numberList);
                 }
                 isVariable = true;
-                currentLetter += c;
-
             }
             else if ((int)c == 94)
             {
                 isIndex = true;
-                if (isNumber == true)
-                {
-                    currentNumber += c;
-                }
-                else
-                {
-                    currentLetter += c;
-                }
                 ++idxTracker;
             }
             if (idxTracker > 1)
             {
-                if (currentNumber != "") numberList.Add(currentNumber);
-                if (currentLetter != "") variableList.Add(currentLetter);
-
-                isNumber = false;
-                isVariable = false;
-
-                currentNumber = "";
-                currentLetter = "";
-                idxTracker = 0;
-                Debug.Log(listIndexIdx);
-                listIndexIdx++;
+                if (isIndex) SendToLists(aIndexes);
+                else if (isNumber) SendToLists(numberList);
+                else if (isVariable) SendToLists(variableList);                
             }
-        }
-        if (currentNumber != "") numberList.Add(currentNumber);
-        if (currentLetter != "") variableList.Add(currentLetter);
+            currentComponent += c;
+
+            Debug.Log(currentComponent);
+        }       
+        if (currentComponent != "") numberList.Add(currentComponent);
+        if (currentComponent != "") variableList.Add(currentComponent);
 
     }
     public void Calculate(List<string> numbers, List<string> output)
     {
+        //Ezt majd írd át
         output.Clear();
         int i;
         int idx = 0;
@@ -152,11 +126,15 @@ public class RemarkableIdentities : MonoBehaviour
             ++idx;
         }
     }
-    public void SendToLists(string currentComponent, List<string> list, bool boolean, int idxTracker)
+    public void SendToLists(List<string> list)
     {
         if (currentComponent != "") list.Add(currentComponent);
-        boolean = false;
+        isIndex = false;
+        isNumber = false;
+        isVariable = false;       
         idxTracker = 0;
+        currentComponent = "";
+        listIndexIdx++;
     }
     public void ClosePage()
     {
