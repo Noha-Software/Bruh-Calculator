@@ -23,15 +23,15 @@ public class RemarkableIdentities : MonoBehaviour
     public string aInputField;
     public string bInputField;
 
-    List<string> aNumbers;
-    List<string> aVariables;
-    List<string> bNumbers;
-    List<string> bVariables;
+    [SerializeField] List<string> aNumbers;
+    [SerializeField] List<string> aVariables;
+    [SerializeField] List<string> bNumbers;
+    [SerializeField] List<string> bVariables;
     List<string> aNumbersOutput;
     List<List<string>> indexedListA;
-    List<string> aIndexes;
+    [SerializeField] List<string> aIndexes;
     List<List<string>> indexedListB;
-    List<int> bIndexes;
+    [SerializeField]List<string> bIndexes;
     
     private void Start()
     {
@@ -42,6 +42,7 @@ public class RemarkableIdentities : MonoBehaviour
         aNumbersOutput = new List<string>();
         indexedListA = new List<List<string>>();
         aIndexes = new List<string>();
+        bIndexes = new List<string>();
     }
     public void GetInputs()
     {
@@ -54,18 +55,18 @@ public class RemarkableIdentities : MonoBehaviour
     public void RIOutput()
     {
         GetInputs();
-        SortData(aInputField, aNumbers, aVariables);
-        SortData(bInputField, bNumbers, bVariables);
+        SortData(aInputField, aNumbers, aVariables, aIndexes);
+        SortData(bInputField, bNumbers, bVariables, bIndexes);
         //Calculate(aNumbers, aNumbersOutput);
         listIndexIdx = 0;
     }
-    public void SortData(string input, List<string> numberList, List<string> variableList)
+    public void SortData(string input, List<string> numberList, List<string> variableList, List<string> indexList)
     {      
         numberList.Clear();
         variableList.Clear();
 
         idxTracker = 0;
-                       
+
         foreach (char c in input)
         {
             if ((int)c <= 57 && (int)c >= 48 && idxTracker < 2)
@@ -79,17 +80,16 @@ public class RemarkableIdentities : MonoBehaviour
                     isNumber = true;
                     currentComponent += c;
                 }
-                else if (isVariable && idxTracker > 0)
-                {
-                    currentComponent += c;
-                }
                 else
                 {
                     SendToLists(variableList);
+                    currentComponent += c;
+                    isNumber = true;
                 }
             }
             else if (((int)c <= 90 && (int)c >= 65) || ((int)c <= 122 && (int)c >= 97) && idxTracker < 2 && (int)c != 94)
             {
+                Debug.Log(currentComponent + isNumber);
                 if (isNumber)
                 {
                     SendToLists(numberList);
@@ -99,24 +99,23 @@ public class RemarkableIdentities : MonoBehaviour
             }
             else if ((int)c == 94)
             {
-                if (!isIndex) 
+                if (!isIndex)
                 {
                     if (isNumber) SendToLists(numberList);
                     else SendToLists(variableList);
-                    isIndex = true;                    
+                    isIndex = true;
                 }
                 ++idxTracker;
             }
             if (idxTracker > 1)
-            {
-                SendToLists(aIndexes);                
+            { 
+                SendToLists(indexList);                
             }
 
-            Debug.Log(currentComponent);
-        }       
-        if (currentComponent != "") numberList.Add(currentComponent);
-        if (currentComponent != "") variableList.Add(currentComponent);
-
+            //Debug.Log(currentComponent);
+        }
+        if(isNumber) SendToLists(numberList);
+        if(isVariable) SendToLists(variableList);
     }
     public void Calculate(List<string> numbers, List<string> output)
     {
