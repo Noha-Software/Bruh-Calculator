@@ -70,15 +70,18 @@ public class RemarkableIdentities : MonoBehaviour
         {
             if ((int)c <= 57 && (int)c >= 48 && idxTracker < 2)
             {
-               
-                if (isVariable == false)
+                if (isIndex)
+                {
+                    currentComponent += c;
+                }
+                else if (isVariable == false)
                 {
                     isNumber = true;
-                    continue;
+                    currentComponent += c;
                 }
                 else if (isVariable && idxTracker > 0)
                 {
-                    continue;
+                    currentComponent += c;
                 }
                 else
                 {
@@ -92,19 +95,22 @@ public class RemarkableIdentities : MonoBehaviour
                     SendToLists(numberList);
                 }
                 isVariable = true;
+                currentComponent += c;
             }
             else if ((int)c == 94)
             {
-                isIndex = true;
+                if (!isIndex) 
+                {
+                    if (isNumber) SendToLists(numberList);
+                    else SendToLists(variableList);
+                    isIndex = true;                    
+                }
                 ++idxTracker;
             }
             if (idxTracker > 1)
             {
-                if (isIndex) SendToLists(aIndexes);
-                else if (isNumber) SendToLists(numberList);
-                else if (isVariable) SendToLists(variableList);                
+                SendToLists(aIndexes);                
             }
-            currentComponent += c;
 
             Debug.Log(currentComponent);
         }       
