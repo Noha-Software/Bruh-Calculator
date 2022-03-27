@@ -94,6 +94,7 @@ public class RemarkableIdentities : MonoBehaviour
                 {
                     SendToLists(numberList);
                 }
+                SendToLists(variableList);
                 isVariable = true;
                 currentComponent += c;
             }
