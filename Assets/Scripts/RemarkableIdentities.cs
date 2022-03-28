@@ -23,26 +23,24 @@ public class RemarkableIdentities : MonoBehaviour
     public string aInputField;
     public string bInputField;
 
-    [SerializeField] List<string> aNumbers;
-    [SerializeField] List<string> aVariables;
-    [SerializeField] List<string> bNumbers;
-    [SerializeField] List<string> bVariables;
+    [SerializeField] List<List<string>> aList;
+    [SerializeField] List<List<string>> bList;
+    /*
     List<string> aNumbersOutput;
-    List<List<string>> indexedListA;
-    [SerializeField] List<string> aIndexes;
-    List<List<string>> indexedListB;
-    [SerializeField]List<string> bIndexes;
-    
+    List<List<string>> indexedListA;   
+    List<List<string>> indexedListB;    
+    */
+        
     private void Start()
     {
-        aNumbers = new List<string>();
-        aVariables = new List<string>();
-        bNumbers = new List<string>();
-        bVariables = new List<string>();
-        aNumbersOutput = new List<string>();
+        aList = new List<List<string>>() { new List<string>(), new List<string>(), new List<string>(), new List<string>() };
+        bList = new List<List<string>>() { new List<string>(), new List<string>(), new List<string>(), new List<string>() };
+        /*
+        aNumbersOutput = new List<string>();        
         indexedListA = new List<List<string>>();
-        aIndexes = new List<string>();
-        bIndexes = new List<string>();
+        indexedListB = new List<List<string>>();
+        */
+
     }
     public void GetInputs()
     {
@@ -55,10 +53,12 @@ public class RemarkableIdentities : MonoBehaviour
     public void RIOutput()
     {
         GetInputs();
-        SortData(aInputField, aNumbers, aVariables, aIndexes);
-        SortData(bInputField, bNumbers, bVariables, bIndexes);
+        SortData(aInputField, aList[0], aList[1], aList[2]);
+        SortData(bInputField, bList[0], bList[1], bList[2]);
         //Calculate(aNumbers, aNumbersOutput);
         listIndexIdx = 0;
+
+        foreach(string s in aList[0])
     }
     public void SortData(string input, List<string> numberList, List<string> variableList, List<string> indexList)
     {      
