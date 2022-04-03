@@ -10,9 +10,7 @@ public class RemarkableIdentities : MonoBehaviour
 
     string aInputName;
     string bInputName;
-    string aOutput;
-    string bOutput;
-    int listIndexIdx = 0;
+    string output;
     int idxTracker = 0;
     string currentComponent = "";
 
@@ -23,24 +21,13 @@ public class RemarkableIdentities : MonoBehaviour
     public string aInputField;
     public string bInputField;
 
-    [SerializeField] List<List<string>> aList;
-    [SerializeField] List<List<string>> bList;
-    /*
-    List<string> aNumbersOutput;
-    List<List<string>> indexedListA;   
-    List<List<string>> indexedListB;    
-    */
-        
+    [SerializeField] List<string> aList;
+    [SerializeField] List<string> bList;
+
     private void Start()
     {
-        aList = new List<List<string>>() { new List<string>(), new List<string>(), new List<string>(), new List<string>() };
-        bList = new List<List<string>>() { new List<string>(), new List<string>(), new List<string>(), new List<string>() };
-        /*
-        aNumbersOutput = new List<string>();        
-        indexedListA = new List<List<string>>();
-        indexedListB = new List<List<string>>();
-        */
-
+        aList = new List<string>();
+        bList = new List<string>();
     }
     public void GetInputs()
     {
@@ -49,24 +36,16 @@ public class RemarkableIdentities : MonoBehaviour
         bInputName = GameObject.Find("Tab 3 - Remarkable Identities/Tabs/").GetComponent<TabGroup>().currentPageOpen.name + "/bInput";
         aInputField = GameObject.Find(aInputName).GetComponent<TMP_InputField>().text;
         bInputField = GameObject.Find(bInputName).GetComponent<TMP_InputField>().text;        
-    }   
+    }
     public void RIOutput()
     {
         GetInputs();
-        SortData(aInputField, aList[0], aList[1], aList[2]);
-        SortData(bInputField, bList[0], bList[1], bList[2]);
-        //Calculate(aNumbers, aNumbersOutput);
-        listIndexIdx = 0;
-
-        foreach(string s in aList[0])
+        SortData(aInputField, aList);
+        SortData(bInputField, bList);
     }
-    public void SortData(string input, List<string> numberList, List<string> variableList, List<string> indexList)
-    {      
-        numberList.Clear();
-        variableList.Clear();
-
-        idxTracker = 0;
-
+    public void SortData(string input, List<string> list)
+    {
+        list.Clear();
         foreach (char c in input)
         {
             if ((int)c <= 57 && (int)c >= 48 && idxTracker < 2)
@@ -82,65 +61,43 @@ public class RemarkableIdentities : MonoBehaviour
                 }
                 else
                 {
-                    SendToLists(variableList);
+                    SendToList(list);
                     currentComponent += c;
                     isNumber = true;
                 }
             }
             else if (((int)c <= 90 && (int)c >= 65) || ((int)c <= 122 && (int)c >= 97) && idxTracker < 2 && (int)c != 94)
             {
-                Debug.Log(currentComponent + isNumber);
-                if (isNumber)
-                {
-                    SendToLists(numberList);
-                }
-                SendToLists(variableList);
+                SendToList(list);
                 isVariable = true;
                 currentComponent += c;
             }
             else if ((int)c == 94)
             {
-                if (!isIndex)
+                if (!isIndex && !isVariable)
                 {
-                    if (isNumber) SendToLists(numberList);
-                    else SendToLists(variableList);
                     isIndex = true;
+                    SendToList(list);                    
                 }
                 ++idxTracker;
             }
             if (idxTracker > 1)
-            { 
-                SendToLists(indexList);                
+            {
+                isIndex = false;
+                SendToList(list);
+                idxTracker = 0;
             }
 
-            //Debug.Log(currentComponent);
+            Debug.Log(currentComponent);
         }
-        if(isNumber) SendToLists(numberList);
-        if(isVariable) SendToLists(variableList);
+        SendToList(list);
     }
-    public void Calculate(List<string> numbers, List<string> output)
+    public void SendToList(List<string> list)
     {
-        //Ezt majd írd át
-        output.Clear();
-        int i;
-        int idx = 0;
-        foreach (string s in numbers)
-        {            
-            i = Int32.Parse(s);
-            output.Add((i*i).ToString());
-            Debug.Log(output[idx]);
-            ++idx;
-        }
-    }
-    public void SendToLists(List<string> list)
-    {
-        if (currentComponent != "") list.Add(currentComponent);
-        isIndex = false;
+        if (currentComponent != "") list.Add(currentComponent);        
         isNumber = false;
-        isVariable = false;       
-        idxTracker = 0;
+        isVariable = false;               
         currentComponent = "";
-        listIndexIdx++;
     }
     public void ClosePage()
     {
