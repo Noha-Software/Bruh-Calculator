@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using System.Text;
 
 public class RemarkableIdentities : MonoBehaviour
 {
@@ -10,13 +11,14 @@ public class RemarkableIdentities : MonoBehaviour
 
     string aInputName;
     string bInputName;
-    string output;
     int idxTracker = 0;
-    string currentComponent = "";
 
     bool isNumber;
     bool isVariable;
     bool isIndex;
+
+    StringBuilder output;
+    StringBuilder currentComponent;
 
     public string aInputField;
     public string bInputField;
@@ -28,6 +30,8 @@ public class RemarkableIdentities : MonoBehaviour
     {
         aList = new List<string>();
         bList = new List<string>();
+        output = new StringBuilder(50);
+        currentComponent = new StringBuilder();
     }
     public void GetInputs()
     {
@@ -37,11 +41,14 @@ public class RemarkableIdentities : MonoBehaviour
         aInputField = GameObject.Find(aInputName).GetComponent<TMP_InputField>().text;
         bInputField = GameObject.Find(bInputName).GetComponent<TMP_InputField>().text;
     }
-    public void Calculate()
+    public void Output()
     {
         GetInputs();
         SortData(aInputField, aList);
         SortData(bInputField, bList);
+        Calculate(aList);        
+        Calculate(bList);
+        output.Clear();
     }
     public void SortData(string input, List<string> list)
     {
@@ -52,17 +59,17 @@ public class RemarkableIdentities : MonoBehaviour
             {
                 if (isIndex)
                 {
-                    currentComponent += c;
+                    currentComponent.Append(c);
                 }
                 else if (isVariable == false)
                 {
                     isNumber = true;
-                    currentComponent += c;
+                    currentComponent.Append(c);
                 }
                 else
                 {
                     SendToList(list);
-                    currentComponent += c;
+                    currentComponent.Append(c);
                     isNumber = true;
                 }
             }
@@ -70,7 +77,7 @@ public class RemarkableIdentities : MonoBehaviour
             {
                 SendToList(list);
                 isVariable = true;
-                currentComponent += c;
+                currentComponent.Append(c);
             }
             else if ((int)c == 94)
             {
@@ -84,16 +91,39 @@ public class RemarkableIdentities : MonoBehaviour
                 idxTracker = 0;
             }
 
-            Debug.Log(currentComponent);
+            //Debug.Log(currentComponent);
         }
         SendToList(list);
     }
+    public void Calculate(List<string> list)
+    {
+        foreach(string s in list)
+        {
+            if (Int64.TryParse(s, out long result))
+            {
+                output.Append(result *= result);
+            }
+            else
+            {
+                if(s.Length == 1)
+                {
+                    output.Append(s + "<sup>2</sup>");
+                }
+                else
+                {
+                    long v = Int64.Parse(s.Trim(s[0]));                   
+                    output.Append(s[0] + "<sup>" + (v*2).ToString() + "</sup>");                    
+                }
+            }
+        }
+        Debug.Log(output);
+    }
     public void SendToList(List<string> list)
     {
-        if (currentComponent != "") list.Add(currentComponent);
+        if (currentComponent.ToString() != "") list.Add(currentComponent.ToString());
         isNumber = false;
         isVariable = false;
-        currentComponent = "";
+        currentComponent.Clear();
     }
     public void ClosePage()
     {
