@@ -37,7 +37,7 @@ public class RemarkableIdentities : MonoBehaviour
         aInputField = GameObject.Find(aInputName).GetComponent<TMP_InputField>().text;
         bInputField = GameObject.Find(bInputName).GetComponent<TMP_InputField>().text;
     }
-    public void RIOutput()
+    public void Calculate()
     {
         GetInputs();
         SortData(aInputField, aList);
@@ -74,12 +74,8 @@ public class RemarkableIdentities : MonoBehaviour
             }
             else if ((int)c == 94)
             {
-                if (!isIndex && !isVariable)
-                {
-                    isIndex = true;
-                    SendToList(list);
-                }
-                ++idxTracker;
+                isIndex = true;
+                idxTracker++;
             }
             if (idxTracker > 1)
             {
@@ -106,7 +102,9 @@ public class RemarkableIdentities : MonoBehaviour
     }
     public void AddUpperIndex()
     {
-        currentTextSelcted.GetComponent<TMP_InputField>().text += "^";
+        TMP_InputField field = currentTextSelcted.GetComponent<TMP_InputField>();
+        field.text += "^";
+        //Debug.Log(field.caretPosition);
     }
     public void AddDoubleUpperIndex()
     {

@@ -2555,6 +2555,8 @@ MonoBehaviour:
   currentTextSelcted: {fileID: 0}
   aInputField: 
   bInputField: 
+  aList: []
+  bList: []
 --- !u!114 &178023968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5351,6 +5353,8 @@ MonoBehaviour:
   currentTextSelcted: {fileID: 0}
   aInputField: 
   bInputField: 
+  aList: []
+  bList: []
 --- !u!1 &361421203
 GameObject:
   m_ObjectHideFlags: 0
@@ -8335,6 +8339,8 @@ MonoBehaviour:
   currentTextSelcted: {fileID: 0}
   aInputField: 
   bInputField: 
+  aList: []
+  bList: []
 --- !u!114 &560586666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10378,7 +10384,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36.85
+  m_fontSize: 37.45
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -11440,7 +11446,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36.85
+  m_fontSize: 37.45
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -12142,7 +12148,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 344082093}
-        m_MethodName: RIOutput
+        m_MethodName: Calculate
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
