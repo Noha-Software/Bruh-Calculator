@@ -11,20 +11,26 @@ public class RemarkableIdentities : MonoBehaviour
 
     string aInputName;
     string bInputName;
+    string indexInputName;
+    string outputName;
     int idxTracker = 0;
 
     bool isNumber;
     bool isVariable;
     bool isIndex;
 
+    int x;
+
     StringBuilder output;
     StringBuilder currentComponent;
 
     public string aInputField;
     public string bInputField;
+    public string outputField;
 
     [SerializeField] List<string> aList;
     [SerializeField] List<string> bList;
+    List<int> pascal;
 
     private void Start()
     {
@@ -32,23 +38,50 @@ public class RemarkableIdentities : MonoBehaviour
         bList = new List<string>();
         output = new StringBuilder(50);
         currentComponent = new StringBuilder();
+        pascal = new List<int>();
     }
     public void GetInputs()
     {
-        //Get the inputs as strings
-        aInputName = GameObject.Find("Tab 3 - Remarkable Identities/Tabs/").GetComponent<TabGroup>().currentPageOpen.name + "/aInput";
-        bInputName = GameObject.Find("Tab 3 - Remarkable Identities/Tabs/").GetComponent<TabGroup>().currentPageOpen.name + "/bInput";
+        string pagename = GameObject.Find("Tab 3 - Remarkable Identities/Tabs/").GetComponent<TabGroup>().currentPageOpen.name;
+        indexInputName = pagename + "/indexInput";
+        aInputName = pagename + "/aInput";
+        bInputName = pagename + "/bInput";
+        outputName = pagename + "/outputText";
+        x = Int32.Parse(GameObject.Find(indexInputName).GetComponent<TMP_InputField>().text) + 1;
         aInputField = GameObject.Find(aInputName).GetComponent<TMP_InputField>().text;
         bInputField = GameObject.Find(bInputName).GetComponent<TMP_InputField>().text;
+        outputField = GameObject.Find(outputName).GetComponent<TextMeshProUGUI>().text;
     }
     public void Output()
     {
         GetInputs();
         SortData(aInputField, aList);
         SortData(bInputField, bList);
-        Calculate(aList);        
-        Calculate(bList);
+
+        int val = 1, blank, j;
+        for (int i = 0; i < x; i++)
+        {
+            for (blank = 1; blank <= x - i; blank++)
+                for (j = 0; j <= i; j++)
+                {
+                    if (j == 0 || i == 0)
+                        val = 1;
+                    else val = val * (i - j + 1) / j;
+                    if (x - 1 == i) pascal.Add(val);
+                }
+        }
+
+        for (int i = 0; i < x; ++i)
+        {            
+            Calculate(((x-1) - i), i);            
+            //Debug.Log((x-1) - i);
+        }
+        Debug.Log(output);
+        outputField = output.ToString();
+        //outputField = "bruh";
+        pascal.Clear();
         output.Clear();
+        
     }
     public void SortData(string input, List<string> list)
     {
@@ -90,33 +123,46 @@ public class RemarkableIdentities : MonoBehaviour
                 SendToList(list);
                 idxTracker = 0;
             }
-
             //Debug.Log(currentComponent);
         }
         SendToList(list);
     }
-    public void Calculate(List<string> list)
+    public void Calculate(int a, int b)
     {
-        foreach(string s in list)
+        void FuckMe(int idx, List<string> list)
         {
-            if (Int64.TryParse(s, out long result))
+            if (idx != 0) foreach (string s in list)
             {
-                output.Append(result *= result);
-            }
-            else
-            {
-                if(s.Length == 1)
+                if (Int64.TryParse(s, out long res))
                 {
-                    output.Append(s + "<sup>2</sup>");
+                    int n = (int)res;
+                    for (int i = 0; i < (idx-1); ++i) if(idx != 1)
+                    {
+
+                        res *= n;
+                        //Debug.Log(res + " " + idx + " " + i);
+                    }
+                    res *= pascal[b];
+                    output.Append(res);
+                    //Debug.Log(res);
                 }
                 else
                 {
-                    long v = Int64.Parse(s.Trim(s[0]));                   
-                    output.Append(s[0] + "<sup>" + (v*2).ToString() + "</sup>");                    
+                    if (s.Length == 1)
+                    {
+                        output.Append(s + "<sup>" + idx + "</sup>");
+                    }
+                    else
+                    {
+                        long v = Int64.Parse(s.Trim(s[0]));
+                        output.Append(s[0] + "<sup>" + (v * idx) + "</sup>");
+                    }
                 }
             }
         }
-        Debug.Log(output);
+        FuckMe(a, aList);
+        FuckMe(b, bList);
+        output.Append(" + ");
     }
     public void SendToList(List<string> list)
     {
