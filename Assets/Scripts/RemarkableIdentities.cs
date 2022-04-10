@@ -26,7 +26,7 @@ public class RemarkableIdentities : MonoBehaviour
 
     public string aInputField;
     public string bInputField;
-    public string outputField;
+    public TextMeshProUGUI outputField;
 
     [SerializeField] List<string> aList;
     [SerializeField] List<string> bList;
@@ -50,7 +50,7 @@ public class RemarkableIdentities : MonoBehaviour
         x = Int32.Parse(GameObject.Find(indexInputName).GetComponent<TMP_InputField>().text) + 1;
         aInputField = GameObject.Find(aInputName).GetComponent<TMP_InputField>().text;
         bInputField = GameObject.Find(bInputName).GetComponent<TMP_InputField>().text;
-        outputField = GameObject.Find(outputName).GetComponent<TextMeshProUGUI>().text;
+        outputField = GameObject.Find(outputName).GetComponent<TextMeshProUGUI>();
     }
     public void Output()
     {
@@ -58,6 +58,7 @@ public class RemarkableIdentities : MonoBehaviour
         SortData(aInputField, aList);
         SortData(bInputField, bList);
 
+        //Pascal háromszög
         int val = 1, blank, j;
         for (int i = 0; i < x; i++)
         {
@@ -77,7 +78,7 @@ public class RemarkableIdentities : MonoBehaviour
             //Debug.Log((x-1) - i);
         }
         Debug.Log(output);
-        outputField = output.ToString();
+        outputField.text = output.ToString();
         //outputField = "bruh";
         pascal.Clear();
         output.Clear();
