@@ -2553,8 +2553,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTextSelcted: {fileID: 0}
-  aInputField: 
-  bInputField: 
+  tabs: {fileID: 0}
+  aInputField: {fileID: 0}
+  bInputField: {fileID: 0}
   outputField: {fileID: 0}
   aList: []
   bList: []
@@ -5155,8 +5156,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTextSelcted: {fileID: 0}
-  aInputField: 
-  bInputField: 
+  tabs: {fileID: 0}
+  aInputField: {fileID: 0}
+  bInputField: {fileID: 0}
   outputField: {fileID: 0}
   aList: []
   bList: []
@@ -5578,8 +5580,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTextSelcted: {fileID: 0}
-  aInputField: 
-  bInputField: 
+  tabs: {fileID: 72802465}
+  aInputField: {fileID: 0}
+  bInputField: {fileID: 0}
   outputField: {fileID: 0}
   aList: []
   bList: []
@@ -8567,8 +8570,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTextSelcted: {fileID: 0}
-  aInputField: 
-  bInputField: 
+  tabs: {fileID: 0}
+  aInputField: {fileID: 0}
+  bInputField: {fileID: 0}
   outputField: {fileID: 0}
   aList: []
   bList: []
@@ -10615,7 +10619,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 37.3
+  m_fontSize: 37.45
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -11676,7 +11680,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 37.3
+  m_fontSize: 37.45
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

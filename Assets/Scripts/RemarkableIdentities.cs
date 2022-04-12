@@ -8,14 +8,10 @@ using System.Text;
 public class RemarkableIdentities : MonoBehaviour
 {
     public GameObject currentTextSelcted;
+    public GameObject tabs;
 
-    string aInputName;
-    string bInputName;
-    string indexInputName;
-    string outputName;
     int idxTracker = 0;
 
-    bool isNumber;
     bool isVariable;
     bool isIndex;
 
@@ -24,9 +20,9 @@ public class RemarkableIdentities : MonoBehaviour
     StringBuilder output;
     StringBuilder currentComponent;
 
-    public string aInputField;
-    public string bInputField;
-    public TextMeshProUGUI outputField;
+    public TMP_InputField aInput;
+    public TMP_InputField bInput;
+    public TextMeshProUGUI outputText;
 
     [SerializeField] List<string> aList;
     [SerializeField] List<string> bList;
@@ -42,21 +38,17 @@ public class RemarkableIdentities : MonoBehaviour
     }
     public void GetInputs()
     {
-        string pagename = GameObject.Find("Tab 3 - Remarkable Identities/Tabs/").GetComponent<TabGroup>().currentPageOpen.name;
-        indexInputName = pagename + "/indexInput";
-        aInputName = pagename + "/aInput";
-        bInputName = pagename + "/bInput";
-        outputName = pagename + "/outputText";
-        x = Int32.Parse(GameObject.Find(indexInputName).GetComponent<TMP_InputField>().text) + 1;
-        aInputField = GameObject.Find(aInputName).GetComponent<TMP_InputField>().text;
-        bInputField = GameObject.Find(bInputName).GetComponent<TMP_InputField>().text;
-        outputField = GameObject.Find(outputName).GetComponent<TextMeshProUGUI>();
+        GameObject currentPageSelected = tabs.GetComponent<TabGroup>().currentPageOpen;
+        x = Int32.Parse(GameObject.Find(currentPageSelected.name + "indexInput").GetComponent<TMP_InputField>().text) + 1;
+        aInput = GameObject.Find(currentPageSelected.name + "/aInput").GetComponent<TMP_InputField>();
+        bInput = GameObject.Find(currentPageSelected.name + "/bInput").GetComponent<TMP_InputField>();
+        outputText = GameObject.Find(currentPageSelected.name + "/outputText").GetComponent<TextMeshProUGUI>();
     }
     public void Output()
     {
         GetInputs();
-        SortData(aInputField, aList);
-        SortData(bInputField, bList);
+        SortData(aInput.text, aList);
+        SortData(bInput.text, bList);
 
         //Pascal háromszög
         int val = 1, blank, j;
@@ -78,7 +70,7 @@ public class RemarkableIdentities : MonoBehaviour
             //Debug.Log((x-1) - i);
         }
         Debug.Log(output);
-        outputField.text = output.ToString();
+        outputText.text = output.ToString();
         //outputField = "bruh";
         pascal.Clear();
         output.Clear();
@@ -97,14 +89,12 @@ public class RemarkableIdentities : MonoBehaviour
                 }
                 else if (isVariable == false)
                 {
-                    isNumber = true;
                     currentComponent.Append(c);
                 }
                 else
                 {
                     SendToList(list);
                     currentComponent.Append(c);
-                    isNumber = true;
                 }
             }
             else if (((int)c <= 90 && (int)c >= 65) || ((int)c <= 122 && (int)c >= 97) && idxTracker < 2 && (int)c != 94)
@@ -134,9 +124,11 @@ public class RemarkableIdentities : MonoBehaviour
         {
             if (idx != 0) foreach (string s in list)
             {
+                bool hasNumber;
                 if (Int64.TryParse(s, out long res))
                 {
                     int n = (int)res;
+                    int amog = 0;
                     for (int i = 0; i < (idx-1); ++i) if(idx != 1)
                     {
 
@@ -144,14 +136,15 @@ public class RemarkableIdentities : MonoBehaviour
                         //Debug.Log(res + " " + idx + " " + i);
                     }
                     res *= pascal[b];
-                    output.Append(res);
+                    output.Append(amog);
                     //Debug.Log(res);
                 }
                 else
                 {
                     if (s.Length == 1)
                     {
-                        output.Append(s + "<sup>" + idx + "</sup>");
+                        output.Append(s);
+                        if (idx != 1) output.Append("<sup>" + idx + "</sup>");
                     }
                     else
                     {
@@ -161,14 +154,13 @@ public class RemarkableIdentities : MonoBehaviour
                 }
             }
         }
-        FuckMe(a, aList);
-        FuckMe(b, bList);
-        output.Append(" + ");
+    FuckMe(a, aList);
+    FuckMe(b, bList);
+    if (a != 0) output.Append(" + ");
     }
     public void SendToList(List<string> list)
     {
         if (currentComponent.ToString() != "") list.Add(currentComponent.ToString());
-        isNumber = false;
         isVariable = false;
         currentComponent.Clear();
     }
