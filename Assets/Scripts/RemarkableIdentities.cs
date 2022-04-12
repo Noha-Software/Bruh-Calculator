@@ -19,6 +19,7 @@ public class RemarkableIdentities : MonoBehaviour
 
     StringBuilder output;
     StringBuilder currentComponent;
+    StringBuilder calculations;
 
     public TMP_InputField aInput;
     public TMP_InputField bInput;
@@ -34,6 +35,7 @@ public class RemarkableIdentities : MonoBehaviour
         bList = new List<string>();
         output = new StringBuilder(50);
         currentComponent = new StringBuilder();
+        calculations = new StringBuilder();
         pascal = new List<int>();
     }
     public void GetInputs()
@@ -66,7 +68,7 @@ public class RemarkableIdentities : MonoBehaviour
 
         for (int i = 0; i < x; ++i)
         {            
-            Calculate(((x-1) - i), i);            
+            Calculate(((x-1) - i), i, pascal[i]);            
             //Debug.Log((x-1) - i);
         }
         Debug.Log(output);
@@ -118,45 +120,59 @@ public class RemarkableIdentities : MonoBehaviour
         }
         SendToList(list);
     }
-    public void Calculate(int a, int b)
+    public void Calculate(int a, int b, int pascalNum)
     {
+        bool hasNumber = false;
+        long number = 1;
+        calculations.Clear();
+
         void FuckMe(int idx, List<string> list)
         {
+            
             if (idx != 0) foreach (string s in list)
             {
-                bool hasNumber;
+                
                 if (Int64.TryParse(s, out long res))
                 {
+                    hasNumber = true;
                     int n = (int)res;
-                    int amog = 0;
                     for (int i = 0; i < (idx-1); ++i) if(idx != 1)
                     {
 
                         res *= n;
                         //Debug.Log(res + " " + idx + " " + i);
                     }
-                    res *= pascal[b];
-                    output.Append(amog);
+                    number *= res;
                     //Debug.Log(res);
                 }
                 else
                 {
                     if (s.Length == 1)
                     {
-                        output.Append(s);
-                        if (idx != 1) output.Append("<sup>" + idx + "</sup>");
+                        calculations.Append(s);
+                        if (idx != 1) calculations.Append("<sup>" + idx + "</sup>");
                     }
                     else
                     {
                         long v = Int64.Parse(s.Trim(s[0]));
-                        output.Append(s[0] + "<sup>" + (v * idx) + "</sup>");
+                        calculations.Append(s[0] + "<sup>" + (v * idx) + "</sup>");
                     }
                 }
             }
         }
-    FuckMe(a, aList);
-    FuckMe(b, bList);
-    if (a != 0) output.Append(" + ");
+        FuckMe(a, aList);
+        FuckMe(b, bList);
+        if (hasNumber)
+        {
+            number *= pascalNum;
+            calculations.Replace(calculations.ToString(), number + (calculations.ToString().PadLeft(calculations.Length + number.ToString().Length)).Trim());
+        }
+        else
+        {
+            calculations.Replace(calculations.ToString(), pascalNum + (calculations.ToString().PadLeft(calculations.Length + pascalNum.ToString().Length)).Trim());
+        }
+        output.Append(calculations.ToString());
+        if (a != 0) output.Append(" + ");
     }
     public void SendToList(List<string> list)
     {
