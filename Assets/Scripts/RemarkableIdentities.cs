@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using System.Text;
+using UnityEngine.UI;
 
 public class RemarkableIdentities : MonoBehaviour
 {
@@ -14,8 +15,10 @@ public class RemarkableIdentities : MonoBehaviour
 
     bool isVariable;
     bool isIndex;
+    bool deduction;
 
     int x;
+    char opSym;
 
     StringBuilder output;
     StringBuilder currentComponent;
@@ -25,11 +28,11 @@ public class RemarkableIdentities : MonoBehaviour
     public TMP_InputField bInput;
     public TextMeshProUGUI outputText;
 
-    [SerializeField] List<string> aList;
-    [SerializeField] List<string> bList;
+    List<string> aList;
+    List<string> bList;
     List<int> pascal;
 
-    private void Start()
+    void Start()
     {
         aList = new List<string>();
         bList = new List<string>();
@@ -38,13 +41,13 @@ public class RemarkableIdentities : MonoBehaviour
         calculations = new StringBuilder();
         pascal = new List<int>();
     }
-    public void GetInputs()
+    void GetInputs()
     {
         GameObject currentPageSelected = tabs.GetComponent<TabGroup>().currentPageOpen;
         x = Int32.Parse(GameObject.Find(currentPageSelected.name + "indexInput").GetComponent<TMP_InputField>().text) + 1;
         aInput = GameObject.Find(currentPageSelected.name + "/aInput").GetComponent<TMP_InputField>();
         bInput = GameObject.Find(currentPageSelected.name + "/bInput").GetComponent<TMP_InputField>();
-        outputText = GameObject.Find(currentPageSelected.name + "/outputText").GetComponent<TextMeshProUGUI>();
+        outputText = GameObject.Find(currentPageSelected.name + "/output/outputText").GetComponent<TextMeshProUGUI>();
     }
     public void Output()
     {
@@ -69,16 +72,12 @@ public class RemarkableIdentities : MonoBehaviour
         for (int i = 0; i < x; ++i)
         {            
             Calculate(((x-1) - i), i, pascal[i]);            
-            //Debug.Log((x-1) - i);
         }
-        Debug.Log(output);
         outputText.text = output.ToString();
-        //outputField = "bruh";
         pascal.Clear();
-        output.Clear();
-        
+        output.Clear();       
     }
-    public void SortData(string input, List<string> list)
+    void SortData(string input, List<string> list)
     {
         list.Clear();
         foreach (char c in input)
@@ -116,15 +115,15 @@ public class RemarkableIdentities : MonoBehaviour
                 SendToList(list);
                 idxTracker = 0;
             }
-            //Debug.Log(currentComponent);
         }
         SendToList(list);
     }
-    public void Calculate(int a, int b, int pascalNum)
+    void Calculate(int a, int b, int pascalNum)
     {
         bool hasNumber = false;
         long number = 1;
         calculations.Clear();
+        opSym = '+';
 
         void FuckMe(int idx, List<string> list)
         {
@@ -140,10 +139,8 @@ public class RemarkableIdentities : MonoBehaviour
                     {
 
                         res *= n;
-                        //Debug.Log(res + " " + idx + " " + i);
                     }
                     number *= res;
-                    //Debug.Log(res);
                 }
                 else
                 {
@@ -169,12 +166,13 @@ public class RemarkableIdentities : MonoBehaviour
         }
         else
         {
-            calculations.Replace(calculations.ToString(), pascalNum + (calculations.ToString().PadLeft(calculations.Length + pascalNum.ToString().Length)).Trim());
+            if (pascalNum != 1) calculations.Replace(calculations.ToString(), pascalNum + (calculations.ToString().PadLeft(calculations.Length + pascalNum.ToString().Length)).Trim());
         }
         output.Append(calculations.ToString());
-        if (a != 0) output.Append(" + ");
+        if (deduction && b % 2 == 0) opSym = '-';
+        if (a != 0) output.Append(opSym);
     }
-    public void SendToList(List<string> list)
+    void SendToList(List<string> list)
     {
         if (currentComponent.ToString() != "") list.Add(currentComponent.ToString());
         isVariable = false;
@@ -188,15 +186,30 @@ public class RemarkableIdentities : MonoBehaviour
     public void AddUpperIndex()
     {
         TMP_InputField field = currentTextSelcted.GetComponent<TMP_InputField>();
-        field.text += "^";
-        //Debug.Log(field.caretPosition);
+        int caret = field.caretPosition;
+        field.text = field.text.Substring(0, caret) + "^" + field.text.Substring(caret);
     }
     public void AddDoubleUpperIndex()
     {
-        currentTextSelcted.GetComponent<TMP_InputField>().text += "^^";
+        TMP_InputField field = currentTextSelcted.GetComponent<TMP_InputField>();
+        int caret = field.caretPosition;
+        field.text = field.text.Substring(0, caret) + "^^" + field.text.Substring(caret);
     }
     public void SetThisSelectedTab(GameObject input)
     {
         currentTextSelcted = input;
+    }
+    public void OperatingSymbol(GameObject text)
+    {
+        if (deduction)
+        {
+            deduction = false;
+            text.GetComponent<Text>().text = "+";
+        }
+        else 
+        { 
+            deduction = true;
+            text.GetComponent<Text>().text = "_";
+        }
     }
 }
