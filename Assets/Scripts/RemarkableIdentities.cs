@@ -16,8 +16,10 @@ public class RemarkableIdentities : MonoBehaviour
     bool isVariable;
     bool isIndex;
     bool deduction;
+    bool hasNumber;
 
     int x;
+    long number;
     char opSym;
 
     StringBuilder output;
@@ -26,11 +28,13 @@ public class RemarkableIdentities : MonoBehaviour
 
     public TMP_InputField aInput;
     public TMP_InputField bInput;
+    public TMP_InputField xInput;
     public TextMeshProUGUI outputText;
 
     List<string> aList;
     List<string> bList;
     List<int> pascal;
+    GameObject currentPageSelected;
 
     void Start()
     {
@@ -43,8 +47,8 @@ public class RemarkableIdentities : MonoBehaviour
     }
     void GetInputs()
     {
-        GameObject currentPageSelected = tabs.GetComponent<TabGroup>().currentPageOpen;
-        x = Int32.Parse(GameObject.Find(currentPageSelected.name + "indexInput").GetComponent<TMP_InputField>().text) + 1;
+        currentPageSelected = tabs.GetComponent<TabGroup>().currentPageOpen;
+        xInput = GameObject.Find(currentPageSelected.name + "indexInput").GetComponent<TMP_InputField>();        
         aInput = GameObject.Find(currentPageSelected.name + "/aInput").GetComponent<TMP_InputField>();
         bInput = GameObject.Find(currentPageSelected.name + "/bInput").GetComponent<TMP_InputField>();
         outputText = GameObject.Find(currentPageSelected.name + "/output/outputText").GetComponent<TextMeshProUGUI>();
@@ -52,8 +56,26 @@ public class RemarkableIdentities : MonoBehaviour
     public void Output()
     {
         GetInputs();
-        SortData(aInput.text, aList);
-        SortData(bInput.text, bList);
+        if (aInput.text == "" || bInput.text == "" || xInput.text == "")
+        {
+            outputText.text = "ERROR: All three fields must have data in them to proccess them";
+            return;
+        }
+        x = Int32.Parse(GameObject.Find(currentPageSelected.name + "indexInput").GetComponent<TMP_InputField>().text) + 1;
+        string one = SortData(aInput.text, aList);
+        string two = SortData(bInput.text, bList);
+        if (one != "")
+        {
+            outputText.text = one;
+            ResetAll();
+            return;
+        }
+        if( two != "")
+        {
+            outputText.text = two;
+            ResetAll();
+            return;
+        }
 
         //Pascal háromszög
         int val = 1, blank, j;
@@ -77,7 +99,7 @@ public class RemarkableIdentities : MonoBehaviour
         pascal.Clear();
         output.Clear();       
     }
-    void SortData(string input, List<string> list)
+    string SortData(string input, List<string> list)
     {
         list.Clear();
         foreach (char c in input)
@@ -100,6 +122,7 @@ public class RemarkableIdentities : MonoBehaviour
             }
             else if (((int)c <= 90 && (int)c >= 65) || ((int)c <= 122 && (int)c >= 97) && idxTracker < 2 && (int)c != 94)
             {
+                if (isIndex) return "ERROR: Use of variable as an exponent is forbidden"; //Hibaüzenet, ha változó kerül egy kitevõbe               
                 SendToList(list);
                 isVariable = true;
                 currentComponent.Append(c);
@@ -109,6 +132,10 @@ public class RemarkableIdentities : MonoBehaviour
                 isIndex = true;
                 idxTracker++;
             }
+            else
+            {
+                return "ERROR: An invalid character was used. Valid characters include:\nCapital and non-capital letters of the english alphabet\nNumerics from 0 to 9\n'^' to mark exponents";
+            }
             if (idxTracker > 1)
             {
                 isIndex = false;
@@ -116,47 +143,47 @@ public class RemarkableIdentities : MonoBehaviour
                 idxTracker = 0;
             }
         }
+        if (isIndex) return "ERROR: The final exponent has been not sealed properly (only one '^' used instead of two)";
         SendToList(list);
+        return ""; //Ne adjon hibaüzenetet helyes szintaktika használatakor
     }
-    void Calculate(int a, int b, int pascalNum)
+    void FuckMe(int idx, List<string> list)
     {
-        bool hasNumber = false;
-        long number = 1;
-        calculations.Clear();
-        opSym = '+';
-
-        void FuckMe(int idx, List<string> list)
+        if (idx != 0) foreach (string s in list)
         {
-            
-            if (idx != 0) foreach (string s in list)
-            {
-                
-                if (Int64.TryParse(s, out long res))
-                {
-                    hasNumber = true;
-                    int n = (int)res;
-                    for (int i = 0; i < (idx-1); ++i) if(idx != 1)
-                    {
 
-                        res *= n;
-                    }
-                    number *= res;
+            if (Int64.TryParse(s, out long res))
+            {
+                hasNumber = true;
+                int n = (int)res;
+                for (int i = 0; i < (idx - 1); ++i) if (idx != 1)
+                {
+                    res *= n;
+                }
+                number *= res;
+            }
+            else
+            {
+                if (s.Length == 1)
+                {
+                    calculations.Append(s);
+                    if (idx != 1) calculations.Append("<sup>" + idx + "</sup>");
                 }
                 else
                 {
-                    if (s.Length == 1)
-                    {
-                        calculations.Append(s);
-                        if (idx != 1) calculations.Append("<sup>" + idx + "</sup>");
-                    }
-                    else
-                    {
-                        long v = Int64.Parse(s.Trim(s[0]));
-                        calculations.Append(s[0] + "<sup>" + (v * idx) + "</sup>");
-                    }
+                    long v = Int64.Parse(s.Trim(s[0]));
+                    calculations.Append(s[0] + "<sup>" + (v * idx) + "</sup>");
                 }
             }
         }
+    }
+    void Calculate(int a, int b, int pascalNum)
+    {
+        hasNumber = false;
+        number = 1;
+        calculations.Clear();
+        opSym = '+';
+
         FuckMe(a, aList);
         FuckMe(b, bList);
         if (hasNumber)
@@ -177,6 +204,14 @@ public class RemarkableIdentities : MonoBehaviour
         if (currentComponent.ToString() != "") list.Add(currentComponent.ToString());
         isVariable = false;
         currentComponent.Clear();
+    }
+    public void ResetAll()
+    {
+        idxTracker = 0;
+        isVariable = false;
+        isIndex = false;
+        aList.Clear();
+        bList.Clear();
     }
     public void ClosePage()
     {
