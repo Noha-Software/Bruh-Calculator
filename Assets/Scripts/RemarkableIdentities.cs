@@ -61,7 +61,16 @@ public class RemarkableIdentities : MonoBehaviour
             outputText.text = "ERROR: All three fields must have data in them to proccess them";
             return;
         }
-        x = Int32.Parse(GameObject.Find(currentPageSelected.name + "indexInput").GetComponent<TMP_InputField>().text) + 1;
+        if(Int32.TryParse((GameObject.Find(currentPageSelected.name + "indexInput").GetComponent<TMP_InputField>().text + 1), out int res))
+        {
+            x = res;
+        }
+        else
+        {
+            outputText.text = "ERROR: Only intergers can be typed as the exponent";
+            return;
+        }
+        //x = Int32.Parse(GameObject.Find(currentPageSelected.name + "indexInput").GetComponent<TMP_InputField>().text) + 1;
         string one = SortData(aInput.text, aList);
         string two = SortData(bInput.text, bList);
         if (one != "")
