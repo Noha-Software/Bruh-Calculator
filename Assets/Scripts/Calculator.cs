@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -79,6 +80,10 @@ public class Calculator : MonoBehaviour
 	public TMP_Text lcmOutputText;
 	public TMP_InputField[] lcmInputNumberFields;
 
+	[Space]
+	[Header("Thermal expansion attributes")]
+	public ThermalExpansion thermalExpansion;
+	public TabGroup expansionTabgGroup;
 	#endregion
 
 	private void Start()
@@ -255,4 +260,46 @@ public class Calculator : MonoBehaviour
 		}
 	}
 	#endregion
+
+	#region Thermal Expansion
+
+	TMP_InputField expansionCheckInput;
+
+	public void ParsebleCheck(GameObject thisObject)
+    {
+		expansionCheckInput = thisObject.GetComponent<TMP_InputField>();
+		Debug.Log(expansionCheckInput.text[expansionCheckInput.text.Length - 1]);
+		switch (expansionCheckInput.text[expansionCheckInput.text.Length-1])
+        {
+			case '.':
+				expansionCheckInput.text = expansionCheckInput.text.Remove(expansionCheckInput.text.Length - 1) + ",";
+				break;
+			case '0':
+				break;
+			case '1':
+				break;
+			case '2':
+				break;
+			case '3':
+				break;
+			case '4':
+				break;
+			case '5':
+				break;
+			case '6':
+				break;
+			case '7':
+				break;
+			case '8':
+				break;
+			case '9':
+				break;
+			case ',':
+				break;
+			default:
+				expansionCheckInput.text = expansionCheckInput.text.Remove(expansionCheckInput.text.Length - 1);
+				break;
+		}
+	}
+    #endregion
 }
