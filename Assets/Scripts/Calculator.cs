@@ -264,42 +264,76 @@ public class Calculator : MonoBehaviour
 	#region Thermal Expansion
 
 	TMP_InputField expansionCheckInput;
+	bool isDecimal;
+	bool isScientificallyNotated;
+	bool stopSoros;
 
 	public void ParsebleCheck(GameObject thisObject)
     {
 		expansionCheckInput = thisObject.GetComponent<TMP_InputField>();
-		Debug.Log(expansionCheckInput.text[expansionCheckInput.text.Length - 1]);
-		switch (expansionCheckInput.text[expansionCheckInput.text.Length-1])
-        {
-			case '.':
-				expansionCheckInput.text = expansionCheckInput.text.Remove(expansionCheckInput.text.Length - 1) + ",";
-				break;
-			case '0':
-				break;
-			case '1':
-				break;
-			case '2':
-				break;
-			case '3':
-				break;
-			case '4':
-				break;
-			case '5':
-				break;
-			case '6':
-				break;
-			case '7':
-				break;
-			case '8':
-				break;
-			case '9':
-				break;
-			case ',':
-				break;
-			default:
-				expansionCheckInput.text = expansionCheckInput.text.Remove(expansionCheckInput.text.Length - 1);
-				break;
+
+		if (!stopSoros)
+		{
+			switch (expansionCheckInput.text[expansionCheckInput.caretPosition - 1])
+			{
+				case ',':
+					if (isDecimal)
+					{
+						stopSoros = true;
+						expansionCheckInput.text = expansionCheckInput.text.Substring(0, expansionCheckInput.caretPosition - 1) + expansionCheckInput.text.Substring(expansionCheckInput.caretPosition);
+					}
+					break;
+				case '.':
+					expansionCheckInput.text = expansionCheckInput.text.Substring(0, expansionCheckInput.caretPosition - 1) + "," + expansionCheckInput.text.Substring(expansionCheckInput.caretPosition);
+					break;
+				/*case 'x':
+					if (!isScientificallyNotated) expansionCheckInput.text += "10<sup>";
+					else
+					{
+						stopSoros = true;
+						expansionCheckInput.text = expansionCheckInput.text.Substring(0, expansionCheckInput.caretPosition - 1) + expansionCheckInput.text.Substring(expansionCheckInput.caretPosition);
+					}
+					break;*/
+				case '0':
+					break;
+				case '1':
+					break;
+				case '2':
+					break;
+				case '3':
+					break;
+				case '4':
+					break;
+				case '5':
+					break;
+				case '6':
+					break;
+				case '7':
+					break;
+				case '8':
+					break;
+				case '9':
+					break;
+				default:
+					expansionCheckInput.text = expansionCheckInput.text.Remove(expansionCheckInput.text.Length - 1);
+					break;
+			}
+
+			if (expansionCheckInput.text.Contains("x")) isScientificallyNotated = true;
+			else isScientificallyNotated = false;
+
+
+			if (expansionCheckInput.text.Contains(",")) isDecimal = true;
+			else isDecimal = false;
+
+			Debug.Log(expansionCheckInput.text[expansionCheckInput.caretPosition - 1]);
+			Debug.Log(isDecimal);
+			Debug.Log(isScientificallyNotated);
 		}
+		else
+        {
+			stopSoros = false;
+        }
 	}
     #endregion
 }

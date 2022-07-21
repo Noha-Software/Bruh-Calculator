@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 
 public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
+    [SerializeField] int alphaMultiplier;
+
     decimal a;
     decimal b;
     decimal c;
@@ -33,11 +35,25 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         image.color = switchColor;           
     }    
-    public void Calculate(ThermalExpansionTabs tabs)
+    public void CalculateLength(ThermalExpansionTabs tabs)
     {
         a = Decimal.Parse(tabs.row1Input.text);
         b = Decimal.Parse(tabs.row2Input.text);
         c = Decimal.Parse(tabs.row3Input.text);
-        tabs.output.text = Convert.ToString(a + a * b * c);
+        tabs.output.text = Convert.ToString(a + a * b * c * alphaMultiplier);
+    }
+    public void CalculateDeltaT(ThermalExpansionTabs tabs)
+    {
+        a = Decimal.Parse(tabs.row1Input.text);
+        b = Decimal.Parse(tabs.row2Input.text);
+        c = Decimal.Parse(tabs.row3Input.text);
+        //tabs.output.text = Convert.ToString();
+    }
+    public void CalculateAlpha(ThermalExpansionTabs tabs)
+    {
+        a = Decimal.Parse(tabs.row1Input.text);
+        b = Decimal.Parse(tabs.row2Input.text);
+        c = Decimal.Parse(tabs.row3Input.text);
+        tabs.output.text = Convert.ToString((b-a)/(a*c*alphaMultiplier));
     }
 }
