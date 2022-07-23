@@ -61,9 +61,9 @@ public class RemarkableIdentities : MonoBehaviour
             outputText.text = "ERROR: All three fields must have data in them to proccess them";
             return;
         }
-        if(Int32.TryParse((GameObject.Find(currentPageSelected.name + "indexInput").GetComponent<TMP_InputField>().text + 1), out int res))
+        if(Int32.TryParse((GameObject.Find(currentPageSelected.name + "indexInput").GetComponent<TMP_InputField>().text), out int res))
         {
-            x = res;
+            x = res + 1;
         }
         else
         {
