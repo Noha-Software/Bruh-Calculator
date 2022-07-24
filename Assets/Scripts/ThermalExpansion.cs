@@ -3,19 +3,28 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [SerializeField] int alphaMultiplier;
+    [SerializeField] string equationText;
 
     decimal a;
     decimal b;
     decimal c;
 
+    decimal result;
+
     Color switchColor;
 
     public UnityEvent buttonColorChange;
     public UnityEvent onClick;
+
+    public void ChangeEquationText(TMP_Text tmp)
+    {
+        tmp.text = equationText;
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -42,18 +51,11 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
         c = Decimal.Parse(tabs.row3Input.text);
         tabs.output.text = Convert.ToString(a + a * b * c * alphaMultiplier);
     }
-    public void CalculateDeltaT(ThermalExpansionTabs tabs)
+    public void CalculateAlphaOrDeltaT(ThermalExpansionTabs tabs)
     {
         a = Decimal.Parse(tabs.row1Input.text);
         b = Decimal.Parse(tabs.row2Input.text);
         c = Decimal.Parse(tabs.row3Input.text);
-        //tabs.output.text = Convert.ToString();
-    }
-    public void CalculateAlpha(ThermalExpansionTabs tabs)
-    {
-        a = Decimal.Parse(tabs.row1Input.text);
-        b = Decimal.Parse(tabs.row2Input.text);
-        c = Decimal.Parse(tabs.row3Input.text);
-        tabs.output.text = Convert.ToString((b-a)/(a*c*alphaMultiplier));
+        tabs.output.text = Convert.ToString((b - a) / (a * c * alphaMultiplier));
     }
 }

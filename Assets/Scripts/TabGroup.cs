@@ -64,6 +64,7 @@ public class TabGroup : MonoBehaviour
 				obj.SetActive(false);				
 			}
 		}
+
 	}
 
 	public void ResetTabs()

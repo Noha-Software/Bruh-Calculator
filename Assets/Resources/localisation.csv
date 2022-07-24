@@ -20,7 +20,6 @@
 "ballistics","Ballistics","",""
 "expansion","Thermal expansion","Hőtágulás",""
 "anyad","urmom!","",""
-"exp-linear","Linear","Lineáris",""
+"exp-linear","Linear/Liquid/Gas","Lineáris/Folyadék/Gáz",""
 "exp-areal","Areal","Felületi",""
 "exp-cubic","Cubic","Térfogati",""
-"exp-liquid","Liquid","Folyadék",""
