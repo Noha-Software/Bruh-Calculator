@@ -23,3 +23,5 @@
 "exp-linear","Linear/Liquid/Gas","Lineáris/Folyadék/Gáz",""
 "exp-areal","Areal","Felületi",""
 "exp-cubic","Cubic","Térfogati",""
+"exp-convertandexit","Convert and exit","Átváltás és kilépés",""
+"exp-exitwoconverting","Exit without converting","Kilépés átváltás nélkül",""
