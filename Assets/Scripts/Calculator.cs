@@ -325,10 +325,6 @@ public class Calculator : MonoBehaviour
 
 			if (expansionCheckInput.text.Contains(",")) isDecimal = true;
 			else isDecimal = false;
-
-			Debug.Log(expansionCheckInput.text[expansionCheckInput.caretPosition - 1]);
-			Debug.Log(isDecimal);
-			Debug.Log(isScientificallyNotated);
 		}
 		else
         {
