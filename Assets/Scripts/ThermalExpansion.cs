@@ -10,9 +10,12 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
     [SerializeField] int alphaMultiplier;
     [SerializeField] string equationText;
 
-    decimal a;
-    decimal b;
-    decimal c;
+    public ExpansionConversionData a;
+    public ExpansionConversionData b;
+    public ExpansionConversionData c;
+    public TMP_InputField alpha;
+
+    bool endGameAlpha;
 
     decimal result;
 
@@ -46,16 +49,52 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
     }    
     public void CalculateLength(ThermalExpansionTabs tabs)
     {
-        a = Decimal.Parse(tabs.row1Input.text);
-        b = Decimal.Parse(tabs.row2Input.text);
-        c = Decimal.Parse(tabs.row3Input.text);
-        tabs.output.text = Convert.ToString(a + a * b * c * alphaMultiplier);
+        c = tabs.regInput3;
+        tabs.output.text = (Convert(tabs.regInput1.measurementFamily,tabs.regInput1.currentMeasurement,decimal.Parse(tabs.regInput1.input.text)) * (1 + decimal.Parse(tabs.alphaInput.text) * Convert(tabs.regInput2.measurementFamily,tabs.regInput2.currentMeasurement,decimal.Parse(tabs.regInput2.input.text)))).ToString();
     }
-    public void CalculateAlphaOrDeltaT(ThermalExpansionTabs tabs)
+    public void CalculateDeltaT(ThermalExpansionTabs tabs)
     {
-        a = Decimal.Parse(tabs.row1Input.text);
-        b = Decimal.Parse(tabs.row2Input.text);
-        c = Decimal.Parse(tabs.row3Input.text);
-        tabs.output.text = Convert.ToString((b - a) / (a * c * alphaMultiplier));
+        //tabs.output.text = Convert.ToString((b - a) / (a * c * alphaMultiplier));
+    }
+    public void CaluclateAlpha(ThermalExpansionTabs tabs)
+    {
+
+    }
+    decimal Convert(int currentFamily, int currentMeasurement, decimal number)
+    {
+        Debug.Log(number + ": family " + currentFamily + ", measeurement " + currentMeasurement);
+        if (!endGameAlpha)
+        {
+            if (currentFamily != 2)
+            {
+                if (currentFamily == c.measurementFamily)
+                {
+                    if (currentMeasurement == c.currentMeasurement) return number * 1;
+                    else if (currentMeasurement > c.currentMeasurement) return Convert(currentFamily, currentMeasurement - 1, number * ExpansionConverter.conversions[c.measurementFamily][currentMeasurement - 1]);
+                    else return Convert(currentFamily, currentMeasurement + 1, number / ExpansionConverter.conversions[c.measurementFamily][currentMeasurement]);
+                }
+                else
+                {
+                    if (currentFamily == 0)
+                    {
+                        number *= ExpansionConverter.conversions[2][currentMeasurement];
+                        if (currentMeasurement > 0) currentMeasurement -= 1;
+                        return Convert(1, currentMeasurement, number);
+                    }
+                    else
+                    {
+                        number /= ExpansionConverter.conversions[2][currentMeasurement + 1];
+                        return Convert(0, currentMeasurement + 1, number);
+                    }
+                }
+            }
+            else
+            {
+                if (currentMeasurement != c.measurementFamily && currentMeasurement == 0) return number * 9 / 5 + 32;
+                else if (currentMeasurement != c.measurementFamily && currentMeasurement == 1) return (number - 32) * 5 / 9;
+                else return number;
+            }
+        }
+        else return 0;
     }
 }

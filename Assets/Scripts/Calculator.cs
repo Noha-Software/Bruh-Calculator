@@ -268,9 +268,9 @@ public class Calculator : MonoBehaviour
 	bool isScientificallyNotated;
 	bool stopSoros;
 
-	public void ParsebleCheck(GameObject thisObject)
+	public void ParsebleCheck(ExpansionConversionData data)
     {
-		expansionCheckInput = thisObject.GetComponent<TMP_InputField>();
+		/*expansionCheckInput = data.input;
 
 		if (!stopSoros)
 		{
@@ -293,8 +293,9 @@ public class Calculator : MonoBehaviour
 						stopSoros = true;
 						expansionCheckInput.text = expansionCheckInput.text.Substring(0, expansionCheckInput.caretPosition - 1) + expansionCheckInput.text.Substring(expansionCheckInput.caretPosition);
 					}
-					break;*/
+					break; //IDE KELL A LEZÁRÁS
 				case '0':
+					Debug.Log(expansionCheckInput.caretPosition);
 					break;
 				case '1':
 					break;
@@ -314,6 +315,10 @@ public class Calculator : MonoBehaviour
 					break;
 				case '9':
 					break;
+				case '-':
+					if (data.measurementFamily == 2 || expansionCheckInput.caretPosition == 1) return;
+					else expansionCheckInput.text = expansionCheckInput.text.Remove(expansionCheckInput.caretPosition - 1);
+					break;
 				default:
 					expansionCheckInput.text = expansionCheckInput.text.Remove(expansionCheckInput.text.Length - 1);
 					break;
@@ -329,7 +334,7 @@ public class Calculator : MonoBehaviour
 		else
         {
 			stopSoros = false;
-        }
+        }*/
 	}
     #endregion
 }

@@ -25,4 +25,8 @@ public class EbelButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     {
         this.gameObject.GetComponent<Image>().color = originalColor;
     }
+    public void ResetColor()
+    {
+        this.gameObject.GetComponent<Image>().color = originalColor;
+    }
 }

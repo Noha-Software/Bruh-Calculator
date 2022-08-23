@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System;
+﻿using System;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
@@ -11,30 +9,30 @@ public class ExpansionConverter : MonoBehaviour
     public EbelButton interFamilyButton;
     public TextMeshProUGUI from;
     public TextMeshProUGUI output;
+    public TextMeshProUGUI roundText;
     public ExpansionConversionData data;
     public Slider slider;
+    public Slider roundSlider;
 
     string number;
 
     bool dont;
 
-    string[][] measurements = new string[3][];
-    float[][] conversions = new float[4][];
+    int helpInt;
+
+    static public string[][] measurements = new string[2][];
+    static public decimal[][] conversions = new decimal[3][];
 
     int selectedMeasurementFamily = 0; //Imperial or metric
-
-    /*int[] imperialConversion = new int[] { 12, 3, 1760 };
-    int[] metricConversion = new int[] { 10, 10, 10, 1000 };
-    float[] metricImperialConversion = new float[] { 0.03937F, 0.3937F, 0.32808F, 1.0936F, 0.621371192F };*/
+    int currentMeasurement;
 
     private void Awake()
     {
         measurements[0] = new string[] { "mm", "cm", "dm", "m", "km" };
         measurements[1] = new string[] { "inch", "feet", "yard", "mile"};
-        measurements[2] = new string[] { "°C/°K", "°F"};
-        conversions[1] = new float[] { 12, 3, 1760 };
-        conversions[0] = new float[] { 10, 10, 10, 1000 };
-        conversions[2] = new float[] { 0.03937F, 0.3937F, 0.32808F, 1.0936F, 0.621371192F };
+        conversions[1] = new decimal[] { 12, 3, 1760 };
+        conversions[0] = new decimal[] { 10, 10, 10, 1000 };
+        conversions[2] = new decimal[] { 0.0393700787M, 0.393700787M, 0.32808399M, 1.0936133M, 0.621371192M };
     }
 
     public void SliderValueChange()
@@ -42,94 +40,120 @@ public class ExpansionConverter : MonoBehaviour
         if (!dont)
         {
             to.text = measurements[selectedMeasurementFamily][(int)slider.value];
-            output.text = Convert(data.currentMeasurement, double.Parse(number)).ToString();
+            output.text = Convert(currentMeasurement, decimal.Parse(number)).ToString();
         }
     }
     public void PageOpened(ExpansionConversionData ecd)
     {
-        if (ecd.input.text != "" || (ecd.endText != null && ecd.endText.text != ""))
+        if (ecd != null && (ecd.input.text != "" || (ecd.endText != null && ecd.endText.text != "")))
         {
-            this.gameObject.SetActive(true);
-            dont = true;
             data = ecd;
+            if (data.input.text != null) number = data.input.text;
+            else number = data.endText.text;
             selectedMeasurementFamily = data.measurementFamily;
-            Debug.Log(selectedMeasurementFamily);
-            if (data.input.text != "")
+            currentMeasurement = data.currentMeasurement;
+            if (ecd.measurementFamily != 2)
             {
-                output.text = data.input.text;
-                number = data.input.text;
+                this.gameObject.SetActive(true);
+                dont = true;
+                output.text = number;
+                to.text = "";
+                from.text = measurements[selectedMeasurementFamily][data.currentMeasurement];
+                slider.maxValue = measurements[selectedMeasurementFamily].Length - 1;
+                slider.value = data.currentMeasurement;
+                dont = false;
             }
             else
             {
-                output.text = data.endText.text;
-                number = data.endText.text;
-            }
-            if (data.measurementFamily == 2)  
-            slider.value = data.currentMeasurement;
-            to.text = "";
-            from.text = measurements[selectedMeasurementFamily][data.currentMeasurement];
-            slider.maxValue = measurements[selectedMeasurementFamily].Length - 1;
-            dont = false;
+                if(data.currentMeasurement == 0)
+                {
+                    if (data.input.text != "") data.input.text = (decimal.Parse(data.input.text)*9/5 + 32).ToString();
+                    else if (data.endText.text != "") data.input.text = (decimal.Parse(data.input.text)* 9/5 + 32).ToString();
+                    else return;
+                    data.currentMeasurement = 1;
+                    data.buttonText.text = "°F";
+                }
+                else
+                {
+                    if (data.input.text != "") data.input.text = ((decimal.Parse(data.input.text) - 32) * 5 / 9).ToString();
+                    else if (data.endText.text != "") data.input.text = ((decimal.Parse(data.input.text) - 32) * 5 / 9).ToString();
+                    else return;
+                    data.currentMeasurement = 0;
+                    data.buttonText.text = "°C/°K";
+                }
+            }   
         }
     }
     public void ClosePage()
     {
         this.gameObject.SetActive(false);
     }
+    public void SaveConversion()
+    {
+        data.measurementFamily = selectedMeasurementFamily;
+        data.currentMeasurement = (int)slider.value;
+        data.buttonText.text = measurements[selectedMeasurementFamily][(int)slider.value];
+        if (data.input.text != null) data.input.text = (Convert(currentMeasurement, decimal.Parse(number))).ToString();
+        else data.endText.text = (Convert(currentMeasurement, decimal.Parse(number))).ToString();
+    }
     public void ConvertInterFamily()
     {
+        helpInt = (int)slider.value;
         dont = true;
-        int helpInt = (int)slider.value;
-        Debug.Log("convertInterFamily: " + selectedMeasurementFamily);
-        if (selectedMeasurementFamily == 0)
+        if(selectedMeasurementFamily == 0)
         {
-            Debug.Log("Metric => imperial");
+            number = (Convert(currentMeasurement ,decimal.Parse(number)) * conversions[2][helpInt]).ToString();
+            if (slider.value > 0) slider.value -= 1;           
+            if (currentMeasurement > 0) currentMeasurement -= 1;
+            slider.maxValue -= 1;
             selectedMeasurementFamily = 1;
-            slider.maxValue = measurements[selectedMeasurementFamily].Length - 1;
-            if (slider.maxValue > slider.value && slider.value > 1)
-            {               
-                slider.value -= 1;
-                number = (double.Parse(output.text) * (double)conversions[2][helpInt]).ToString();                
-            }
-            else if (slider.maxValue == slider.value)
-            {
-                number = (double.Parse(output.text) * (double)conversions[2][helpInt]).ToString();
-            }
-            else 
-            {
-                slider.value = 0;
-                number = (double.Parse(output.text) * (double)conversions[2][helpInt]).ToString();
-            }
+            currentMeasurement = (int)slider.value;
+        }   
+        else
+        {
+            number = (Convert(currentMeasurement, decimal.Parse(number)) / conversions[2][helpInt + 1]).ToString();
+            slider.maxValue += 1;
+            slider.value += 1;
+            currentMeasurement = (int)slider.value;
+            selectedMeasurementFamily = 0;
+        }
+        dont = false;
+        output.text = number;
+        to.text = measurements[selectedMeasurementFamily][(int)slider.value];
+    }
+    /*public void ConvertInterFamily()
+    {
+
+    }*/
+    public decimal Convert(int i, decimal number)
+    {
+        if (selectedMeasurementFamily != 2)
+        {
+            if (i == slider.value) return number * 1;
+            else if (i > slider.value) return Convert(i - 1, number * conversions[selectedMeasurementFamily][i - 1]);
+            else return Convert(i + 1, number / conversions[selectedMeasurementFamily][i]);
         }
         else
         {
-            Debug.Log("Imperial => metric");
-            selectedMeasurementFamily = 0;
-            slider.maxValue = measurements[selectedMeasurementFamily].Length - 1;
-            if ((int)slider.maxValue - 1 > slider.value && slider.value > 1)
-            {                
-                number = (double.Parse(output.text) / (double)conversions[2][helpInt]).ToString();
-            }
-            else if(slider.value <= 1)
-            {
-                slider.value = 1;
-                number = (double.Parse(output.text) / (double)conversions[2][1]).ToString();
-            }
-            else
-            {
-                slider.value = slider.maxValue;
-                number = (double.Parse(output.text) / (double)conversions[2][helpInt]).ToString();
-            }
-        }        
-        dont = false;
-        to.text = measurements[selectedMeasurementFamily][(int)slider.value];
-        output.text = number;
+            if (data.currentMeasurement == 0)return decimal.Parse(data.input.text) * 9 / 5 + 32;
+            else return (decimal.Parse(data.input.text) - 32) * 5 / 9;
+        }
     }
-    public double Convert(int i, double number)
+    /*public void RoundSldierValueChanged()
     {
-        //Debug.Log(number);
-        if (i == slider.value) return number * 1;
-        else if (i > slider.value) return Convert(i-1, number * conversions[selectedMeasurementFamily][i - 1]);
-        else return Convert(i + 1, number / conversions[selectedMeasurementFamily][i]);
-    }
+        output.text = (Round((int)roundSlider.value)).ToString();
+    }*/
+    /*public decimal Round(int i)
+    {
+        if (i != -1)
+        {
+            roundText.text = "Round to " + i + " digits";
+            return Math.Round(Convert(currentMeasurement, decimal.Parse(number)), i, MidpointRounding.AwayFromZero);
+        }
+        else
+        {
+            roundText.text = "Do not round";
+            return Convert(currentMeasurement, decimal.Parse(number));
+        }
+    }*/
 }

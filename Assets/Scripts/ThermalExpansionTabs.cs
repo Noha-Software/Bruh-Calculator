@@ -7,8 +7,9 @@ public class ThermalExpansionTabs : MonoBehaviour
 {
     [Header("Adatok bruh")]
     [Space]
-    public TMP_InputField row1Input;
-    public TMP_InputField row2Input;
-    public TMP_InputField row3Input;
+    public ExpansionConversionData regInput1;
+    public ExpansionConversionData regInput2;
+    public ExpansionConversionData regInput3;
+    public TMP_InputField alphaInput;
     public TMP_Text output;
 }
