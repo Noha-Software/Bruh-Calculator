@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
@@ -14,6 +15,7 @@ public class ExpansionConverter : MonoBehaviour
     public Slider slider;
     public Slider roundSlider;
 
+    ThermalExpansion calculator;
     string number;
 
     bool dont;
@@ -26,30 +28,41 @@ public class ExpansionConverter : MonoBehaviour
     int selectedMeasurementFamily = 0; //Imperial or metric
     int currentMeasurement;
 
-    private void Awake()
+    public static void Define()
     {
         measurements[0] = new string[] { "mm", "cm", "dm", "m", "km" };
         measurements[1] = new string[] { "inch", "feet", "yard", "mile"};
+        //measurements[2] = new string[] { "°C/°K", "°F" };
         conversions[1] = new decimal[] { 12, 3, 1760 };
         conversions[0] = new decimal[] { 10, 10, 10, 1000 };
         conversions[2] = new decimal[] { 0.0393700787M, 0.393700787M, 0.32808399M, 1.0936133M, 0.621371192M };
+        Debug.Log("MŐŐŐ");
     }
 
     public void SliderValueChange()
-    {
+    {        
         if (!dont)
         {
             to.text = measurements[selectedMeasurementFamily][(int)slider.value];
-            output.text = Convert(currentMeasurement, decimal.Parse(number)).ToString();
+            if (data.input != null)
+            {
+                Debug.Log("No bitches?");
+                output.text = Convert(currentMeasurement, decimal.Parse(number)).ToString();
+            }
+            else
+            {
+                Debug.Log("BRUH!");
+                output.text = calculator.Calculate(selectedMeasurementFamily, (int)slider.value).ToString();
+            }
         }
     }
     public void PageOpened(ExpansionConversionData ecd)
     {
-        if (ecd != null && (ecd.input.text != "" || (ecd.endText != null && ecd.endText.text != "")))
+        if (ecd != null && ((ecd.input != null && ecd.input.text != "") || (ecd.endText != null && ecd.endText.text != "")))
         {
             data = ecd;
-            if (data.input.text != null) number = data.input.text;
-            else number = data.endText.text;
+            if (data.input != null) number = data.input.text;
+            else number = data.endText.text;  
             selectedMeasurementFamily = data.measurementFamily;
             currentMeasurement = data.currentMeasurement;
             if (ecd.measurementFamily != 2)
@@ -93,8 +106,8 @@ public class ExpansionConverter : MonoBehaviour
         data.measurementFamily = selectedMeasurementFamily;
         data.currentMeasurement = (int)slider.value;
         data.buttonText.text = measurements[selectedMeasurementFamily][(int)slider.value];
-        if (data.input.text != null) data.input.text = (Convert(currentMeasurement, decimal.Parse(number))).ToString();
-        else data.endText.text = (Convert(currentMeasurement, decimal.Parse(number))).ToString();
+        if (data.input != null) data.input.text = (Convert(currentMeasurement, decimal.Parse(number))).ToString();
+        else data.endText.text = calculator.Calculate(selectedMeasurementFamily, (int)slider.value).ToString();     
     }
     public void ConvertInterFamily()
     {
@@ -118,7 +131,8 @@ public class ExpansionConverter : MonoBehaviour
             selectedMeasurementFamily = 0;
         }
         dont = false;
-        output.text = number;
+        if (data.input != null) output.text = number;
+        else output.text = calculator.Calculate(selectedMeasurementFamily, (int)slider.value).ToString();
         to.text = measurements[selectedMeasurementFamily][(int)slider.value];
     }
     /*public void ConvertInterFamily()
@@ -138,6 +152,10 @@ public class ExpansionConverter : MonoBehaviour
             if (data.currentMeasurement == 0)return decimal.Parse(data.input.text) * 9 / 5 + 32;
             else return (decimal.Parse(data.input.text) - 32) * 5 / 9;
         }
+    }
+    public void SetCalculator(ThermalExpansion te)
+    {
+        calculator = te;
     }
     /*public void RoundSldierValueChanged()
     {

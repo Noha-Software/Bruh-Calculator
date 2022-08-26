@@ -90,6 +90,7 @@ public class Calculator : MonoBehaviour
 	{
 		gcdInputNumbers = new int[gcdInputNumberFields.Length];
 		lcmInputNumbers = new int[lcmInputNumberFields.Length];
+		ExpansionConverter.Define();
 	}
 
 	private void Update()
