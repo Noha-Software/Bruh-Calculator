@@ -1643,6 +1643,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -2736,6 +2738,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -3571,6 +3575,8 @@ MonoBehaviour:
   power: 1
   measurementFamily: 0
   currentMeasurement: 3
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 282374929}
   input: {fileID: 0}
   buttonText: {fileID: 285505573}
@@ -6149,7 +6155,7 @@ GameObject:
   - component: {fileID: 179181977}
   - component: {fileID: 179181978}
   m_Layer: 5
-  m_Name: Slider (1)
+  m_Name: RoundSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6220,15 +6226,15 @@ MonoBehaviour:
   m_FillRect: {fileID: 531802205}
   m_HandleRect: {fileID: 761529574}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 4
+  m_MinValue: -1
+  m_MaxValue: 15
   m_WholeNumbers: 1
-  m_Value: 0
+  m_Value: -1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1127917185}
-        m_MethodName: SliderValueChange
+        m_MethodName: RoundSldierValueChanged
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8781,10 +8787,6 @@ MonoBehaviour:
   equationText: 
   typeOfCalculation: 0
   tabs: {fileID: 0}
-  a: {fileID: 0}
-  b: {fileID: 0}
-  c: {fileID: 0}
-  alpha: {fileID: 0}
   buttonColorChange:
     m_PersistentCalls:
       m_Calls:
@@ -9935,6 +9937,8 @@ MonoBehaviour:
   power: 1
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -10132,6 +10136,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -13657,6 +13663,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -15053,6 +15061,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -15935,6 +15945,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -16931,10 +16943,6 @@ MonoBehaviour:
   equationText: 
   typeOfCalculation: 0
   tabs: {fileID: 0}
-  a: {fileID: 0}
-  b: {fileID: 0}
-  c: {fileID: 0}
-  alpha: {fileID: 0}
   buttonColorChange:
     m_PersistentCalls:
       m_Calls:
@@ -17623,6 +17631,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -18154,6 +18164,8 @@ MonoBehaviour:
   power: 1
   measurementFamily: 0
   currentMeasurement: 3
+  roundTo: -1
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 1560205349}
   buttonText: {fileID: 559151482}
@@ -19267,6 +19279,8 @@ MonoBehaviour:
   power: 1
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -21079,6 +21093,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -21765,6 +21781,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -25881,6 +25899,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -26295,10 +26315,6 @@ MonoBehaviour:
   equationText: 
   typeOfCalculation: 0
   tabs: {fileID: 0}
-  a: {fileID: 0}
-  b: {fileID: 0}
-  c: {fileID: 0}
-  alpha: {fileID: 0}
   buttonColorChange:
     m_PersistentCalls:
       m_Calls:
@@ -26766,6 +26782,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -27489,6 +27507,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -31227,6 +31247,8 @@ MonoBehaviour:
   power: 1
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -31484,10 +31506,10 @@ MonoBehaviour:
   interFamilyButton: {fileID: 86335305}
   from: {fileID: 1393089002}
   output: {fileID: 613724098}
-  roundText: {fileID: 0}
+  roundText: {fileID: 1759066131}
   data: {fileID: 0}
   slider: {fileID: 775053202}
-  roundSlider: {fileID: 0}
+  roundSlider: {fileID: 179181978}
 --- !u!1 &1142350882
 GameObject:
   m_ObjectHideFlags: 0
@@ -33910,6 +33932,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -35326,10 +35350,6 @@ MonoBehaviour:
   equationText: 
   typeOfCalculation: 0
   tabs: {fileID: 0}
-  a: {fileID: 0}
-  b: {fileID: 0}
-  c: {fileID: 0}
-  alpha: {fileID: 0}
   buttonColorChange:
     m_PersistentCalls:
       m_Calls:
@@ -36678,6 +36698,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -37492,6 +37514,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -38727,8 +38751,8 @@ MonoBehaviour:
         m_MethodName: ParsebleCheck
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1427677378}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: ExpansionConversionData, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -40105,6 +40129,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -42073,6 +42099,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -43220,6 +43248,8 @@ MonoBehaviour:
   power: 1
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -43525,6 +43555,8 @@ MonoBehaviour:
   power: 1
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -43671,8 +43703,8 @@ MonoBehaviour:
         m_MethodName: ParsebleCheck
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1560205346}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 586219800}
+          m_ObjectArgumentAssemblyTypeName: ExpansionConversionData, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -44534,6 +44566,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -45838,10 +45872,6 @@ MonoBehaviour:
   equationText: 
   typeOfCalculation: 0
   tabs: {fileID: 0}
-  a: {fileID: 0}
-  b: {fileID: 0}
-  c: {fileID: 0}
-  alpha: {fileID: 0}
   buttonColorChange:
     m_PersistentCalls:
       m_Calls:
@@ -49642,7 +49672,7 @@ GameObject:
   - component: {fileID: 1759066132}
   - component: {fileID: 1759066131}
   m_Layer: 5
-  m_Name: Output (1)
+  m_Name: RoundText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51393,6 +51423,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -52145,10 +52177,6 @@ MonoBehaviour:
   equationText: "A<sub>1</sub>=A<sub>0</sub> x (1 +2 \u03B1 x \u0394T)"
   typeOfCalculation: 0
   tabs: {fileID: 0}
-  a: {fileID: 0}
-  b: {fileID: 0}
-  c: {fileID: 0}
-  alpha: {fileID: 0}
   buttonColorChange:
     m_PersistentCalls:
       m_Calls:
@@ -53340,6 +53368,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -53539,6 +53569,8 @@ MonoBehaviour:
   power: 1
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -54929,6 +54961,8 @@ MonoBehaviour:
   power: 1
   measurementFamily: 2
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 2086679073}
   buttonText: {fileID: 1172426145}
@@ -55754,6 +55788,8 @@ MonoBehaviour:
   power: 1
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -56351,6 +56387,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -56433,6 +56471,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -57262,6 +57302,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -57876,6 +57918,8 @@ MonoBehaviour:
   power: 0
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -58077,10 +58121,6 @@ MonoBehaviour:
   equationText: "V<sub>1</sub>=V<sub>0</sub> x (1 + 3\u03B1 x \u0394T)"
   typeOfCalculation: 0
   tabs: {fileID: 0}
-  a: {fileID: 0}
-  b: {fileID: 0}
-  c: {fileID: 0}
-  alpha: {fileID: 0}
   buttonColorChange:
     m_PersistentCalls:
       m_Calls:
@@ -58245,6 +58285,8 @@ MonoBehaviour:
   power: 1
   measurementFamily: 0
   currentMeasurement: 0
+  roundTo: 0
+  trueNumber: 
   endText: {fileID: 0}
   input: {fileID: 0}
   buttonText: {fileID: 0}
@@ -58304,10 +58346,6 @@ MonoBehaviour:
   equationText: 
   typeOfCalculation: 0
   tabs: {fileID: 0}
-  a: {fileID: 0}
-  b: {fileID: 0}
-  c: {fileID: 0}
-  alpha: {fileID: 0}
   buttonColorChange:
     m_PersistentCalls:
       m_Calls:
@@ -60528,10 +60566,6 @@ MonoBehaviour:
     x (1 + \u03B2 x \u0394T) "
   typeOfCalculation: 0
   tabs: {fileID: 1307716549}
-  a: {fileID: 586219800}
-  b: {fileID: 1927205724}
-  c: {fileID: 117589394}
-  alpha: {fileID: 1069161955}
   buttonColorChange:
     m_PersistentCalls:
       m_Calls:

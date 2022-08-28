@@ -8,6 +8,8 @@ public class ExpansionConversionData : MonoBehaviour
     public int power;
     public int measurementFamily;
     public int currentMeasurement;
+    public int roundTo;
+    public string trueNumber;
     public TextMeshProUGUI endText;
     public TMP_InputField input;
     public TextMeshProUGUI buttonText;

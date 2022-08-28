@@ -264,78 +264,101 @@ public class Calculator : MonoBehaviour
 
 	#region Thermal Expansion
 
-	TMP_InputField expansionCheckInput;
+	TMP_InputField input;
 	bool isDecimal;
 	bool isScientificallyNotated;
+	bool wasPasted;
+	string beforeDecimal;
+	string afterDecimal;
 	bool stopSoros;
+	int decimalPos;
+	int savedLength;
 
 	public void ParsebleCheck(ExpansionConversionData data)
     {
-		/*expansionCheckInput = data.input;
+		input = data.input;
+
+		if (savedLength - 1 == input.text.Length) if (input.text[decimalPos] != ',' && input.text[decimalPos] != '.') decimalPos -= 1;
+		else if (savedLength + 1 == input.text.Length) if (input.text[decimalPos] != ',' && input.text[decimalPos] != '.') decimalPos += 1;
+		else if (savedLength == input.text.Length) wasPasted = false; 
 
 		if (!stopSoros)
 		{
-			switch (expansionCheckInput.text[expansionCheckInput.caretPosition - 1])
+			Debug.Log("decimalPos at the start of function: " + decimalPos);
+			for (int i1 = 0; i1 < input.text.Length; i1++)
 			{
-				case ',':
-					if (isDecimal)
-					{
-						stopSoros = true;
-						expansionCheckInput.text = expansionCheckInput.text.Substring(0, expansionCheckInput.caretPosition - 1) + expansionCheckInput.text.Substring(expansionCheckInput.caretPosition);
-					}
-					break;
-				case '.':
-					expansionCheckInput.text = expansionCheckInput.text.Substring(0, expansionCheckInput.caretPosition - 1) + "," + expansionCheckInput.text.Substring(expansionCheckInput.caretPosition);
-					break;
-				/*case 'x':
-					if (!isScientificallyNotated) expansionCheckInput.text += "10<sup>";
-					else
-					{
-						stopSoros = true;
-						expansionCheckInput.text = expansionCheckInput.text.Substring(0, expansionCheckInput.caretPosition - 1) + expansionCheckInput.text.Substring(expansionCheckInput.caretPosition);
-					}
-					break; //IDE KELL A LEZÁRÁS
-				case '0':
-					Debug.Log(expansionCheckInput.caretPosition);
-					break;
-				case '1':
-					break;
-				case '2':
-					break;
-				case '3':
-					break;
-				case '4':
-					break;
-				case '5':
-					break;
-				case '6':
-					break;
-				case '7':
-					break;
-				case '8':
-					break;
-				case '9':
-					break;
-				case '-':
-					if (data.measurementFamily == 2 || expansionCheckInput.caretPosition == 1) return;
-					else expansionCheckInput.text = expansionCheckInput.text.Remove(expansionCheckInput.caretPosition - 1);
-					break;
-				default:
-					expansionCheckInput.text = expansionCheckInput.text.Remove(expansionCheckInput.text.Length - 1);
-					break;
+				switch (input.text[i1])
+				{
+					case ',':
+						decimalPos = i1;
+						if (!isDecimal) break;
+						input.text = input.text.Substring(0, decimalPos) + input.text.Substring(decimalPos + 1);
+						break;
+					case '.':
+						input.text = input.text.Substring(0, i1) + "," + input.text.Substring(i1 + 1);
+						break;
+					/*case 'x':
+						if (!isScientificallyNotated) expansionCheckInput.text += "10<sup>";
+						else
+						{
+							stopSoros = true;
+							expansionCheckInput.text = expansionCheckInput.text.Substring(0, expansionCheckInput.caretPosition - 1) + expansionCheckInput.text.Substring(expansionCheckInput.caretPosition);
+						}
+						break;*/ //IDE KELL A LEZÁRÁS
+					case '0':
+						break;
+					case '1':
+						break;
+					case '2':
+						break;
+					case '3':
+						break;
+					case '4':
+						break;
+					case '5':
+						break;
+					case '6':
+						break;
+					case '7':
+						break;
+					case '8':
+						break;
+					case '9':
+						break;
+					case '-':
+						if (data.measurementFamily == 2 && i1 == 0) break;
+						else
+						{
+							if (decimalPos > i1) decimalPos--;
+							input.text = input.text.Substring(0, i1) + input.text.Substring(i1 + 1);							
+						}
+						break;
+					default:
+						if (decimalPos > i1) decimalPos--;
+						input.text = input.text.Substring(0, i1) + input.text.Substring(i1 + 1);
+						break;
+				}
+				
 			}
-
-			if (expansionCheckInput.text.Contains("x")) isScientificallyNotated = true;
-			else isScientificallyNotated = false;
-
-
-			if (expansionCheckInput.text.Contains(",")) isDecimal = true;
+			/*if (input.text.Contains("x")) isScientificallyNotated = true;
+			else isScientificallyNotated = false*/
+			if (input.text.Contains(",")) isDecimal = true;
 			else isDecimal = false;
+			savedLength = input.text.Length;
+
+			Debug.Log("decimalPos at the end of function: " + decimalPos);
 		}
-		else
+		else stopSoros = false;
+	}
+    void MoveDecimalPosition()
+    {	
+		/*if(toDecimalString != input.text.Substring(0, decimalPos + 1))
         {
-			stopSoros = false;
-        }*/
+			if (input.text.Length > savedLength) decimalPos += 1;
+			else if (input.text.Length < savedLength) decimalPos -= 1;
+        }
+		/*if(i < input.text.Length - 1) input.text = input.text.Substring(0, i) + input.text.Substring(i + 1);
+		else if (i == input.text.Length - 1) input.text = input.text.Substring(0, i - 1) +*/
 	}
     #endregion
 }

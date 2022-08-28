@@ -25,35 +25,24 @@ public class ExpansionConverter : MonoBehaviour
     static public string[][] measurements = new string[2][];
     static public decimal[][] conversions = new decimal[3][];
 
-    int selectedMeasurementFamily = 0; //Imperial or metric
+    int selectedMeasurementFamily = 0;
     int currentMeasurement;
 
     public static void Define()
     {
         measurements[0] = new string[] { "mm", "cm", "dm", "m", "km" };
         measurements[1] = new string[] { "inch", "feet", "yard", "mile"};
-        //measurements[2] = new string[] { "°C/°K", "°F" };
         conversions[1] = new decimal[] { 12, 3, 1760 };
         conversions[0] = new decimal[] { 10, 10, 10, 1000 };
         conversions[2] = new decimal[] { 0.0393700787M, 0.393700787M, 0.32808399M, 1.0936133M, 0.621371192M };
-        Debug.Log("MŐŐŐ");
     }
-
     public void SliderValueChange()
     {        
         if (!dont)
         {
             to.text = measurements[selectedMeasurementFamily][(int)slider.value];
-            if (data.input != null)
-            {
-                Debug.Log("No bitches?");
-                output.text = Convert(currentMeasurement, decimal.Parse(number)).ToString();
-            }
-            else
-            {
-                Debug.Log("BRUH!");
-                output.text = calculator.Calculate(selectedMeasurementFamily, (int)slider.value).ToString();
-            }
+            if (data.input != null) output.text = Convert(currentMeasurement, decimal.Parse(number)).ToString();            
+            else output.text = calculator.Calculate(selectedMeasurementFamily, (int)slider.value).ToString();            
         }
     }
     public void PageOpened(ExpansionConversionData ecd)
@@ -61,15 +50,22 @@ public class ExpansionConverter : MonoBehaviour
         if (ecd != null && ((ecd.input != null && ecd.input.text != "") || (ecd.endText != null && ecd.endText.text != "")))
         {
             data = ecd;
-            if (data.input != null) number = data.input.text;
-            else number = data.endText.text;  
+            if (data.input != null) number = data.trueNumber;
+            else number = data.trueNumber;
+            if (data.trueNumber != "") number = data.trueNumber;
+            else
+            {
+                if (data.input != null) number = data.input.text;
+                else number = data.endText.text;
+            }
+            roundSlider.value = data.roundTo;
             selectedMeasurementFamily = data.measurementFamily;
             currentMeasurement = data.currentMeasurement;
             if (ecd.measurementFamily != 2)
             {
                 this.gameObject.SetActive(true);
                 dont = true;
-                output.text = number;
+                output.text = Round().ToString();
                 to.text = "";
                 from.text = measurements[selectedMeasurementFamily][data.currentMeasurement];
                 slider.maxValue = measurements[selectedMeasurementFamily].Length - 1;
@@ -106,8 +102,10 @@ public class ExpansionConverter : MonoBehaviour
         data.measurementFamily = selectedMeasurementFamily;
         data.currentMeasurement = (int)slider.value;
         data.buttonText.text = measurements[selectedMeasurementFamily][(int)slider.value];
-        if (data.input != null) data.input.text = (Convert(currentMeasurement, decimal.Parse(number))).ToString();
-        else data.endText.text = calculator.Calculate(selectedMeasurementFamily, (int)slider.value).ToString();     
+        if (data.input != null) data.input.text = Round().ToString();
+        else data.endText.text = Round().ToString();
+        data.trueNumber = number;
+        data.roundTo = (int)roundSlider.value;
     }
     public void ConvertInterFamily()
     {
@@ -131,14 +129,10 @@ public class ExpansionConverter : MonoBehaviour
             selectedMeasurementFamily = 0;
         }
         dont = false;
-        if (data.input != null) output.text = number;
-        else output.text = calculator.Calculate(selectedMeasurementFamily, (int)slider.value).ToString();
+        if(data.input == null) number = calculator.Calculate(selectedMeasurementFamily, (int)slider.value).ToString();
+        output.text = Round().ToString();
         to.text = measurements[selectedMeasurementFamily][(int)slider.value];
     }
-    /*public void ConvertInterFamily()
-    {
-
-    }*/
     public decimal Convert(int i, decimal number)
     {
         if (selectedMeasurementFamily != 2)
@@ -157,21 +151,24 @@ public class ExpansionConverter : MonoBehaviour
     {
         calculator = te;
     }
-    /*public void RoundSldierValueChanged()
+    public void RoundSldierValueChanged()
     {
-        output.text = (Round((int)roundSlider.value)).ToString();
-    }*/
-    /*public decimal Round(int i)
-    {
-        if (i != -1)
+        if (!dont)
         {
-            roundText.text = "Round to " + i + " digits";
-            return Math.Round(Convert(currentMeasurement, decimal.Parse(number)), i, MidpointRounding.AwayFromZero);
+            output.text = Round().ToString();
+        }
+    }
+    public decimal Round()
+    {        
+        if (roundSlider.value != -1)
+        {
+            roundText.text = "Round to " + roundSlider.value + " digits";
+            return Math.Round(Convert(currentMeasurement, decimal.Parse(number)), (int)roundSlider.value, MidpointRounding.AwayFromZero);
         }
         else
         {
             roundText.text = "Do not round";
             return Convert(currentMeasurement, decimal.Parse(number));
         }
-    }*/
+    }
 }
