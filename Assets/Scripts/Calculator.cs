@@ -267,9 +267,6 @@ public class Calculator : MonoBehaviour
 	TMP_InputField input;
 	bool isDecimal;
 	bool isScientificallyNotated;
-	bool wasPasted;
-	string beforeDecimal;
-	string afterDecimal;
 	bool stopSoros;
 	int decimalPos;
 	int savedLength;
@@ -278,11 +275,23 @@ public class Calculator : MonoBehaviour
     {
 		input = data.input;
 
-		if (savedLength - 1 == input.text.Length) if (input.text[decimalPos] != ',' && input.text[decimalPos] != '.') decimalPos -= 1;
-		else if (savedLength + 1 == input.text.Length) if (input.text[decimalPos] != ',' && input.text[decimalPos] != '.') decimalPos += 1;
-		else if (savedLength == input.text.Length) wasPasted = false; 
+		//Debug.Log(input.text);
 
-		if (!stopSoros)
+		if(data.input.text.Contains(",") || data.input.text.Contains("."))
+        {			
+			if (savedLength != input.text.Length && savedLength - 1 != input.text.Length && savedLength + 1 != input.text.Length)
+            {
+				if (Array.FindAll<char>(input.text.ToCharArray(), x => (x == ',' || x == '.')).Length > 1)
+				{
+					if (decimalPos > input.text.Length - 1) decimalPos -= savedLength - input.text.Length;
+					else if (input.text[decimalPos] != ',' || input.text[decimalPos] != '.') decimalPos -= savedLength - input.text.Length;
+				}
+				else isDecimal = false;
+            }
+			if (savedLength - 1 == input.text.Length && (input.text[decimalPos - 1] == ',' || input.text[decimalPos - 1] == '.')) decimalPos -= 1;
+			else if (savedLength + 1 == input.text.Length && (input.text[decimalPos + 1] == ',' || input.text[decimalPos + 1] == '.')) decimalPos += 1;
+		}		 
+		if (!stopSoros && input.text != "")
 		{
 			Debug.Log("decimalPos at the start of function: " + decimalPos);
 			for (int i1 = 0; i1 < input.text.Length; i1++)
@@ -290,9 +299,16 @@ public class Calculator : MonoBehaviour
 				switch (input.text[i1])
 				{
 					case ',':
-						decimalPos = i1;
-						if (!isDecimal) break;
-						input.text = input.text.Substring(0, decimalPos) + input.text.Substring(decimalPos + 1);
+						if (!isDecimal || decimalPos == i1)
+						{
+							decimalPos = i1;
+							break;
+						}
+						stopSoros = true;
+						Remove(decimalPos);
+						if (i1 > decimalPos) decimalPos = i1 - 1;
+						else decimalPos = i1;
+						Debug.Log(decimalPos);
 						break;
 					case '.':
 						input.text = input.text.Substring(0, i1) + "," + input.text.Substring(i1 + 1);
@@ -329,19 +345,16 @@ public class Calculator : MonoBehaviour
 						if (data.measurementFamily == 2 && i1 == 0) break;
 						else
 						{
-							if (decimalPos > i1) decimalPos--;
-							input.text = input.text.Substring(0, i1) + input.text.Substring(i1 + 1);							
+							Remove(i1);
 						}
 						break;
 					default:
-						if (decimalPos > i1) decimalPos--;
-						input.text = input.text.Substring(0, i1) + input.text.Substring(i1 + 1);
+						Remove(i1);
 						break;
 				}
-				
 			}
 			/*if (input.text.Contains("x")) isScientificallyNotated = true;
-			else isScientificallyNotated = false*/
+			else isScientificallyNotated = false*/ //IDE IS
 			if (input.text.Contains(",")) isDecimal = true;
 			else isDecimal = false;
 			savedLength = input.text.Length;
@@ -350,15 +363,11 @@ public class Calculator : MonoBehaviour
 		}
 		else stopSoros = false;
 	}
-    void MoveDecimalPosition()
-    {	
-		/*if(toDecimalString != input.text.Substring(0, decimalPos + 1))
-        {
-			if (input.text.Length > savedLength) decimalPos += 1;
-			else if (input.text.Length < savedLength) decimalPos -= 1;
-        }
-		/*if(i < input.text.Length - 1) input.text = input.text.Substring(0, i) + input.text.Substring(i + 1);
-		else if (i == input.text.Length - 1) input.text = input.text.Substring(0, i - 1) +*/
+    void Remove(int i)
+    {
+		if (i > 0 && i < input.text.Length - 1) input.text = input.text.Substring(0, i) + input.text.Substring(i + 1);
+		else if (i <= 0) input.text = input.text.Substring(1);
+		else input.text = input.text.Substring(0, input.text.Length - 1);
 	}
     #endregion
 }
