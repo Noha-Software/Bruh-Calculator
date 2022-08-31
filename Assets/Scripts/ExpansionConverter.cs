@@ -40,7 +40,7 @@ public class ExpansionConverter : MonoBehaviour
     {        
         if (!dont)
         {
-            to.text = measurements[selectedMeasurementFamily][(int)slider.value];
+            to.text = measurements[selectedMeasurementFamily][(int)slider.value] + "<sup>" + data.power + "</sup>";
             if (data.input != null) output.text = Convert(currentMeasurement, decimal.Parse(number)).ToString();            
             else output.text = calculator.Calculate(selectedMeasurementFamily, (int)slider.value).ToString();            
         }
@@ -65,11 +65,11 @@ public class ExpansionConverter : MonoBehaviour
             {
                 this.gameObject.SetActive(true);
                 dont = true;
-                output.text = Round().ToString();
                 to.text = "";
                 from.text = measurements[selectedMeasurementFamily][data.currentMeasurement];
                 slider.maxValue = measurements[selectedMeasurementFamily].Length - 1;
                 slider.value = data.currentMeasurement;
+                output.text = Round().ToString();
                 dont = false;
             }
             else
@@ -101,7 +101,7 @@ public class ExpansionConverter : MonoBehaviour
     {
         data.measurementFamily = selectedMeasurementFamily;
         data.currentMeasurement = (int)slider.value;
-        data.buttonText.text = measurements[selectedMeasurementFamily][(int)slider.value];
+        data.buttonText.text = measurements[selectedMeasurementFamily][(int)slider.value] + "<sup>"+data.power+"</sup>";
         if (data.input != null) data.input.text = Round().ToString();
         else data.endText.text = Round().ToString();
         data.trueNumber = number;
@@ -113,7 +113,7 @@ public class ExpansionConverter : MonoBehaviour
         dont = true;
         if(selectedMeasurementFamily == 0)
         {
-            number = (Convert(currentMeasurement ,decimal.Parse(number)) * conversions[2][helpInt]).ToString();
+            number = ((Convert(currentMeasurement ,decimal.Parse(number)) * Pow(conversions[2][helpInt], data.power))).ToString();
             if (slider.value > 0) slider.value -= 1;           
             if (currentMeasurement > 0) currentMeasurement -= 1;
             slider.maxValue -= 1;
@@ -122,7 +122,7 @@ public class ExpansionConverter : MonoBehaviour
         }   
         else
         {
-            number = (Convert(currentMeasurement, decimal.Parse(number)) / conversions[2][helpInt + 1]).ToString();
+            number = (Convert(currentMeasurement, decimal.Parse(number)) / Pow(conversions[2][helpInt + 1], data.power)).ToString();
             slider.maxValue += 1;
             slider.value += 1;
             currentMeasurement = (int)slider.value;
@@ -138,8 +138,8 @@ public class ExpansionConverter : MonoBehaviour
         if (selectedMeasurementFamily != 2)
         {
             if (i == slider.value) return number * 1;
-            else if (i > slider.value) return Convert(i - 1, number * conversions[selectedMeasurementFamily][i - 1]);
-            else return Convert(i + 1, number / conversions[selectedMeasurementFamily][i]);
+            else if (i > slider.value) return Convert(i - 1, number * Pow(conversions[selectedMeasurementFamily][i - 1], data.power));
+            else return Convert(i + 1, number / Pow(conversions[selectedMeasurementFamily][i], data.power));
         }
         else
         {
@@ -170,5 +170,10 @@ public class ExpansionConverter : MonoBehaviour
             roundText.text = "Do not round";
             return Convert(currentMeasurement, decimal.Parse(number));
         }
+    }
+    static decimal Pow(decimal x, decimal y)
+    {
+        if (y == 1) return x * 1;   
+        else return x * Pow(x, y - 1);
     }
 }

@@ -51,7 +51,17 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
     //tabs.output.text = Convert.ToString((b - a) / (a * c * alphaMultiplier));    
     public decimal Calculate(int toFamily, int toMeasurement)
     {
-        return Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement,toFamily,toMeasurement, decimal.Parse(tabs.regInput1.input.text)) * (1 + decimal.Parse(tabs.alphaInput.text) * Convert(tabs.regInput2.measurementFamily, tabs.regInput2.currentMeasurement,toFamily,toMeasurement, decimal.Parse(tabs.regInput2.input.text)));             
+        switch(typeOfCalculation)
+        {
+            case 0:
+                return Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput1.input.text)) * (1 + tabs.regInput1.power*decimal.Parse(tabs.alphaInput.text) * Convert(tabs.regInput2.measurementFamily, tabs.regInput2.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput2.input.text)));
+                
+            case 1:
+                return ((Convert(tabs.regInput2.measurementFamily, tabs.regInput2.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput2.input.text)) - Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput1.input.text))) / (Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput1.input.text)) * Convert(tabs.regInput3.measurementFamily, tabs.regInput3.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput3.input.text)))) / tabs.regInput1.power;
+            case 2:
+                return
+
+        }
     }
     decimal Convert(int currentFamily, int currentMeasurement,int toFamily,int toMeasurement, decimal number)
     {
