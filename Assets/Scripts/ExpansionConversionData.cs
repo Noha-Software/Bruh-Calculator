@@ -20,8 +20,14 @@ public class ExpansionConversionData : MonoBehaviour
         if (buttonText != null && measurementFamily == 2) if (currentMeasurement == 0) buttonText.text = "°C/°K"; else buttonText.text = "°F";
         else if (buttonText != null)
         {
-            buttonText.text = ExpansionConverter.measurements[measurementFamily][currentMeasurement];
+            if (measurementFamily < 2) buttonText.text = (ExpansionConverter.measurements[measurementFamily][currentMeasurement]);
+            else buttonText.text = (ExpansionConverter.measurements[measurementFamily - 3][currentMeasurement]);
             if (power != 1) buttonText.text += String.Format("<sup>" + power + "</sup>");
+            if (measurementFamily == 3)
+            {
+                if(currentMeasurement == 0) buttonText.text = "1/°K";
+                else buttonText.text = "1/°F";
+            }
         }       
     }
 }

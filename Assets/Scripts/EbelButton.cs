@@ -10,15 +10,16 @@ public class EbelButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     public Color originalColor;
     public Color hoverColor;
+    public bool disabled;
 
     public void OnPointerClick(PointerEventData data)
     {
-        onClick.Invoke();
+        if (!disabled) onClick.Invoke();
     }
 
     public void OnPointerEnter(PointerEventData data)
     {
-        this.gameObject.GetComponent<Image>().color = hoverColor;
+        if(!disabled)this.gameObject.GetComponent<Image>().color = hoverColor;
     }
 
     public void OnPointerExit(PointerEventData data)

@@ -356,7 +356,11 @@ public class Calculator : MonoBehaviour
 			/*if (input.text.Contains("x")) isScientificallyNotated = true;
 			else isScientificallyNotated = false*/ //IDE IS
 			if (input.text.Contains(",")) isDecimal = true;
-			else isDecimal = false;
+			else
+			{
+				isDecimal = false;
+				decimalPos = 1;
+			}
 			savedLength = input.text.Length;
 
 			Debug.Log("decimalPos at the end of function: " + decimalPos);
