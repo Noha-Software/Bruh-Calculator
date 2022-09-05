@@ -55,15 +55,16 @@ public class ExpansionConverter : MonoBehaviour
         if (ecd != null && ((ecd.input != null && ecd.input.text != "") || (ecd.endText != null && ecd.endText.text != "")))
         {
             data = ecd;
-            if (data.trueNumber != "") number = data.trueNumber;
+            roundSlider.value = data.roundTo;
+            selectedMeasurementFamily = data.measurementFamily;
+            currentMeasurement = data.currentMeasurement;            
+            if (data.input != null && data.trueNumber != "" && Round(decimal.Parse(data.trueNumber)) == decimal.Parse(data.input.text)) number = data.trueNumber;            
+            else if (data.endText != null && data.trueNumber != "" && Round(decimal.Parse(data.trueNumber)) == decimal.Parse(data.endText.text)) number = data.trueNumber;           
             else
             {
                 if (data.input != null) number = data.input.text;
                 else number = data.endText.text;
-            }
-            roundSlider.value = data.roundTo;
-            selectedMeasurementFamily = data.measurementFamily;
-            currentMeasurement = data.currentMeasurement;
+            }                       
             this.gameObject.SetActive(true);
             to.text = "";
             from.text = data.buttonText.text;                       

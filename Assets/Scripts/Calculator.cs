@@ -293,7 +293,7 @@ public class Calculator : MonoBehaviour
 		}		 
 		if (!stopSoros && input.text != "")
 		{
-			Debug.Log("decimalPos at the start of function: " + decimalPos);
+			//Debug.Log("decimalPos at the start of function: " + decimalPos);
 			for (int i1 = 0; i1 < input.text.Length; i1++)
 			{
 				switch (input.text[i1])
@@ -363,7 +363,7 @@ public class Calculator : MonoBehaviour
 			}
 			savedLength = input.text.Length;
 
-			Debug.Log("decimalPos at the end of function: " + decimalPos);
+			//Debug.Log("decimalPos at the end of function: " + decimalPos);
 		}
 		else stopSoros = false;
 	}

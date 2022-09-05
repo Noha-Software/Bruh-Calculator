@@ -13,9 +13,11 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public ThermalExpansionTabs tabs;
 
-    bool endGameAlpha;
-
-    int toFamily, toMeasurement;
+    bool realFamily;
+    int trueFamily;
+    bool fuckHowINameDis;
+    int trueMeasurement;
+    //int toFamily, toMeasurement;
 
     decimal result;
 
@@ -46,62 +48,92 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         image.color = switchColor;           
     }    
-    public void WriteOutput()
+    public void WriteOutput(ExpansionConversionData data)
     {
-        tabs.output.text = Calculate(toFamily, toMeasurement).ToString();
+        tabs.output.text = Calculate(data).ToString();
     }    
     //tabs.output.text = Convert.ToString((b - a) / (a * c * alphaMultiplier));    
-    public decimal Calculate(int toFamily, int toMeasurement)
+    public decimal Calculate(ExpansionConversionData data)
     {
-        this.toFamily = toFamily;
-        this.toMeasurement = toMeasurement;
         switch(typeOfCalculation)
         {
             case 0:
-                return Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput1.input.text)) * (1 + tabs.regInput1.power* Convert(tabs.regInput3.measurementFamily, tabs.regInput3.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput3.input.text)) * Convert(tabs.regInput2.measurementFamily, tabs.regInput2.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput2.input.text)));                
+                return Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, data.measurementFamily, data.currentMeasurement, decimal.Parse(tabs.regInput1.input.text)) * (1 + tabs.regInput1.power* Convert(tabs.regInput3.measurementFamily, tabs.regInput3.currentMeasurement, data.measurementFamily, data.currentMeasurement, decimal.Parse(tabs.regInput3.input.text)) * Convert(tabs.regInput2.measurementFamily, tabs.regInput2.currentMeasurement, data.measurementFamily, data.currentMeasurement, decimal.Parse(tabs.regInput2.input.text)));                
             case 1:
-                return ((Convert(tabs.regInput2.measurementFamily, tabs.regInput2.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput2.input.text)) - Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput1.input.text))) / (Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput1.input.text)) * Convert(tabs.regInput3.measurementFamily, tabs.regInput3.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput3.input.text)))) / tabs.regInput1.power;
+                return ((Convert(tabs.regInput2.measurementFamily, tabs.regInput2.currentMeasurement, data.measurementFamily, data.currentMeasurement, decimal.Parse(tabs.regInput2.input.text)) - Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, data.measurementFamily, data.currentMeasurement, decimal.Parse(tabs.regInput1.input.text))) / (Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, data.measurementFamily, data.currentMeasurement, decimal.Parse(tabs.regInput1.input.text)) * Convert(tabs.regInput3.measurementFamily, tabs.regInput3.currentMeasurement, data.measurementFamily, data.currentMeasurement, decimal.Parse(tabs.regInput3.input.text)))) / tabs.regInput1.power;
             case 2:
-                return (Convert(tabs.regInput2.measurementFamily, tabs.regInput2.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput2.input.text)) - Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput1.input.text))) / (Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput1.input.text)) * (Convert(tabs.regInput3.measurementFamily, tabs.regInput3.currentMeasurement, toFamily, toMeasurement, decimal.Parse(tabs.regInput3.input.text)) / tabs.regInput1.power));
+                return (Convert(tabs.regInput2.measurementFamily, tabs.regInput2.currentMeasurement, data.measurementFamily, data.currentMeasurement, decimal.Parse(tabs.regInput2.input.text)) - Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, data.measurementFamily, data.currentMeasurement, decimal.Parse(tabs.regInput1.input.text))) / (Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, data.measurementFamily, data.currentMeasurement, decimal.Parse(tabs.regInput1.input.text)) * (Convert(tabs.regInput3.measurementFamily, tabs.regInput3.currentMeasurement, data.measurementFamily, data.currentMeasurement, decimal.Parse(tabs.regInput3.input.text)) / tabs.regInput1.power));
+            default:
+                return 0;
+        }
+    }
+    public decimal Calculate(int family, int measurement)
+    {
+        switch (typeOfCalculation)
+        {
+            case 0:
+                return Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput1.input.text)) * (1 + tabs.regInput1.power * Convert(tabs.regInput3.measurementFamily, tabs.regInput3.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput3.input.text)) * Convert(tabs.regInput2.measurementFamily, tabs.regInput2.currentMeasurement, family,measurement , decimal.Parse(tabs.regInput2.input.text)));
+            case 1:
+                return ((Convert(tabs.regInput2.measurementFamily, tabs.regInput2.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput2.input.text)) - Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput1.input.text))) / (Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput1.input.text)) * Convert(tabs.regInput3.measurementFamily, tabs.regInput3.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput3.input.text)))) / tabs.regInput1.power;
+            case 2:
+                return (Convert(tabs.regInput2.measurementFamily, tabs.regInput2.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput2.input.text)) - Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput1.input.text))) / (Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput1.input.text)) * (Convert(tabs.regInput3.measurementFamily, tabs.regInput3.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput3.input.text)) / tabs.regInput1.power));
             default:
                 return 0;
         }
     }
     decimal Convert(int currentFamily, int currentMeasurement,int toFamily,int toMeasurement, decimal number)
     {
+        if (!realFamily)
+        {
+            
+            trueFamily = currentFamily;
+            if (currentFamily == 3) --currentFamily;
+            trueMeasurement = currentMeasurement;
+            if(currentFamily < 2 && toFamily > 1)
+            {
+                fuckHowINameDis = true;
+                toFamily = toMeasurement;
+                toMeasurement = currentMeasurement;               
+            }
+            else if(currentFamily > 1 && toFamily < 2)
+            {                               
+                toMeasurement = toFamily;
+                toFamily = currentFamily;
+            }
+        }
+        realFamily = true;
         Debug.Log("numbir: " + number);
+        Debug.Log("Current family: " + currentFamily + ", measurement: " + currentMeasurement + "\n To family: " + toFamily + ", measurement: " + toMeasurement);
         if (currentFamily < 2 && toFamily < 2 && currentFamily != toFamily)
         {                        
             if (currentFamily == 0)
             {
                 number *= ExpansionConverter.conversions[3][currentMeasurement];
-                if (currentMeasurement > 0) currentMeasurement -= 1;
+                if (currentMeasurement > 0 && !fuckHowINameDis) currentMeasurement -= 1;
+                fuckHowINameDis = false;
                 return Convert(1, currentMeasurement, toFamily, toMeasurement, number);
             }
             else
             {
                 number /= ExpansionConverter.conversions[3][currentMeasurement + 1];
-                return Convert(0, currentMeasurement + 1, toFamily, toMeasurement, number);
+                if (!fuckHowINameDis) currentMeasurement += 1;
+                fuckHowINameDis = false;
+                return Convert(0, currentMeasurement, toFamily, toMeasurement, number);
             }
         }
         else
         {
-            int bruh = currentFamily;
-            if (currentFamily == 3) bruh--;
-            if(bruh == 2)
-            {
-                Debug.Log(toFamily);
-                toMeasurement = toFamily;
-                if (toMeasurement == 0 && currentMeasurement != toMeasurement) number -= 32;
-            }            
+            Debug.Log("truefamily: " + trueFamily);
+            if (trueFamily == 2 && toMeasurement == 0 && toMeasurement != currentMeasurement) number -= 32;
             if (currentMeasurement == toMeasurement)
             {
-                if (toMeasurement == 1 && currentFamily == 2 && currentMeasurement == 1) number += 32;
+                if (toMeasurement == 1 && trueFamily == 2) number += 32;
+                realFamily = false;
                 Debug.Log("nombar: " + number);
                 return number;
             }
-            else if (currentMeasurement > toMeasurement) return Convert(currentFamily, currentMeasurement - 1, bruh, toMeasurement, number * ExpansionConverter.conversions[bruh][currentMeasurement - 1]);
-            else return Convert(currentFamily, currentMeasurement + 1, bruh, toMeasurement, number / ExpansionConverter.conversions[bruh][currentMeasurement]);
+            else if (currentMeasurement > toMeasurement) return Convert(currentFamily, currentMeasurement - 1, currentFamily, toMeasurement, number * ExpansionConverter.conversions[currentFamily][currentMeasurement - 1]);
+            else return Convert(currentFamily, currentMeasurement + 1, currentFamily, toMeasurement, number / ExpansionConverter.conversions[currentFamily][currentMeasurement]);
         }                      
     }
 }
