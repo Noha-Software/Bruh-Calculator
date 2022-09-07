@@ -74,7 +74,7 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
             case 0:
                 return Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput1.input.text)) * (1 + tabs.regInput1.power * Convert(tabs.regInput3.measurementFamily, tabs.regInput3.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput3.input.text)) * Convert(tabs.regInput2.measurementFamily, tabs.regInput2.currentMeasurement, family,measurement , decimal.Parse(tabs.regInput2.input.text)));
             case 1:
-                return ((Convert(tabs.regInput2.measurementFamily, tabs.regInput2.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput2.input.text)) - Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput1.input.text))) / (Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput1.input.text)) * Convert(tabs.regInput3.measurementFamily, tabs.regInput3.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput3.input.text)))) / tabs.regInput1.power;
+                return (Convert(tabs.regInput2.measurementFamily, tabs.regInput2.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput2.input.text)) - Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput1.input.text))) / (Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput1.input.text)) * Convert(tabs.regInput3.measurementFamily, tabs.regInput3.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput3.input.text))) / tabs.regInput1.power;
             case 2:
                 return (Convert(tabs.regInput2.measurementFamily, tabs.regInput2.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput2.input.text)) - Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput1.input.text))) / (Convert(tabs.regInput1.measurementFamily, tabs.regInput1.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput1.input.text)) * (Convert(tabs.regInput3.measurementFamily, tabs.regInput3.currentMeasurement, family, measurement, decimal.Parse(tabs.regInput3.input.text)) / tabs.regInput1.power));
             default:
@@ -127,12 +127,12 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
             if (trueFamily == 2 && toMeasurement == 0 && toMeasurement != currentMeasurement) number -= 32;
             if (currentMeasurement == toMeasurement)
             {
-                if (toMeasurement == 1 && trueFamily == 2) number += 32;
+                if (toMeasurement == 1 && trueFamily == 2 && trueMeasurement == 0) number += 32;
                 realFamily = false;
                 Debug.Log("nombar: " + number);
                 return number;
             }
-            else if (currentMeasurement > toMeasurement) return Convert(currentFamily, currentMeasurement - 1, currentFamily, toMeasurement, number * ExpansionConverter.conversions[currentFamily][currentMeasurement - 1]);
+            else if ((trueFamily != 3 && currentMeasurement > toMeasurement) || ((trueFamily == 3 && currentMeasurement < toMeasurement))) return Convert(currentFamily, currentMeasurement - 1, currentFamily, toMeasurement, number * ExpansionConverter.conversions[currentFamily][currentMeasurement - 1]);
             else return Convert(currentFamily, currentMeasurement + 1, currentFamily, toMeasurement, number / ExpansionConverter.conversions[currentFamily][currentMeasurement]);
         }                      
     }
