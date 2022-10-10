@@ -47,7 +47,7 @@ public class ExpansionConverter : MonoBehaviour
             to.text = measurements[selectedMeasurementFamily][(int)slider.value];
             if (data.power != 1 && selectedMeasurementFamily < 2) to.text += "<sup>" + data.power + "</sup>";
             if (data.input != null) output.text = Round(decimal.Parse(number)).ToString();            
-            else output.text = Round(calculator.Calculate(selectedMeasurementFamily, (int)slider.value)).ToString();
+            else output.text = Round(calculator.Calculate(selectedMeasurementFamily, (int)slider.value, calculator.typeOfCalculation)).ToString();
         }
     }
     public void PageOpened(ExpansionConversionData ecd)
@@ -91,6 +91,7 @@ public class ExpansionConverter : MonoBehaviour
         data.buttonText.text = measurements[selectedMeasurementFamily][(int)slider.value];
         if (data.power != 1 && selectedMeasurementFamily < 2) data.buttonText.text += "<sup>" + data.power + "</sup>";
         if (data.input != null) data.input.text = Round(decimal.Parse(number)).ToString();
+        else if(data.measurementFamily == 3) data.endText.text = Round(decimal.Parse(number)).ToString();
         else data.endText.text = Round(decimal.Parse(number)).ToString();
         data.trueNumber = Convert(currentMeasurement, decimal.Parse(number)).ToString();
         data.roundTo = (int)roundSlider.value;
@@ -116,7 +117,7 @@ public class ExpansionConverter : MonoBehaviour
         }
         currentMeasurement = (int)slider.value;        
         dont = false;
-        if(data.input == null) number = calculator.Calculate(selectedMeasurementFamily, (int)slider.value).ToString();
+        if(data.input == null) number = calculator.Calculate(selectedMeasurementFamily, (int)slider.value, calculator.typeOfCalculation).ToString();
         output.text = Round(decimal.Parse(number)).ToString();
         to.text = measurements[selectedMeasurementFamily][currentMeasurement];
     }
@@ -125,13 +126,16 @@ public class ExpansionConverter : MonoBehaviour
         int bruh = selectedMeasurementFamily;
         if (selectedMeasurementFamily == 3) bruh--;
         if (selectedMeasurementFamily == 2 && slider.value == 0 && i != slider.value) number -= 32;
+        Debug.Log("KID NAMED FINGER: " + bruh + i);
+        if (i == -1) i = 1;
         if (i == slider.value)
         {
             if (slider.value == 1 && selectedMeasurementFamily == 2 && currentMeasurement == 0) number += 32;
             return number;
         }
-        else if (i > slider.value) return Convert(i - 1, number * Pow(conversions[bruh][i - 1], data.power));       
-        else return Convert(i + 1, number / Pow(conversions[bruh][i], data.power)); 
+        else if ((selectedMeasurementFamily != 3 && i > slider.value) || (selectedMeasurementFamily == 3 && slider.value > i)) return Convert(i - 1, number * Pow(conversions[bruh][Math.Abs(i - 1)], data.power));
+        else if ((selectedMeasurementFamily != 3 && i < slider.value) || (selectedMeasurementFamily == 3 && slider.value < i)) return Convert(i + 1, number / Pow(conversions[bruh][i], data.power));
+        else return 69.420M;
     }
     public void SetCalculator(ThermalExpansion te)
     {

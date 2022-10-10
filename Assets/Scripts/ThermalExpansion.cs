@@ -67,7 +67,7 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 return 0;
         }
     }
-    public decimal Calculate(int family, int measurement)
+    public decimal Calculate(int family, int measurement, int typeOfCalculation)
     {
         switch (typeOfCalculation)
         {
@@ -88,12 +88,15 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
             
             trueFamily = currentFamily;
             if (currentFamily == 3) --currentFamily;
+            if (toFamily == 3) --toFamily;
             trueMeasurement = currentMeasurement;
             if(currentFamily < 2 && toFamily > 1)
             {
-                fuckHowINameDis = true;
+                //fuckHowINameDis = true;
+                //Debug.Log("KID NAMED FINGER:");
                 toFamily = toMeasurement;
-                toMeasurement = currentMeasurement;               
+                if (toFamily == 0) toMeasurement = 3;
+                else toMeasurement = 2;
             }
             else if(currentFamily > 1 && toFamily < 2)
             {                               
@@ -125,6 +128,8 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
         {
             Debug.Log("truefamily: " + trueFamily);
             if (trueFamily == 2 && toMeasurement == 0 && toMeasurement != currentMeasurement) number -= 32;
+            if (currentMeasurement == -1) currentMeasurement = 1;
+            Debug.Log("bruh: " + currentMeasurement + ", " + toMeasurement);
             if (currentMeasurement == toMeasurement)
             {
                 if (toMeasurement == 1 && trueFamily == 2 && trueMeasurement == 0) number += 32;
@@ -132,8 +137,12 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 Debug.Log("nombar: " + number);
                 return number;
             }
-            else if ((trueFamily != 3 && currentMeasurement > toMeasurement) || ((trueFamily == 3 && currentMeasurement < toMeasurement))) return Convert(currentFamily, currentMeasurement - 1, currentFamily, toMeasurement, number * ExpansionConverter.conversions[currentFamily][currentMeasurement - 1]);
-            else return Convert(currentFamily, currentMeasurement + 1, currentFamily, toMeasurement, number / ExpansionConverter.conversions[currentFamily][currentMeasurement]);
+            else if ((currentMeasurement > toMeasurement && trueFamily != 3) || (currentMeasurement < toMeasurement && trueFamily == 3)) return Convert(currentFamily, currentMeasurement - 1, toFamily, toMeasurement, number * ExpansionConverter.conversions[currentFamily][currentMeasurement - 1]);
+            else
+            {
+                //Debug.Log("currentFamily:");
+                return Convert(currentFamily, currentMeasurement + 1, toFamily, toMeasurement, number / ExpansionConverter.conversions[currentFamily][currentMeasurement]);
+            }
         }                      
     }
 }
