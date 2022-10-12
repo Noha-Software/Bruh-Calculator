@@ -125,12 +125,10 @@ public class ExpansionConverter : MonoBehaviour
     {
         int bruh = selectedMeasurementFamily;
         if (selectedMeasurementFamily == 3) bruh--;
-        if (selectedMeasurementFamily == 2 && slider.value == 0 && i != slider.value) number -= 32;
         Debug.Log("KID NAMED FINGER: " + bruh + i);
         if (i == -1) i = 1;
         if (i == slider.value)
         {
-            if (slider.value == 1 && selectedMeasurementFamily == 2 && currentMeasurement == 0) number += 32;
             return number;
         }
         else if ((selectedMeasurementFamily != 3 && i > slider.value) || (selectedMeasurementFamily == 3 && slider.value > i)) return Convert(i - 1, number * Pow(conversions[bruh][Math.Abs(i - 1)], data.power));

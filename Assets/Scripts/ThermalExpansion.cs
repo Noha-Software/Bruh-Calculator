@@ -127,12 +127,10 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
         else
         {
             Debug.Log("truefamily: " + trueFamily);
-            if (trueFamily == 2 && toMeasurement == 0 && toMeasurement != currentMeasurement) number -= 32;
             if (currentMeasurement == -1) currentMeasurement = 1;
             Debug.Log("bruh: " + currentMeasurement + ", " + toMeasurement);
             if (currentMeasurement == toMeasurement)
             {
-                if (toMeasurement == 1 && trueFamily == 2 && trueMeasurement == 0) number += 32;
                 realFamily = false;
                 Debug.Log("nombar: " + number);
                 return number;
