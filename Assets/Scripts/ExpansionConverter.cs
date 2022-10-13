@@ -24,7 +24,7 @@ public class ExpansionConverter : MonoBehaviour
     int helpInt;
 
     static public string[][] measurements = new string[4][];
-    static public decimal[][] conversions = new decimal[4][];
+    static public decimal[][] conversions = new decimal[5][];
 
     int selectedMeasurementFamily = 0;
     int currentMeasurement;
@@ -38,7 +38,8 @@ public class ExpansionConverter : MonoBehaviour
         conversions[1] = new decimal[] { 12, 3, 1760 };
         conversions[0] = new decimal[] { 10, 10, 10, 1000 };
         conversions[2] = new decimal[] { (decimal)5/9 , (decimal)5/9};
-        conversions[3] = new decimal[] { 0.0393700787M, 0.393700787M, 0.32808399M, 1.0936133M, 0.621371192M };
+        conversions[3] = new decimal[] { (decimal)9 / 5, (decimal)9 / 5 };
+        conversions[4] = new decimal[] { 0.0393700787M, 0.393700787M, 0.32808399M, 1.0936133M, 0.621371192M };
     }
     public void SliderValueChange()
     {        
@@ -103,14 +104,14 @@ public class ExpansionConverter : MonoBehaviour
         dont = true;      
         if(selectedMeasurementFamily == 0)
         {
-            number = ((Convert(currentMeasurement, decimal.Parse(number)) * Pow(conversions[3][helpInt], data.power))).ToString();
+            number = ((Convert(currentMeasurement, decimal.Parse(number)) * Pow(conversions[4][helpInt], data.power))).ToString();
             if (slider.value > 0) slider.value -= 1;
             slider.maxValue -= 1;
             selectedMeasurementFamily = 1;
         }
         else
         {
-            number = ((Convert(currentMeasurement, decimal.Parse(number)) / Pow(conversions[3][helpInt + 1], data.power))).ToString();
+            number = ((Convert(currentMeasurement, decimal.Parse(number)) / Pow(conversions[4][helpInt + 1], data.power))).ToString();
             slider.maxValue += 1;
             slider.value++;            
             selectedMeasurementFamily = 0;
@@ -123,17 +124,13 @@ public class ExpansionConverter : MonoBehaviour
     }
     public decimal Convert(int i, decimal number)
     {
-        int bruh = selectedMeasurementFamily;
-        if (selectedMeasurementFamily == 3) bruh--;
-        Debug.Log("KID NAMED FINGER: " + bruh + i);
-        if (i == -1) i = 1;
+        Debug.Log("KID NAMED FINGER: " + selectedMeasurementFamily + i);
         if (i == slider.value)
         {
             return number;
         }
-        else if ((selectedMeasurementFamily != 3 && i > slider.value) || (selectedMeasurementFamily == 3 && slider.value > i)) return Convert(i - 1, number * Pow(conversions[bruh][Math.Abs(i - 1)], data.power));
-        else if ((selectedMeasurementFamily != 3 && i < slider.value) || (selectedMeasurementFamily == 3 && slider.value < i)) return Convert(i + 1, number / Pow(conversions[bruh][i], data.power));
-        else return 69.420M;
+        else if (i > slider.value) return Convert(i - 1, number * Pow(conversions[selectedMeasurementFamily][Math.Abs(i - 1)], data.power));
+        else return Convert(i + 1, number / Pow(conversions[selectedMeasurementFamily][i], data.power));
     }
     public void SetCalculator(ThermalExpansion te)
     {

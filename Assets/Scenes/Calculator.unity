@@ -11373,7 +11373,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 2
+  measurementFamily: 3
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 

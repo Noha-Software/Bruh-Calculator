@@ -9,7 +9,7 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
 {
     [SerializeField] int alphaMultiplier;
     [SerializeField] string equationText;
-    public int typeOfCalculation;
+    public int typeOfCalculation; 
 
     public ThermalExpansionTabs tabs;
 
@@ -85,11 +85,6 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         if (!realFamily)
         {
-            
-            trueFamily = currentFamily;
-            if (currentFamily == 3) --currentFamily;
-            if (toFamily == 3) --toFamily;
-            trueMeasurement = currentMeasurement;
             if(currentFamily < 2 && toFamily > 1)
             {
                 //fuckHowINameDis = true;
@@ -104,21 +99,20 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 toFamily = currentFamily;
             }
         }
-        realFamily = true;
         Debug.Log("numbir: " + number);
         Debug.Log("Current family: " + currentFamily + ", measurement: " + currentMeasurement + "\n To family: " + toFamily + ", measurement: " + toMeasurement);
         if (currentFamily < 2 && toFamily < 2 && currentFamily != toFamily)
         {                        
             if (currentFamily == 0)
             {
-                number *= ExpansionConverter.conversions[3][currentMeasurement];
+                number *= ExpansionConverter.conversions[4][currentMeasurement];
                 if (currentMeasurement > 0 && !fuckHowINameDis) currentMeasurement -= 1;
                 fuckHowINameDis = false;
                 return Convert(1, currentMeasurement, toFamily, toMeasurement, number);
             }
             else
             {
-                number /= ExpansionConverter.conversions[3][currentMeasurement + 1];
+                number /= ExpansionConverter.conversions[4][currentMeasurement + 1];
                 if (!fuckHowINameDis) currentMeasurement += 1;
                 fuckHowINameDis = false;
                 return Convert(0, currentMeasurement, toFamily, toMeasurement, number);
@@ -126,19 +120,15 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
         }
         else
         {
-            Debug.Log("truefamily: " + trueFamily);
-            if (currentMeasurement == -1) currentMeasurement = 1;
-            Debug.Log("bruh: " + currentMeasurement + ", " + toMeasurement);
             if (currentMeasurement == toMeasurement)
             {
-                realFamily = false;
                 Debug.Log("nombar: " + number);
                 return number;
             }
-            else if ((currentMeasurement > toMeasurement && trueFamily != 3) || (currentMeasurement < toMeasurement && trueFamily == 3)) return Convert(currentFamily, currentMeasurement - 1, toFamily, toMeasurement, number * ExpansionConverter.conversions[currentFamily][currentMeasurement - 1]);
+            else if (currentMeasurement > toMeasurement) return Convert(currentFamily, currentMeasurement - 1, toFamily, toMeasurement, number * ExpansionConverter.conversions[currentFamily][currentMeasurement - 1]);
             else
             {
-                //Debug.Log("currentFamily:");
+                Debug.Log("Current family: " + currentFamily + ", measurement: " + currentMeasurement + "\n To family: " + toFamily + ", measurement: " + toMeasurement);
                 return Convert(currentFamily, currentMeasurement + 1, toFamily, toMeasurement, number / ExpansionConverter.conversions[currentFamily][currentMeasurement]);
             }
         }                      
