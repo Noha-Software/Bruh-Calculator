@@ -10,5 +10,5 @@ public class ThermalExpansionTabs : MonoBehaviour
     public ExpansionConversionData regInput1;
     public ExpansionConversionData regInput2;
     public ExpansionConversionData regInput3;
-    public TMP_Text output;
+    public ExpansionConversionData output;
 }

@@ -47,8 +47,7 @@ public class ExpansionConverter : MonoBehaviour
         {
             to.text = measurements[selectedMeasurementFamily][(int)slider.value];
             if (data.power != 1 && selectedMeasurementFamily < 2) to.text += "<sup>" + data.power + "</sup>";
-            if (data.input != null) output.text = Round(decimal.Parse(number)).ToString();            
-            else output.text = Round(calculator.Calculate(selectedMeasurementFamily, (int)slider.value, calculator.typeOfCalculation)).ToString();
+            output.text = Round(decimal.Parse(number)).ToString();            
         }
     }
     public void PageOpened(ExpansionConversionData ecd)
@@ -129,7 +128,7 @@ public class ExpansionConverter : MonoBehaviour
         {
             return number;
         }
-        else if (i > slider.value) return Convert(i - 1, number * Pow(conversions[selectedMeasurementFamily][Math.Abs(i - 1)], data.power));
+        else if (i > slider.value) return Convert(i - 1, number * Pow(conversions[selectedMeasurementFamily][i - 1], data.power));
         else return Convert(i + 1, number / Pow(conversions[selectedMeasurementFamily][i], data.power));
     }
     public void SetCalculator(ThermalExpansion te)

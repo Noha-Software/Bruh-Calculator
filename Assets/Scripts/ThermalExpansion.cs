@@ -50,7 +50,8 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
     }    
     public void WriteOutput(ExpansionConversionData data)
     {
-        tabs.output.text = Calculate(data).ToString();
+        if (data.roundTo != -1) data.endText.text = Math.Round(Calculate(data), data.roundTo, MidpointRounding.AwayFromZero).ToString();
+        else data.endText.text = Calculate(data).ToString();        
     }    
     //tabs.output.text = Convert.ToString((b - a) / (a * c * alphaMultiplier));    
     public decimal Calculate(ExpansionConversionData data)
