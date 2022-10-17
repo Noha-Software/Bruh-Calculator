@@ -55,9 +55,9 @@ public class ExpansionConverter : MonoBehaviour
         if (ecd != null && ((ecd.input != null && ecd.input.text != "") || (ecd.endText != null && ecd.endText.text != "")))
         {
             data = ecd;
-            roundSlider.value = data.roundTo;
+            dont = true;
             selectedMeasurementFamily = data.measurementFamily;
-            currentMeasurement = data.currentMeasurement;            
+            currentMeasurement = data.currentMeasurement;
             if (data.input != null && data.trueNumber != "" && Round(decimal.Parse(data.trueNumber)) == decimal.Parse(data.input.text)) number = data.trueNumber;            
             else if (data.endText != null && data.trueNumber != "" && Round(decimal.Parse(data.trueNumber)) == decimal.Parse(data.endText.text)) number = data.trueNumber;           
             else
@@ -67,9 +67,9 @@ public class ExpansionConverter : MonoBehaviour
             }                       
             this.gameObject.SetActive(true);
             to.text = "";
-            from.text = data.buttonText.text;                       
-            dont = true;
-            slider.gameObject.SetActive(true);                               
+            from.text = data.buttonText.text;
+            roundSlider.value = data.roundTo;
+            slider.gameObject.SetActive(true);
             slider.maxValue = measurements[selectedMeasurementFamily].Length - 1;
             slider.value = data.currentMeasurement;
             output.text = Round(decimal.Parse(number)).ToString();
@@ -103,14 +103,14 @@ public class ExpansionConverter : MonoBehaviour
         dont = true;      
         if(selectedMeasurementFamily == 0)
         {
-            number = ((Convert(currentMeasurement, decimal.Parse(number)) * Pow(conversions[4][helpInt], data.power))).ToString();
+            number = ((Convert(currentMeasurement, decimal.Parse(number)) * Pow(conversions[4][helpInt], data.power, selectedMeasurementFamily))).ToString();
             if (slider.value > 0) slider.value -= 1;
             slider.maxValue -= 1;
             selectedMeasurementFamily = 1;
         }
         else
         {
-            number = ((Convert(currentMeasurement, decimal.Parse(number)) / Pow(conversions[4][helpInt + 1], data.power))).ToString();
+            number = ((Convert(currentMeasurement, decimal.Parse(number)) / Pow(conversions[4][helpInt + 1], data.power, selectedMeasurementFamily))).ToString();
             slider.maxValue += 1;
             slider.value++;            
             selectedMeasurementFamily = 0;
@@ -128,8 +128,8 @@ public class ExpansionConverter : MonoBehaviour
         {
             return number;
         }
-        else if (i > slider.value) return Convert(i - 1, number * Pow(conversions[selectedMeasurementFamily][i - 1], data.power));
-        else return Convert(i + 1, number / Pow(conversions[selectedMeasurementFamily][i], data.power));
+        else if (i > slider.value) return Convert(i - 1, number * Pow(conversions[selectedMeasurementFamily][i - 1], data.power, selectedMeasurementFamily));
+        else return Convert(i + 1, number / Pow(conversions[selectedMeasurementFamily][i], data.power, selectedMeasurementFamily));
     }
     public void SetCalculator(ThermalExpansion te)
     {
@@ -155,9 +155,13 @@ public class ExpansionConverter : MonoBehaviour
             return Convert(currentMeasurement, number);
         }
     }
-    static decimal Pow(decimal x, decimal y)
+    static public decimal Pow(decimal x, decimal y, int z)
     {
-        if (y == 1) return x * 1;   
-        else return x * Pow(x, y - 1);
+        if (z > 1) return x;
+        else
+        {
+            if (y == 1) return x * 1;
+            else return x * Pow(x, y - 1, 2);
+        }       
     }
 }

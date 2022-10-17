@@ -275,9 +275,9 @@ public class Calculator : MonoBehaviour
     {
 		input = data.input;
 
-		//Debug.Log(input.text);
+		Debug.Log(input.text);
 
-		if(data.input.text.Contains(",") || data.input.text.Contains("."))
+		if(isDecimal && (input.text.Contains(",") || input.text.Contains(",")))
         {			
 			if (savedLength != input.text.Length && savedLength - 1 != input.text.Length && savedLength + 1 != input.text.Length)
             {
@@ -288,12 +288,23 @@ public class Calculator : MonoBehaviour
 				}
 				else isDecimal = false;
             }
-			if (savedLength - 1 == input.text.Length && (input.text[decimalPos - 1] == ',' || input.text[decimalPos - 1] == '.')) decimalPos -= 1;
+			if (decimalPos == 0)
+			{
+				if (savedLength - 1 == input.text.Length && input.text[decimalPos] != ',') isDecimal = false;
+				else if (savedLength + 1 == input.text.Length && input.text[decimalPos] != ',') decimalPos++;
+			}
+			/*else if (decimalPos + 1 == input.text.Length)
+            {
+				if (savedLength - 1 == input.text.Length && input.text[decimalPos - 1] != ',') isDecimal = false;
+				else if (savedLength + 1 == input.text.Length && input.text[decimalPos] != ',') decimalPos++;
+			}*/
+			//{ if (savedLength + 1 == input.text.Length && input.text[decimalPos] != ',') isDecimal = false; }
+			else if (savedLength - 1 == input.text.Length && (input.text[decimalPos - 1] == ',' || input.text[decimalPos - 1] == '.')) decimalPos -= 1;
 			else if (savedLength + 1 == input.text.Length && (input.text[decimalPos + 1] == ',' || input.text[decimalPos + 1] == '.')) decimalPos += 1;
 		}		 
 		if (!stopSoros && input.text != "")
 		{
-			//Debug.Log("decimalPos at the start of function: " + decimalPos);
+			Debug.Log("decimalPos at the start of function: " + decimalPos);
 			for (int i1 = 0; i1 < input.text.Length; i1++)
 			{
 				switch (input.text[i1])
@@ -363,7 +374,7 @@ public class Calculator : MonoBehaviour
 			}
 			savedLength = input.text.Length;
 
-			//Debug.Log("decimalPos at the end of function: " + decimalPos);
+			Debug.Log("decimalPos at the end of function: " + decimalPos);
 		}
 		else stopSoros = false;
 	}

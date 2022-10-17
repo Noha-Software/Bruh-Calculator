@@ -126,11 +126,11 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 Debug.Log("nombar: " + number);
                 return number;
             }
-            else if (currentMeasurement > toMeasurement) return Convert(currentFamily, currentMeasurement - 1, toFamily, toMeasurement, number * ExpansionConverter.conversions[currentFamily][currentMeasurement - 1]);
+            else if (currentMeasurement > toMeasurement) return Convert(currentFamily, currentMeasurement - 1, toFamily, toMeasurement, number * ExpansionConverter.Pow(ExpansionConverter.conversions[currentFamily][currentMeasurement - 1], alphaMultiplier, currentFamily));
             else
             {
                 Debug.Log("Current family: " + currentFamily + ", measurement: " + currentMeasurement + "\n To family: " + toFamily + ", measurement: " + toMeasurement);
-                return Convert(currentFamily, currentMeasurement + 1, toFamily, toMeasurement, number / ExpansionConverter.conversions[currentFamily][currentMeasurement]);
+                return Convert(currentFamily, currentMeasurement + 1, toFamily, toMeasurement, number / ExpansionConverter.Pow(ExpansionConverter.conversions[currentFamily][currentMeasurement], alphaMultiplier, currentFamily));
             }
         }                      
     }
