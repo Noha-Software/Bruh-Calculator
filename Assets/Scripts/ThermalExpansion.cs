@@ -106,14 +106,14 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
         {                        
             if (currentFamily == 0)
             {
-                number *= ExpansionConverter.conversions[4][currentMeasurement];
+                number *= ExpansionConverter.Pow(ExpansionConverter.conversions[4][currentMeasurement], alphaMultiplier, currentFamily);
                 if (currentMeasurement > 0 && !fuckHowINameDis) currentMeasurement -= 1;
                 fuckHowINameDis = false;
                 return Convert(1, currentMeasurement, toFamily, toMeasurement, number);
             }
             else
             {
-                number /= ExpansionConverter.conversions[4][currentMeasurement + 1];
+                number /= ExpansionConverter.Pow(ExpansionConverter.conversions[4][currentMeasurement + 1], alphaMultiplier, currentFamily);
                 if (!fuckHowINameDis) currentMeasurement += 1;
                 fuckHowINameDis = false;
                 return Convert(0, currentMeasurement, toFamily, toMeasurement, number);
