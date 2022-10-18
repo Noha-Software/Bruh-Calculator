@@ -58,6 +58,10 @@ public class ExpansionConverter : MonoBehaviour
             dont = true;
             selectedMeasurementFamily = data.measurementFamily;
             currentMeasurement = data.currentMeasurement;
+            slider.gameObject.SetActive(true);
+            roundSlider.value = data.roundTo;
+            slider.maxValue = measurements[selectedMeasurementFamily].Length - 1;
+            slider.value = data.currentMeasurement;
             if (data.input != null && data.trueNumber != "" && Round(decimal.Parse(data.trueNumber)) == decimal.Parse(data.input.text)) number = data.trueNumber;            
             else if (data.endText != null && data.trueNumber != "" && Round(decimal.Parse(data.trueNumber)) == decimal.Parse(data.endText.text)) number = data.trueNumber;           
             else
@@ -68,10 +72,6 @@ public class ExpansionConverter : MonoBehaviour
             this.gameObject.SetActive(true);
             to.text = "";
             from.text = data.buttonText.text;
-            roundSlider.value = data.roundTo;
-            slider.gameObject.SetActive(true);
-            slider.maxValue = measurements[selectedMeasurementFamily].Length - 1;
-            slider.value = data.currentMeasurement;
             output.text = Round(decimal.Parse(number)).ToString();
             dont = false;
             if (selectedMeasurementFamily < 2) interFamilyButton.disabled = false;
@@ -120,6 +120,7 @@ public class ExpansionConverter : MonoBehaviour
         if(data.input == null) number = calculator.Calculate(selectedMeasurementFamily, (int)slider.value, calculator.typeOfCalculation).ToString();
         output.text = Round(decimal.Parse(number)).ToString();
         to.text = measurements[selectedMeasurementFamily][currentMeasurement];
+        if (data.power > 1) to.text += "<sup>" + data.power + "</sup>";
     }
     public decimal Convert(int i, decimal number)
     {
@@ -147,12 +148,12 @@ public class ExpansionConverter : MonoBehaviour
         if (roundSlider.value != -1)
         {
             roundText.text = "Round to " + roundSlider.value + " digits";
-            return Math.Round(Convert(currentMeasurement, number), (int)roundSlider.value, MidpointRounding.AwayFromZero);
+            return decimal.Parse((Math.Round(Convert(currentMeasurement, number), (int)roundSlider.value, MidpointRounding.AwayFromZero)).ToString().TrimEnd('0'));
         }
         else
         {
             roundText.text = "Do not round";
-            return Convert(currentMeasurement, number);
+            return decimal.Parse(Convert(currentMeasurement, number).ToString().TrimEnd('0'));
         }
     }
     static public decimal Pow(decimal x, decimal y, int z)
@@ -161,7 +162,7 @@ public class ExpansionConverter : MonoBehaviour
         else
         {
             if (y == 1) return x * 1;
-            else return x * Pow(x, y - 1, 2);
+            else return x * Pow(x, y - 1, 0);
         }       
     }
 }
