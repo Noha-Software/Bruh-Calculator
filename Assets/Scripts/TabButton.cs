@@ -8,10 +8,10 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Image))]
 public class TabButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
-    public TabGroup tabGroup;
+	public TabGroup tabGroup;
 	public GameObject objectToSwap;
 
-    public Image background;
+	public Image background;
 
 	public UnityEvent onTabSelected;
 	public UnityEvent onTabDeselected;
@@ -32,10 +32,10 @@ public class TabButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
 	}
 
 	void Start()
-    {
-        background = GetComponent<Image>();
-        tabGroup.Subscribe(this);
-    }
+	{
+		background = GetComponent<Image>();
+		tabGroup.Subscribe(this);
+	}
 
 	public void Select()
 	{

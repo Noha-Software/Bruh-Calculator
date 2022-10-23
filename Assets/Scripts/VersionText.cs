@@ -7,9 +7,9 @@ public class VersionText : MonoBehaviour
 {
 #if UNITY_EDITOR
 	private void Start()
-    {
+	{
 		UpdateVersionText();
-    }
+	}
 
 	private void Reset()
 	{
