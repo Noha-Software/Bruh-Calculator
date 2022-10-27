@@ -47,7 +47,8 @@ public class ExpansionConverter : MonoBehaviour
         {
             to.text = measurements[selectedMeasurementFamily][(int)slider.value];
             if (data.power != 1 && selectedMeasurementFamily < 2) to.text += "<sup>" + data.power + "</sup>";
-            output.text = Round(decimal.Parse(number)).ToString();            
+            output.text = Round(decimal.Parse(number)).ToString();
+            if (output.text.Contains(",")) output.text = output.text.TrimEnd('0');
         }
     }
     public void PageOpened(ExpansionConversionData ecd)
@@ -138,8 +139,8 @@ public class ExpansionConverter : MonoBehaviour
     }
     public void RoundSldierValueChanged()
     {
-        if (!dont)
         {
+            if (!dont)
             output.text = Round(decimal.Parse(number)).ToString();
         }
     }
@@ -148,12 +149,12 @@ public class ExpansionConverter : MonoBehaviour
         if (roundSlider.value != -1)
         {
             roundText.text = "Round to " + roundSlider.value + " digits";
-            return decimal.Parse((Math.Round(Convert(currentMeasurement, number), (int)roundSlider.value, MidpointRounding.AwayFromZero)).ToString().TrimEnd('0'));
+            return decimal.Parse((Math.Round(Convert(currentMeasurement, number), (int)roundSlider.value, MidpointRounding.AwayFromZero)).ToString());
         }
         else
         {
             roundText.text = "Do not round";
-            return decimal.Parse(Convert(currentMeasurement, number).ToString().TrimEnd('0'));
+            return decimal.Parse(Convert(currentMeasurement, number).ToString());
         }
     }
     static public decimal Pow(decimal x, decimal y, int z)
