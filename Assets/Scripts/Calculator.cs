@@ -180,6 +180,7 @@ public class Calculator : MonoBehaviour
 					primeFactorVisualizer.Disable();
 					primeFactorVisualizer.Visualize(factorVisualizeResult);
 				}
+				PrimeFactor();
 				primeFactorVisualizer.Visualize(factorVisualizeResult);
 			}
 		}
