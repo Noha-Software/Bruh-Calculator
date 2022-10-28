@@ -195,7 +195,15 @@ public class RemarkableIdentities : MonoBehaviour
 		if (hasNumber)
 		{
 			number *= pascalNum;
-			calculations.Replace(calculations.ToString(), number + (calculations.ToString().PadLeft(calculations.Length + number.ToString().Length)).Trim());
+			Debug.Log(calculations.ToString());
+			Debug.Log(number + (calculations.ToString().PadLeft(calculations.Length + number.ToString().Length)).Trim());
+			Debug.Log(Int64.TryParse(calculations.ToString(), out long l));
+			if (!(calculations.ToString() == "")) calculations.Replace(calculations.ToString(), number + (calculations.ToString().PadLeft(calculations.Length + number.ToString().Length)).Trim());
+			else
+			{
+				Debug.Log("GHECI");
+				calculations.Append((number + (calculations.ToString().PadLeft(calculations.Length + number.ToString().Length)).Trim()));
+			}
 		}
 		else
 		{
