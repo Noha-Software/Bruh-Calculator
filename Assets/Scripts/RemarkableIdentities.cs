@@ -299,21 +299,62 @@ public class RemarkableIdentities : MonoBehaviour
 
 			if (negative)
 			{
-				member.coefficient *= -1;
+				member.coefficient *= -1;	// subtraction
 			}
 
 			outputMembers.Add(member);
-			Debug.Log(member.OutputText());
 		}
 
-		List<string> outputs = new List<string>();
-		for (int i = 0; i < outputMembers.Count; i++)
+		List<char[]> uniqueVariables = new List<char[]>();
+		for (int i = 0; i < outputMembers.Count; i++)	// find unique variables in members
 		{
-			if (outputMembers[i].coefficient > 0 && i != 0)
+			int matches = uniqueVariables.FindAll(x =>
+			{
+				string a = new string(outputMembers[i].variables);
+				string b = new string(x);
+				return a == b;
+			}).Count;
+			if (matches==0)
+			{
+				uniqueVariables.Add(outputMembers[i].variables);
+			}
+		}
+
+		List<Member> finalMembers = new List<Member>();
+		foreach (char[] variables in uniqueVariables)	// calculate the coefficient of all variables
+		{
+			List<Member> homogeneousMembers;
+
+			if (string.IsNullOrEmpty(new string(variables)))
+			{
+				homogeneousMembers = outputMembers.FindAll(x => new string(x.variables) == string.Empty);
+			}
+			else
+			{
+				homogeneousMembers = outputMembers.FindAll(x => {
+					string a = new string(variables);
+					string b = new string(x.variables);
+					return a == b;
+				});
+			}
+			
+			int coefficient = 0;
+			foreach (Member m in homogeneousMembers)
+			{
+				coefficient += m.coefficient;
+			}
+			finalMembers.Add(new Member(coefficient, variables));
+		}
+
+
+		List<string> outputs = new List<string>();
+		for (int i = 0; i < finalMembers.Count; i++)
+		{
+			if (finalMembers[i].coefficient > 0 && i != 0)
 			{
 				outputs.Add("+");
 			}
-			outputs.Add(outputMembers[i].OutputText());
+			outputs.Add(finalMembers[i].OutputText());
 		}
 
 		return string.Join("", outputs);
@@ -329,7 +370,7 @@ public class RemarkableIdentities : MonoBehaviour
 			return coefficient + new string(variables.ToArray());
 		}
 
-		public Member(int coefficient, char[] variables)
+		public Member(int coefficient, params char[] variables)
 		{
 			this.coefficient = coefficient;
 			this.variables = variables;
@@ -369,6 +410,10 @@ public class RemarkableIdentities : MonoBehaviour
 							}
 						}
 					}
+					else if (formattedExpression.Length == j + 1)
+					{
+						coefficient = int.Parse(formattedExpression.Substring(0, j+1));
+					}
 				}
 				else
 				{
@@ -390,6 +435,11 @@ public class RemarkableIdentities : MonoBehaviour
 
 		public string OutputText()
 		{
+			if (string.IsNullOrEmpty(new string(variables)))
+			{
+				return coefficient.ToString();
+			}
+
 			List<string> output = new List<string>();
 			output.Add(coefficient.ToString());
 
@@ -410,7 +460,7 @@ public class RemarkableIdentities : MonoBehaviour
 
 		public static Member operator +(Member a, Member b)
 		{
-			if (a.variables != b.variables)
+			if (new string(a.variables) != new string(b.variables))
 			{
 				Debug.LogError("Can't simplify members that don't share variables");
 				return new Member();
@@ -422,7 +472,7 @@ public class RemarkableIdentities : MonoBehaviour
 		}
 		public static Member operator -(Member a, Member b)
 		{
-			if (a.variables != b.variables)
+			if (new string(a.variables) != new string(b.variables))
 			{
 				Debug.LogError("Can't simplify members that don't share variables");
 				return new Member();
