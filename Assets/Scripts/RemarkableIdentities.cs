@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -102,7 +104,7 @@ public class RemarkableIdentities : MonoBehaviour
 		{
 			Calculate(((x - 1) - i), i, pascal[i]);
 		}
-		outputText.text = output.ToString();
+		outputText.text = SimplifyExpression(output.ToString());
 		pascal.Clear();
 		output.Clear();
 	}
@@ -195,13 +197,13 @@ public class RemarkableIdentities : MonoBehaviour
 		if (hasNumber)
 		{
 			number *= pascalNum;
-			Debug.Log(calculations.ToString());
-			Debug.Log(number + (calculations.ToString().PadLeft(calculations.Length + number.ToString().Length)).Trim());
-			Debug.Log(Int64.TryParse(calculations.ToString(), out long l));
+			//Debug.Log(calculations.ToString());
+			//Debug.Log(number + (calculations.ToString().PadLeft(calculations.Length + number.ToString().Length)).Trim());
+			//Debug.Log(Int64.TryParse(calculations.ToString(), out long l));
 			if (!(calculations.ToString() == "")) calculations.Replace(calculations.ToString(), number + (calculations.ToString().PadLeft(calculations.Length + number.ToString().Length)).Trim());
 			else
 			{
-				Debug.Log("GHECI");
+				//Debug.Log("GHECI");
 				calculations.Append((number + (calculations.ToString().PadLeft(calculations.Length + number.ToString().Length)).Trim()));
 			}
 		}
@@ -263,6 +265,222 @@ public class RemarkableIdentities : MonoBehaviour
 		{
 			deduction = true;
 			text.GetComponent<Text>().text = "_";
+		}
+	}
+
+	string SimplifyExpression(string expression)
+	{
+		expression = expression.ToLower();
+		Regex pattern = new Regex(@"(\-)|(\+)");
+		string[] members = pattern.Split(expression);
+
+		List<Member> outputMembers = new List<Member>();
+
+		bool negative = false;
+		for (int i = 0; i < members.Length; i++)
+		{
+			if (members[i] == "+" || members[i] == "-")
+			{
+				if (members[i] == "-")
+				{
+					negative = true;
+				}
+				else
+				{
+					negative = false;
+				}
+				continue;   // ignore if operator
+			}
+
+			Regex exponentPattern = new Regex(@"<.{3,4}>");
+			members[i] = exponentPattern.Replace(members[i], "");   // delete superscript (<sup></sup>)
+
+			Member member = new Member(members[i]);
+
+			if (negative)
+			{
+				member.coefficient *= -1;	// subtraction
+			}
+
+			outputMembers.Add(member);
+		}
+
+		List<char[]> uniqueVariables = new List<char[]>();
+		for (int i = 0; i < outputMembers.Count; i++)	// find unique variables in members
+		{
+			int matches = uniqueVariables.FindAll(x =>
+			{
+				string a = new string(outputMembers[i].variables);
+				string b = new string(x);
+				return a == b;
+			}).Count;
+			if (matches==0)
+			{
+				uniqueVariables.Add(outputMembers[i].variables);
+			}
+		}
+
+		List<Member> finalMembers = new List<Member>();
+		foreach (char[] variables in uniqueVariables)	// calculate the coefficient of all variables
+		{
+			List<Member> homogeneousMembers;
+
+			if (string.IsNullOrEmpty(new string(variables)))
+			{
+				homogeneousMembers = outputMembers.FindAll(x => new string(x.variables) == string.Empty);
+			}
+			else
+			{
+				homogeneousMembers = outputMembers.FindAll(x => {
+					string a = new string(variables);
+					string b = new string(x.variables);
+					return a == b;
+				});
+			}
+			
+			int coefficient = 0;
+			foreach (Member m in homogeneousMembers)
+			{
+				coefficient += m.coefficient;
+			}
+			finalMembers.Add(new Member(coefficient, variables));
+		}
+
+
+		List<string> outputs = new List<string>();
+		for (int i = 0; i < finalMembers.Count; i++)
+		{
+			if (finalMembers[i].coefficient > 0 && i != 0)
+			{
+				outputs.Add("+");
+			}
+			outputs.Add(finalMembers[i].OutputText());
+		}
+
+		return string.Join("", outputs);
+	}
+
+	internal struct Member
+	{
+		public int coefficient;
+		public char[] variables;
+
+		public override string ToString()
+		{
+			return coefficient + new string(variables.ToArray());
+		}
+
+		public Member(int coefficient, params char[] variables)
+		{
+			this.coefficient = coefficient;
+			this.variables = variables;
+		}
+		public Member(string formattedExpression)
+		{
+			coefficient = 0;
+			List<char> variableList = new List<char>();
+			int lastLetter = -1;
+			for (int j = 0; j < formattedExpression.Length; j++)
+			{
+				if (char.IsDigit(formattedExpression[j]))
+				{
+					if (coefficient != 0)
+					{
+						if (formattedExpression.Length > j + 1)
+						{
+							if (char.IsDigit(formattedExpression[j + 1]))
+							{
+								continue;
+							}
+							else
+							{
+								int exponent = int.Parse(formattedExpression.Substring(lastLetter + 1, j - lastLetter));
+								for (int k = 0; k < exponent - 1; k++)
+								{
+									variableList.Add(formattedExpression[lastLetter]);
+								}
+							}
+						}
+						else
+						{
+							int exponent = int.Parse(formattedExpression.Substring(lastLetter + 1, j - lastLetter));
+							for (int k = 0; k < exponent - 1; k++)
+							{
+								variableList.Add(formattedExpression[lastLetter]);
+							}
+						}
+					}
+					else if (formattedExpression.Length == j + 1)
+					{
+						coefficient = int.Parse(formattedExpression.Substring(0, j+1));
+					}
+				}
+				else
+				{
+					if (j == 0)
+					{
+						coefficient = 1;    // coefficient is 1 if not specified
+					}
+					else if (coefficient == 0)
+					{
+						coefficient = int.Parse(formattedExpression.Substring(0, j));
+					}
+					variableList.Add(formattedExpression[j]);
+					lastLetter = j;
+				}
+			}
+			variableList.Sort();
+			variables = variableList.ToArray();
+		}
+
+		public string OutputText()
+		{
+			if (string.IsNullOrEmpty(new string(variables)))
+			{
+				return coefficient.ToString();
+			}
+
+			List<string> output = new List<string>();
+			output.Add(coefficient.ToString());
+
+			char[] uniqueVariables = variables.Distinct().ToArray();
+			foreach (var variable in uniqueVariables)
+			{
+				output.Add(variable.ToString());
+
+				int exponent = Array.FindAll(variables, x => x == variable).Length;
+				if (exponent > 1)
+				{
+					output.Add("<sup>" + exponent + "</sup>");
+				}
+			}
+
+			return string.Join("", output);
+		}
+
+		public static Member operator +(Member a, Member b)
+		{
+			if (new string(a.variables) != new string(b.variables))
+			{
+				Debug.LogError("Can't simplify members that don't share variables");
+				return new Member();
+			}
+			else
+			{
+				return new Member(a.coefficient + b.coefficient, a.variables);
+			}
+		}
+		public static Member operator -(Member a, Member b)
+		{
+			if (new string(a.variables) != new string(b.variables))
+			{
+				Debug.LogError("Can't simplify members that don't share variables");
+				return new Member();
+			}
+			else
+			{
+				return new Member(a.coefficient - b.coefficient, a.variables);
+			}
 		}
 	}
 }
