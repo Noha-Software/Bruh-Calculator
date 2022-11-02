@@ -14,10 +14,7 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public ThermalExpansionTabs tabs;
 
     bool realFamily;
-    int trueFamily;
     bool fuckHowINameDis;
-    int trueMeasurement;
-    //int toFamily, toMeasurement;
 
     decimal result;
 
@@ -51,9 +48,10 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public void WriteOutput(ExpansionConversionData data)
     {
         if (data.roundTo != -1) data.endText.text = Math.Round(Calculate(data), data.roundTo, MidpointRounding.AwayFromZero).ToString();
-        else data.endText.text = Calculate(data).ToString();        
+        else data.endText.text = Calculate(data).ToString();
+        if (data.endText.text.Contains(",")) data.endText.text = data.endText.text.TrimEnd('0');
+        if (data.endText.text.EndsWith(",")) data.endText.text = data.endText.text.TrimEnd(',');
     }    
-    //tabs.output.text = Convert.ToString((b - a) / (a * c * alphaMultiplier));    
     public decimal Calculate(ExpansionConversionData data)
     {
         switch(typeOfCalculation)
@@ -68,7 +66,7 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 return 0;
         }
     }
-    public decimal Calculate(int family, int measurement, int typeOfCalculation)
+    public decimal Calculate(int family, int measurement)
     {
         switch (typeOfCalculation)
         {
@@ -87,9 +85,7 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
         if (!realFamily)
         {
             if(currentFamily < 2 && toFamily > 1)
-            {
-                //fuckHowINameDis = true;
-                //Debug.Log("KID NAMED FINGER:");
+            {               
                 toFamily = toMeasurement;
                 if (toFamily == 0) toMeasurement = 3;
                 else toMeasurement = 2;
@@ -100,8 +96,6 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 toFamily = currentFamily;
             }
         }
-        Debug.Log("numbir: " + number);
-        Debug.Log("Current family: " + currentFamily + ", measurement: " + currentMeasurement + "\n To family: " + toFamily + ", measurement: " + toMeasurement);
         if (currentFamily < 2 && toFamily < 2 && currentFamily != toFamily)
         {                        
             if (currentFamily == 0)
@@ -121,17 +115,9 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
         }
         else
         {
-            if (currentMeasurement == toMeasurement)
-            {
-                Debug.Log("nombar: " + number);
-                return number;
-            }
+            if (currentMeasurement == toMeasurement) return number;
             else if (currentMeasurement > toMeasurement) return Convert(currentFamily, currentMeasurement - 1, toFamily, toMeasurement, number * ExpansionConverter.Pow(ExpansionConverter.conversions[currentFamily][currentMeasurement - 1], alphaMultiplier, currentFamily));
-            else
-            {
-                Debug.Log("Current family: " + currentFamily + ", measurement: " + currentMeasurement + "\n To family: " + toFamily + ", measurement: " + toMeasurement);
-                return Convert(currentFamily, currentMeasurement + 1, toFamily, toMeasurement, number / ExpansionConverter.Pow(ExpansionConverter.conversions[currentFamily][currentMeasurement], alphaMultiplier, currentFamily));
-            }
-        }                      
+            else return Convert(currentFamily, currentMeasurement + 1, toFamily, toMeasurement, number / ExpansionConverter.Pow(ExpansionConverter.conversions[currentFamily][currentMeasurement], alphaMultiplier, currentFamily));
+        }
     }
 }
