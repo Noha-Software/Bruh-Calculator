@@ -1,5 +1,5 @@
 "key","en","hu","de"
-"language","Language","",""
+"language","Language","Nyelv",""
 "convert","Convert","",""
 "enter_number","Enter number...","",""
 "from","From","Ebbe:",""
@@ -24,4 +24,4 @@
 "exp-areal","Areal","Felületi",""
 "exp-cubic","Cubic","Térfogati",""
 "exp-convertandexit","Convert and exit","Átváltás és kilépés",""
-"exp-exitwoconverting","Exit without converting","Kilépés átváltás nélkül",""
+"exp-exitwoconverting","Exit without converting, but save settings","Kilépés átváltás nélkül, de a beállítások megtartása",""
