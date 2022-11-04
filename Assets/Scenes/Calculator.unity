@@ -3376,7 +3376,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1127917185}
-        m_MethodName: SetCalculator
+        m_MethodName: GetCalculator
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1288017263}
@@ -14155,7 +14155,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1127917185}
-        m_MethodName: SetCalculator
+        m_MethodName: GetCalculator
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1649175605}
@@ -20464,7 +20464,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1127917185}
-        m_MethodName: SetCalculator
+        m_MethodName: GetCalculator
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1853352112}
@@ -29842,7 +29842,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1127917185}
-        m_MethodName: SetCalculator
+        m_MethodName: GetCalculator
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 2056151396}
@@ -30815,7 +30815,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1127917185}
-        m_MethodName: SetCalculator
+        m_MethodName: GetCalculator
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 928758719}
@@ -31609,7 +31609,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1127917185}
-        m_MethodName: SetCalculator
+        m_MethodName: GetCalculator
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 2124284068}
@@ -36885,7 +36885,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1127917185}
-        m_MethodName: SetCalculator
+        m_MethodName: GetCalculator
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 2059850073}
@@ -54721,7 +54721,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1127917185}
-        m_MethodName: SetCalculator
+        m_MethodName: GetCalculator
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 282673546}
@@ -57142,7 +57142,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1127917185}
-        m_MethodName: SetCalculator
+        m_MethodName: GetCalculator
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 535571499}

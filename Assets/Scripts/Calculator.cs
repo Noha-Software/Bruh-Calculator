@@ -84,6 +84,8 @@ public class Calculator : MonoBehaviour
 	[Header("Thermal expansion attributes")]
 	public ThermalExpansion thermalExpansion;
 	public TabGroup expansionTabgGroup;
+	static public char decimalPoint;
+	static public char inversePoint;
 	#endregion
 
 	private void Start()
@@ -91,6 +93,17 @@ public class Calculator : MonoBehaviour
 		gcdInputNumbers = new int[gcdInputNumberFields.Length];
 		lcmInputNumbers = new int[lcmInputNumberFields.Length];
 		ExpansionConverter.Define();
+		if (Decimal.Parse("23,32") == 23.32M)
+		{
+			decimalPoint = ',';
+			inversePoint = '.';
+		}
+		else
+        {
+			decimalPoint = '.';
+			inversePoint = ',';
+        }
+		Debug.Log(String.Format("DecimalPoint: {0}, inverse decimal: {1}", decimalPoint, inversePoint));
 	}
 
 	private void Update()
@@ -271,6 +284,7 @@ public class Calculator : MonoBehaviour
 	bool stopSoros;
 	int decimalPos;
 	int savedLength;
+	
 
 	public void ParsebleCheck(ExpansionConversionData data)
     {
@@ -291,7 +305,7 @@ public class Calculator : MonoBehaviour
             }
 			if (decimalPos == 0)
 			{
-				if (savedLength - 1 == input.text.Length && input.text[decimalPos] != ',') isDecimal = false;
+				if (savedLength - 1 == input.text.Length && input.text[decimalPos] != decimalPoint) isDecimal = false;
 				else if (savedLength + 1 == input.text.Length && input.text[decimalPos] != ',') decimalPos++;
 			}
 			/*else if (decimalPos + 1 == input.text.Length)
@@ -311,19 +325,36 @@ public class Calculator : MonoBehaviour
 				switch (input.text[i1])
 				{
 					case ',':
-						if (!isDecimal || decimalPos == i1)
-						{
-							decimalPos = i1;
-							break;
-						}
-						stopSoros = true;
-						Remove(decimalPos);
-						if (i1 > decimalPos) decimalPos = i1 - 1;
-						else decimalPos = i1;
-						Debug.Log(decimalPos);
+						if (decimalPoint == '.') input.text = input.text.Substring(0, i1) + "." + input.text.Substring(i1 + 1);
+						else
+                        {
+							if (!isDecimal || decimalPos == i1)
+							{
+								decimalPos = i1;
+								break;
+							}
+							stopSoros = true;
+							Remove(decimalPos);
+							if (i1 > decimalPos) decimalPos = i1 - 1;
+							else decimalPos = i1;
+							Debug.Log(decimalPos);
+						}						
 						break;
 					case '.':
-						input.text = input.text.Substring(0, i1) + "," + input.text.Substring(i1 + 1);
+						if(decimalPoint == ',')input.text = input.text.Substring(0, i1) + "," + input.text.Substring(i1 + 1);
+						else
+                        {
+							if (!isDecimal || decimalPos == i1)
+							{
+								decimalPos = i1;
+								break;
+							}
+							stopSoros = true;
+							Remove(decimalPos);
+							if (i1 > decimalPos) decimalPos = i1 - 1;
+							else decimalPos = i1;
+							Debug.Log(decimalPos);
+						}
 						break;
 					/*case 'x':
 						if (!isScientificallyNotated) expansionCheckInput.text += "10<sup>";

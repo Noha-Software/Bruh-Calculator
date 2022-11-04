@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+#if UNITY_EDITOR
 [ExecuteInEditMode]
 public class TextLocaliserEditWindow : EditorWindow
 {
@@ -187,3 +188,4 @@ public class TextLocaliserSearchWindow : EditorWindow
 		EditorGUILayout.EndVertical();
 	}
 }
+#endif

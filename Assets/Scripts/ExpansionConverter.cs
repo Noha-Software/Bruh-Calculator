@@ -50,8 +50,8 @@ public class ExpansionConverter : MonoBehaviour
             to.text = measurements[selectedMeasurementFamily][(int)slider.value];
             if (data.power != 1 && selectedMeasurementFamily < 2) to.text += "<sup>" + data.power + "</sup>";
             output.text = Round(decimal.Parse(number)).ToString();
-            if (output.text.Contains(",")) output.text = output.text.TrimEnd('0');
-            if (output.text.EndsWith(",")) output.text = output.text.TrimEnd(',');
+            if (output.text.Contains(Calculator.decimalPoint.ToString())) output.text = output.text.TrimEnd('0');
+            if (output.text.EndsWith(Calculator.decimalPoint.ToString())) output.text = output.text.TrimEnd(Calculator.decimalPoint);
         }
     }
     public void PageOpened(ExpansionConversionData ecd)
@@ -95,14 +95,14 @@ public class ExpansionConverter : MonoBehaviour
         if (data.input != null)
         {
             data.input.text = Round(decimal.Parse(number)).ToString();
-            if (data.input.text.Contains(",")) data.input.text = data.input.text.TrimEnd('0');
-            if (data.input.text.EndsWith(",")) data.input.text = data.input.text.TrimEnd(',');
+            if (data.input.text.Contains(Calculator.decimalPoint.ToString())) data.input.text = data.input.text.TrimEnd('0');
+            if (data.input.text.EndsWith(Calculator.decimalPoint.ToString())) data.input.text = data.input.text.TrimEnd(Calculator.decimalPoint);
         }
         else
         {
             data.endText.text = Round(decimal.Parse(number)).ToString();
-            if (data.endText.text.Contains(",")) data.endText.text = data.endText.text.TrimEnd('0');
-            if (data.endText.text.EndsWith(",")) data.endText.text = data.endText.text.TrimEnd(',');
+            if (data.endText.text.Contains(Calculator.decimalPoint.ToString())) data.endText.text = data.endText.text.TrimEnd('0');
+            if (data.endText.text.EndsWith(Calculator.decimalPoint.ToString())) data.endText.text = data.endText.text.TrimEnd(Calculator.decimalPoint);
         }
         data.trueNumber = Convert((int)slider.value, currentMeasurement, decimal.Parse(number)).ToString();
         data.roundTo = (int)roundSlider.value;
@@ -135,8 +135,8 @@ public class ExpansionConverter : MonoBehaviour
         dont = false;
         number = Convert(currentMeasurement, pifcm, decimal.Parse(number)).ToString();
         output.text = Round(decimal.Parse(number)).ToString();
-        if (output.text.Contains(",")) output.text = output.text.TrimEnd('0');
-        if (output.text.EndsWith(",")) output.text = output.text.TrimEnd(',');
+        if (output.text.Contains(Calculator.decimalPoint.ToString())) output.text = output.text.TrimEnd('0');
+        if (output.text.EndsWith(Calculator.decimalPoint.ToString())) output.text = output.text.TrimEnd(Calculator.decimalPoint);
         to.text = measurements[selectedMeasurementFamily][currentMeasurement];
         if (data.power > 1) to.text += "<sup>" + data.power + "</sup>";
         Debug.Log(String.Format("pifcm at end of conversion: {0}, family: {1}, measurement: {2}", pifcm, selectedMeasurementFamily, currentMeasurement));
@@ -160,8 +160,8 @@ public class ExpansionConverter : MonoBehaviour
             if (!dont)
             {
                 output.text = Round(decimal.Parse(number)).ToString();
-                if (output.text.Contains(",")) output.text = output.text.TrimEnd('0');
-                if (output.text.EndsWith(",")) output.text = output.text.TrimEnd(',');
+                if (output.text.Contains(Calculator.decimalPoint.ToString())) output.text = output.text.TrimEnd('0');
+                if (output.text.EndsWith(Calculator.decimalPoint.ToString())) output.text = output.text.TrimEnd(Calculator.decimalPoint);
             }
         }
     }
