@@ -52,4 +52,4 @@
 "exp-areal","Areal","Felületi",""
 "exp-cubic","Cubic","Térfogati",""
 "exp-convertandexit","Convert and exit","Átváltás és kilépés",""
-"exp-exitwoconverting","Exit without converting, but save settings","Kilépés átváltás nélkül, de a beállítások megtartása",""
+"exp-exitwoconverting","Exit without converting, but keep unit type","Kilépés átváltás nélkül, de mértékegység megtartása",""
