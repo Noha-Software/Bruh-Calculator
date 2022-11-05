@@ -161,7 +161,7 @@ public class ExpansionConverter : MonoBehaviour
         else
         {
             roundText.text = LocalisationSystem.GetLocalisedValue("noround");
-            return ThermalExpansion.Convert(currentFamily, currentMeasurement, toFamily, (int)slider.value, number, data.power)
+            return ThermalExpansion.Convert(currentFamily, currentMeasurement, toFamily, (int)slider.value, number, data.power);
         }
     }
     static public decimal Pow(decimal x, decimal y, int z)
