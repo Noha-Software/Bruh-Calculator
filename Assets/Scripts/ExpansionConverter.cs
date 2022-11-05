@@ -169,12 +169,12 @@ public class ExpansionConverter : MonoBehaviour
     {        
         if (roundSlider.value != -1)
         {
-            roundText.text = "Round to " + roundSlider.value + " digits";
+            roundText.text = LocalisationSystem.GetLocalisedValue("roundto") + ' ' + roundSlider.value + ' ' + LocalisationSystem.GetLocalisedValue("digits");
             return decimal.Parse((Math.Round(Convert((int)slider.value, currentMeasurement, number), (int)roundSlider.value, MidpointRounding.AwayFromZero)).ToString());
         }
         else
         {
-            roundText.text = "Do not round";
+            roundText.text = LocalisationSystem.GetLocalisedValue("noround");
             return decimal.Parse(Convert((int)slider.value, currentMeasurement, number).ToString());
         }
     }
