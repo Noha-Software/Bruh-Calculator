@@ -103,7 +103,7 @@ public class Calculator : MonoBehaviour
 			decimalPoint = '.';
 			inversePoint = ',';
         }
-		Debug.Log(String.Format("DecimalPoint: {0}, inverse decimal: {1}", decimalPoint, inversePoint));
+		//Debug.Log(String.Format("DecimalPoint: {0}, inverse decimal: {1}", decimalPoint, inversePoint));
 	}
 
 	private void Update()
@@ -290,7 +290,7 @@ public class Calculator : MonoBehaviour
     {
 		input = data.input;
 
-		Debug.Log(input.text);
+		//Debug.Log(input.text);
 
 		if(isDecimal && (input.text.Contains(",") || input.text.Contains(",")))
         {			
@@ -319,7 +319,7 @@ public class Calculator : MonoBehaviour
 		}		 
 		if (!stopSoros && input.text != "")
 		{
-			Debug.Log("decimalPos at the start of function: " + decimalPos);
+			//Debug.Log("decimalPos at the start of function: " + decimalPos);
 			for (int i1 = 0; i1 < input.text.Length; i1++)
 			{
 				switch (input.text[i1])
@@ -337,7 +337,7 @@ public class Calculator : MonoBehaviour
 							Remove(decimalPos);
 							if (i1 > decimalPos) decimalPos = i1 - 1;
 							else decimalPos = i1;
-							Debug.Log(decimalPos);
+							//Debug.Log(decimalPos);
 						}						
 						break;
 					case '.':
@@ -353,7 +353,7 @@ public class Calculator : MonoBehaviour
 							Remove(decimalPos);
 							if (i1 > decimalPos) decimalPos = i1 - 1;
 							else decimalPos = i1;
-							Debug.Log(decimalPos);
+							//Debug.Log(decimalPos);
 						}
 						break;
 					/*case 'x':
@@ -385,7 +385,7 @@ public class Calculator : MonoBehaviour
 					case '9':
 						break;
 					case '-':
-						if (data.measurementFamily == 2 && i1 == 0) break;
+						if (data.toFamily == 2 && i1 == 0) break;
 						else
 						{
 							Remove(i1);
@@ -406,7 +406,7 @@ public class Calculator : MonoBehaviour
 			}
 			savedLength = input.text.Length;
 
-			Debug.Log("decimalPos at the end of function: " + decimalPos);
+			//Debug.Log("decimalPos at the end of function: " + decimalPos);
 		}
 		else stopSoros = false;
 	}

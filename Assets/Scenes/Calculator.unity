@@ -1523,7 +1523,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 2
+  toFamily: 2
+  toMeasurement: 0
+  currentFamily: 2
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -2454,7 +2456,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 2
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 
@@ -3157,7 +3161,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: 5
   trueNumber: 
@@ -9744,7 +9750,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 2
+  toFamily: 2
+  toMeasurement: 0
+  currentFamily: 2
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -9881,7 +9889,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 3
+  toFamily: 3
+  toMeasurement: 0
+  currentFamily: 3
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -10171,7 +10181,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 3
+  toFamily: 3
+  toMeasurement: 0
+  currentFamily: 3
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -13068,7 +13080,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 3
+  toFamily: 3
+  toMeasurement: 0
+  currentFamily: 3
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -14611,7 +14625,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 2
+  toFamily: 2
+  toMeasurement: 0
+  currentFamily: 2
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -15564,7 +15580,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 3
+  toFamily: 3
+  toMeasurement: 0
+  currentFamily: 3
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -17326,7 +17344,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 2
+  toFamily: 2
+  toMeasurement: 0
+  currentFamily: 2
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -18118,7 +18138,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 
@@ -19512,7 +19534,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 
@@ -21190,7 +21214,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 3
+  toFamily: 3
+  toMeasurement: 0
+  currentFamily: 3
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -22005,7 +22031,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 3
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 
@@ -26772,7 +26800,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 3
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 
@@ -28024,7 +28054,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 2
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 
@@ -28876,7 +28908,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 3
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 
@@ -32068,7 +32102,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 
@@ -34915,7 +34951,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 2
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 
@@ -38349,7 +38387,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 2
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 
@@ -39298,7 +39338,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 2
+  toFamily: 2
+  toMeasurement: 0
+  currentFamily: 2
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -42381,7 +42423,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 2
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 
@@ -44356,7 +44400,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 3
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 
@@ -45297,7 +45343,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 2
+  toFamily: 2
+  toMeasurement: 0
+  currentFamily: 2
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -45604,7 +45652,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 3
+  toFamily: 3
+  toMeasurement: 0
+  currentFamily: 3
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -46500,7 +46550,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 3
+  toFamily: 3
+  toMeasurement: 0
+  currentFamily: 3
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -53366,7 +53418,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 3
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 
@@ -55367,7 +55421,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 2
+  toFamily: 2
+  toMeasurement: 0
+  currentFamily: 2
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -55568,7 +55624,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 
@@ -56758,7 +56816,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 2
+  toFamily: 2
+  toMeasurement: 0
+  currentFamily: 2
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -57627,7 +57687,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 3
+  toFamily: 3
+  toMeasurement: 0
+  currentFamily: 3
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -58360,7 +58422,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 3
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 
@@ -58445,7 +58509,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 3
+  toFamily: 3
+  toMeasurement: 0
+  currentFamily: 3
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -59425,7 +59491,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 2
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 
@@ -60175,7 +60243,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 2
+  toFamily: 2
+  toMeasurement: 0
+  currentFamily: 2
   currentMeasurement: 0
   roundTo: -1
   trueNumber: 
@@ -60527,7 +60597,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 1
-  measurementFamily: 0
+  toFamily: 0
+  toMeasurement: 3
+  currentFamily: 0
   currentMeasurement: 3
   roundTo: -1
   trueNumber: 

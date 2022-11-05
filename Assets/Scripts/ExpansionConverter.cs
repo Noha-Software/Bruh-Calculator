@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
@@ -21,12 +20,12 @@ public class ExpansionConverter : MonoBehaviour
     bool dont;
 
     int helpInt;
-    static public int pifcm = -1; //Previous Inter Family Conversion Family
 
     static public string[][] measurements = new string[4][];
     static public decimal[][] conversions = new decimal[5][];
 
-    int selectedMeasurementFamily = 0;
+    int toFamily;
+    int currentFamily;
     int currentMeasurement;
     public void GetCalculator(ThermalExpansion te)
     {
@@ -42,14 +41,14 @@ public class ExpansionConverter : MonoBehaviour
         conversions[0] = new decimal[] { 10, 10, 10, 1000 };
         conversions[2] = new decimal[] { 1 , 1};
         conversions[3] = new decimal[] { (decimal)9 / 5, (decimal)9 / 5 };
-        conversions[4] = new decimal[] { 0.039370078740192M, 0.39370078740192M, 0.328083989501M, 1.09361329834M, 0.62137119224M };
+        conversions[4] = new decimal[] { 0.039370078740192M, 0.39370078740192M, 0.328083989501M, 1.09361329834M, 0.621371192237M };
     }
     public void SliderValueChange()
     {        
         if (!dont)
         {
-            to.text = measurements[selectedMeasurementFamily][(int)slider.value];
-            if (data.power != 1 && selectedMeasurementFamily < 2) to.text += "<sup>" + data.power + "</sup>";
+            to.text = measurements[toFamily][(int)slider.value];
+            if (data.power != 1 && toFamily < 2) to.text += "<sup>" + data.power + "</sup>";
             output.text = Round(decimal.Parse(number)).ToString();
             RemoveUnnecessaryChars(output);
         }
@@ -60,28 +59,37 @@ public class ExpansionConverter : MonoBehaviour
         {
             data = ecd;
             dont = true;
-            selectedMeasurementFamily = data.measurementFamily;
+            
+            toFamily = data.toFamily;
+            currentFamily = data.currentFamily;
             currentMeasurement = data.currentMeasurement;
             slider.gameObject.SetActive(true);
             roundSlider.value = data.roundTo;
-            slider.maxValue = measurements[selectedMeasurementFamily].Length - 1;
-            slider.value = data.currentMeasurement;
-            
+            slider.maxValue = measurements[toFamily].Length - 1;
+            slider.value = data.toMeasurement;  
             if (data.input != null && data.trueNumber != "" && Round(decimal.Parse(data.trueNumber)) == decimal.Parse(data.input.text)) number = data.trueNumber;            
             else if (data.endText != null && data.trueNumber != "" && Round(decimal.Parse(data.trueNumber)) == decimal.Parse(data.endText.text)) number = data.trueNumber;           
             else
             {
                 if (data.input != null) number = data.input.text;
                 else number = data.endText.text;
-            }                       
+                if (data.input != null) data.trueNumber = data.input.text;
+                else data.trueNumber = data.endText.text;
+                data.toFamily = toFamily;
+                data.toMeasurement = (int)slider.value;
+                currentFamily = data.toFamily;
+                currentMeasurement = data.toMeasurement;
+                data.currentFamily = currentFamily;
+                data.currentMeasurement = currentMeasurement;
+            }
+            
             this.gameObject.SetActive(true);
             to.text = "";
             from.text = data.buttonText.text;
-            Debug.Log(number);
-            Debug.Log(Round(decimal.Parse(number)).ToString());
             output.text = Round(decimal.Parse(number)).ToString();
-            if (selectedMeasurementFamily < 2) interFamilyButton.disabled = false;
+            if (toFamily < 2) interFamilyButton.disabled = false;
             else interFamilyButton.disabled = true;
+            RemoveUnnecessaryChars(output);
             dont = false;
         }
     }
@@ -93,80 +101,45 @@ public class ExpansionConverter : MonoBehaviour
     public void SaveConversion()
     {
         SaveSettings();
-        if (data.power != 1 && selectedMeasurementFamily < 2) data.buttonText.text += "<sup>" + data.power + "</sup>";
+        if (data.power != 1 && toFamily < 2) data.buttonText.text += "<sup>" + data.power + "</sup>";
         if (data.input != null)
         {
-            data.input.text = Round(decimal.Parse(number)).ToString();
+            data.input.text = output.text;
             RemoveUnnecessaryChars(data.input);
         }
         else
         {
-            data.endText.text = Round(decimal.Parse(number)).ToString();
-            RemoveUnnecessaryChars(data.input);
+            data.endText.text = output.text;
+            RemoveUnnecessaryChars(data.endText);
         }
-        data.trueNumber = Convert((int)slider.value, currentMeasurement, decimal.Parse(number)).ToString();
         data.roundTo = (int)roundSlider.value;
         this.gameObject.SetActive(false);
     }
     public void ConvertInterFamily()
     {
         helpInt = (int)slider.value;
-        dont = true;
-        if (pifcm == -1) pifcm = helpInt;
-        Debug.Log("----------------------------------------------------------");
-        Debug.Log(String.Format("pifcm at start of conversion: {0}, family: {1}, measurement: {2}", pifcm, selectedMeasurementFamily, currentMeasurement));
-        if(selectedMeasurementFamily == 0)
-        {
-            number = ((Convert(pifcm, currentMeasurement, decimal.Parse(number)) * Pow(conversions[4][pifcm], data.power, selectedMeasurementFamily))).ToString();
+        dont = true;        
+        if(toFamily == 0)
+        {           
             if (slider.value > 0) slider.value -= 1;
             slider.maxValue -= 1;
-            selectedMeasurementFamily = 1;
-            if(pifcm != 0)pifcm--;
+            toFamily = 1;
+            
         }
         else
-        {
-            number = ((Convert(pifcm, currentMeasurement, decimal.Parse(number)) / Pow(conversions[4][pifcm + 1], data.power, selectedMeasurementFamily))).ToString();
+        {           
             slider.maxValue += 1;
             slider.value++;            
-            selectedMeasurementFamily = 0;
-            pifcm++;
-        }
-        Debug.Log(number);
-        currentMeasurement = (int)slider.value;        
+            toFamily = 0;
+            
+        }              
         dont = false;
-        number = Convert(currentMeasurement, pifcm, decimal.Parse(number)).ToString();
         output.text = Round(decimal.Parse(number)).ToString();
         RemoveUnnecessaryChars(output);
-        to.text = measurements[selectedMeasurementFamily][currentMeasurement];
+        to.text = measurements[toFamily][(int)slider.value];
         if (data.power > 1) to.text += "<sup>" + data.power + "</sup>";
-        Debug.Log(String.Format("pifcm at end of conversion: {0}, family: {1}, measurement: {2}", pifcm, selectedMeasurementFamily, currentMeasurement));
     }
-    decimal Convert(int i,int y, decimal number)
-    {
-        if (data.input != null)
-        {
-            if (y == i)
-            {
-                if (selectedMeasurementFamily == 2 && dont == false && y != currentMeasurement)
-                {
-                    if (y == 1)
-                    {
-                        number /= 5;
-                        number *= 9;
-                    }
-                    else
-                    {
-                        number /= 9;
-                        number *= 5;
-                    }
-                }
-                return number;
-            }
-            else if (y > i) return Convert(i, y - 1, number * ExpansionConverter.Pow(conversions[selectedMeasurementFamily][y - 1], data.power, selectedMeasurementFamily));
-            else return Convert(i, y + 1, number / ExpansionConverter.Pow(conversions[selectedMeasurementFamily][y], data.power, selectedMeasurementFamily));
-        }
-        else return calculator.Calculate(selectedMeasurementFamily, (int)slider.value);
-    }
+    
     void RoundSldierValueChanged()
     {
         {
@@ -183,12 +156,12 @@ public class ExpansionConverter : MonoBehaviour
         if (roundSlider.value != -1)
         {
             roundText.text = "Round to " + roundSlider.value + " digits";
-            return decimal.Parse((Math.Round(Convert((int)slider.value, currentMeasurement, number), (int)roundSlider.value, MidpointRounding.AwayFromZero)).ToString());
+            return decimal.Parse(Math.Round(ThermalExpansion.Convert(currentFamily, currentMeasurement, toFamily, (int)slider.value, number, data.power), (int)roundSlider.value).ToString());
         }
         else
         {
             roundText.text = "Do not round";
-            return decimal.Parse(Convert((int)slider.value, currentMeasurement, number).ToString());
+            return ThermalExpansion.Convert(currentFamily, currentMeasurement, toFamily, (int)slider.value, number, data.power);
         }
     }
     static public decimal Pow(decimal x, decimal y, int z)
@@ -220,8 +193,8 @@ public class ExpansionConverter : MonoBehaviour
     }
     void SaveSettings()
     {
-        data.currentMeasurement = (int)slider.value;
-        data.measurementFamily = selectedMeasurementFamily;
-        data.buttonText.text = measurements[selectedMeasurementFamily][(int)slider.value];
+        data.toMeasurement = (int)slider.value;
+        data.toFamily = toFamily;
+        data.buttonText.text = measurements[toFamily][(int)slider.value];
     }
 }
