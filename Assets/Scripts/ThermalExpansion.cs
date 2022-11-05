@@ -49,8 +49,7 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         if (data.roundTo != -1) data.endText.text = Math.Round(Calculate(data), data.roundTo, MidpointRounding.AwayFromZero).ToString();
         else data.endText.text = Calculate(data).ToString();
-        if (data.endText.text.Contains(",")) data.endText.text = data.endText.text.TrimEnd('0');
-        if (data.endText.text.EndsWith(",")) data.endText.text = data.endText.text.TrimEnd(',');
+        ExpansionConverter.RemoveUnnecessaryChars(data.endText);
     }    
     public decimal Calculate(ExpansionConversionData data)
     {
