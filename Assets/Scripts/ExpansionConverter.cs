@@ -155,13 +155,13 @@ public class ExpansionConverter : MonoBehaviour
         
         if (roundSlider.value != -1)
         {
-            roundText.text = "Round to " + roundSlider.value + " digits";
+            roundText.text = LocalisationSystem.GetLocalisedValue("roundto") + ' ' + roundSlider.value + ' ' + LocalisationSystem.GetLocalisedValue("digits");
             return decimal.Parse(Math.Round(ThermalExpansion.Convert(currentFamily, currentMeasurement, toFamily, (int)slider.value, number, data.power), (int)roundSlider.value).ToString());
         }
         else
         {
-            roundText.text = "Do not round";
-            return ThermalExpansion.Convert(currentFamily, currentMeasurement, toFamily, (int)slider.value, number, data.power);
+            roundText.text = LocalisationSystem.GetLocalisedValue("noround");
+            return ThermalExpansion.Convert(currentFamily, currentMeasurement, toFamily, (int)slider.value, number, data.power)
         }
     }
     static public decimal Pow(decimal x, decimal y, int z)

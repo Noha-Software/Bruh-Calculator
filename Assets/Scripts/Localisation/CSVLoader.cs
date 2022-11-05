@@ -61,7 +61,12 @@ public class CSVLoader
 			for (int f = 0; f < fields.Length; f++)
 			{
 				fields[f] = fields[f].TrimStart(' ', surround);
-				fields[f] = fields[f].TrimEnd(surround);
+				fields[f] = fields[f].TrimEnd(' ', surround, '"');
+				fields[f].Replace(Environment.NewLine, "");
+				if (languageIndex - 1 == fields.Length)
+				{
+					fields[f].Remove(fields[f].LastIndexOf('"'),1);
+				}
 			}
 
 			if (fields.Length > languageIndex)
@@ -103,6 +108,7 @@ public class CSVLoader
 			result[result.Length - 1] += "\"";
 
 			appended = string.Format(string.Join("\",\"", result));
+			//appended += '"';
 			File.AppendAllText("Assets/Resources/localisation.csv", appended);
 
 			AssetDatabase.Refresh();
