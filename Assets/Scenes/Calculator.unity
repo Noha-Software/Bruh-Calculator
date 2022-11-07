@@ -32462,6 +32462,7 @@ MonoBehaviour:
   data: {fileID: 0}
   slider: {fileID: 775053202}
   roundSlider: {fileID: 179181978}
+  cweButton: {fileID: 1910705404}
 --- !u!1 &1142350882
 GameObject:
   m_ObjectHideFlags: 0

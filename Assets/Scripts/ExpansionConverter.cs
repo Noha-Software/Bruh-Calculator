@@ -14,6 +14,7 @@ public class ExpansionConverter : MonoBehaviour
     ThermalExpansion calculator;
     public Slider slider;
     public Slider roundSlider;
+    public GameObject cweButton;
 
     string number;
 
@@ -66,7 +67,7 @@ public class ExpansionConverter : MonoBehaviour
             slider.gameObject.SetActive(true);
             roundSlider.value = data.roundTo;
             slider.maxValue = measurements[toFamily].Length - 1;
-            slider.value = data.toMeasurement;  
+            slider.value = data.toMeasurement;
             if (data.input != null && data.trueNumber != "" && Round(decimal.Parse(data.trueNumber)) == decimal.Parse(data.input.text)) number = data.trueNumber;            
             else if (data.endText != null && data.trueNumber != "" && Round(decimal.Parse(data.trueNumber)) == decimal.Parse(data.endText.text)) number = data.trueNumber;           
             else
@@ -74,7 +75,7 @@ public class ExpansionConverter : MonoBehaviour
                 if (data.input != null) number = data.input.text;
                 else number = data.endText.text;
                 if (data.input != null) data.trueNumber = data.input.text;
-                else data.trueNumber = data.endText.text;
+                else data.trueNumber = data.endText.text;               
                 data.toFamily = toFamily;
                 data.toMeasurement = (int)slider.value;
                 currentFamily = data.toFamily;
@@ -90,6 +91,8 @@ public class ExpansionConverter : MonoBehaviour
             if (toFamily < 2) interFamilyButton.disabled = false;
             else interFamilyButton.disabled = true;
             RemoveUnnecessaryChars(output);
+            if (data.input != null) cweButton.SetActive(true);
+            else cweButton.SetActive(false);
             dont = false;
         }
     }
@@ -152,11 +155,10 @@ public class ExpansionConverter : MonoBehaviour
     }
     decimal Round(decimal number)
     {
-        
         if (roundSlider.value != -1)
         {
             roundText.text = LocalisationSystem.GetLocalisedValue("roundto") + ' ' + roundSlider.value + ' ' + LocalisationSystem.GetLocalisedValue("digits");
-            return decimal.Parse(Math.Round(ThermalExpansion.Convert(currentFamily, currentMeasurement, toFamily, (int)slider.value, number, data.power), (int)roundSlider.value).ToString());
+            return Math.Round(ThermalExpansion.Convert(currentFamily, currentMeasurement, toFamily, (int)slider.value, number, data.power), (int)roundSlider.value);
         }
         else
         {

@@ -10,7 +10,6 @@
 "exp-areal","Areal","Felületi","Flächenhafte"
 "exp-cubic","Cubic","Térfogati","Kubisch"
 "exp-convertandexit","Convert and exit","Átváltás és kilépés","Konvertieren und beenden"
-"exp-exitwoconverting","Exit without converting","Kilépés átváltás nélkül","Beenden ohne Konvertierung"
 "convert","Convert","Átváltás","Wechseln"
 "app_title","Bruh Calculator","Bruh Kalkulátor","Bruh Rechner"
 "from","From","Ebből","Von"
@@ -52,4 +51,4 @@
 "exp-areal","Areal","Felületi",""
 "exp-cubic","Cubic","Térfogati",""
 "exp-convertandexit","Convert and exit","Átváltás és kilépés",""
-"exp-exitwoconverting","Exit without converting, but keep unit type","Kilépés átváltás nélkül, de mértékegység megtartása",""
+"exp-exitwoconverting","Exit without converting, but keep measurement unit","Kilépés átváltás nélkül, de tartsa meg a mértékegységet","Beenden ohne Konvertierung"

@@ -82,9 +82,9 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
     }
     static public decimal Convert(int currentFamily, int currentMeasurement,int toFamily,int toMeasurement, decimal number, int power)
     {
-        Debug.Log("-------------------------------------------");
-        Debug.Log(number);        
-        Debug.Log(String.Format("Current Family/Measurement: {0}, {1}; To Family, Measurement {2}, {3}", currentFamily, currentMeasurement, toFamily, toMeasurement));
+        //Debug.Log("-------------------------------------------");
+        //Debug.Log(number);        
+        //Debug.Log(String.Format("Current Family/Measurement: {0}, {1}; To Family, Measurement {2}, {3}", currentFamily, currentMeasurement, toFamily, toMeasurement));
         if(currentFamily < 2 && toFamily > 1)
         {               
             toFamily = toMeasurement;
@@ -96,7 +96,7 @@ public class ThermalExpansion : MonoBehaviour, IPointerEnterHandler, IPointerExi
             toMeasurement = toFamily;
             toFamily = currentFamily;
         }
-        Debug.Log(String.Format("Current Family/Measurement: {0}, {1}; To Family, Measurement {2}, {3}", currentFamily, currentMeasurement, toFamily, toMeasurement));
+       // Debug.Log(String.Format("Current Family/Measurement: {0}, {1}; To Family, Measurement {2}, {3}", currentFamily, currentMeasurement, toFamily, toMeasurement));
         if (currentFamily < 2 && toFamily < 2 && currentFamily != toFamily)
         {                        
             if (currentFamily == 0)
