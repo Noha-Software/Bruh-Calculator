@@ -1,54 +1,54 @@
-"key","en","hu","de"
-"system_converter","System Converter","Számrendszer Átváltó","Zahlsystem Wechseln"
-"language","Language","Nyelv","Sprache"
-"plain","Plain","Szimpla","Simpel"
-"gcd","Greatest Common Divisor","Legnagyobb közös osztó","Größter gemeinsamer Teiler"
-"lcm","Least Common Multiplier","Legkisebb közös többszörös","Kleinstes gemeinsames Vielfaches"
-"prime_factorizator","Prime Factorizator","Prímtényezős Felbontás","Primfaktorzerlegung"
-"expansion","Thermal expansion","Hőtágulás","Wärmeausdehnung"
-"exp-linear","Linear","Lineáris","Linear"
-"exp-areal","Areal","Felületi","Flächenhafte"
-"exp-cubic","Cubic","Térfogati","Kubisch"
-"exp-convertandexit","Convert and exit","Átváltás és kilépés","Konvertieren und beenden"
-"convert","Convert","Átváltás","Wechseln"
-"app_title","Bruh Calculator","Bruh Kalkulátor","Bruh Rechner"
-"from","From","Ebből","Von"
-"enter_number","Enter number...","Adj meg egy számot...","Nummer eingeben"
-"factorize","Factorize","Felbontás","Faktorisieren"
-"visualize","Visualize","Levezetés","Visualisieren"
-"number1","Number 1","1. szám","1. Nummer"
-"number2","Number 2","2. szám","2. Nummer"
-"find","Find","Találd meg","Finden"
-"mathematics","Mathematics","Matematika","Mathematik"
-"physics","Physics","Fizika","Physik"
-"to","To","Ebbe","Zu"
-"remarkable_identities","Remarkable Identities","Nevezetes Azonosságok","Bemerkenswerte Identitäten"
-"roundto","Round to","Kerekítsen","Auf"
-"digits","digits","tizedesjegyre","Stellen runden"
-"noround","Don't round","Ne kerekítsen","Nicht runden"
-"language","Language","Nyelv",""
-"convert","Convert","",""
-"enter_number","Enter number...","",""
-"from","From","Ebbe:",""
-"to","To","Ebbe",""
-"plain","Plain","Szimpla",""
-"gcd","Greatest Common Divisor","Legnagyobb közös osztó",""
-"lcm","Least Common Multiplier","Legkisebb közös többszörös",""
-"factorize","Factorize","",""
-"visualize","Visualize","",""
-"number1","Number 1","",""
-"number2","Number 2","",""
-"find","Find","",""
-"system_converter","System Converter","Számrendszer Átváltó",""
-"prime_factorizator","Prime Factorizator","Prímtényezős Felbontás",""
-"app_title","Bruh Calculator","Bruh Számológép","Bruh Rechner"
-"mathematics","Mathematics","",""
-"physics","Physics","",""
-"ballistics","Ballistics","",""
-"expansion","Thermal expansion","Hőtágulás",""
-"anyad","urmom!","",""
-"exp-linear","Linear/Liquid/Gas","Lineáris/Folyadék/Gáz",""
-"exp-areal","Areal","Felületi",""
-"exp-cubic","Cubic","Térfogati",""
-"exp-convertandexit","Convert and exit","Átváltás és kilépés",""
-"exp-exitwoconverting","Exit without converting, but keep measurement unit","Kilépés átváltás nélkül, de tartsa meg a mértékegységet","Beenden ohne Konvertierung"
+"key","en","hu","de",
+"system_converter","System Converter","Számrendszer Átváltó","Zahlsystem Wechseln",
+"language","Language","Nyelv","Sprache",
+"plain","Plain","Szimpla","Simpel",
+"gcd","Greatest Common Divisor","Legnagyobb közös osztó","Größter gemeinsamer Teiler",
+"lcm","Least Common Multiplier","Legkisebb közös többszörös","Kleinstes gemeinsames Vielfaches",
+"prime_factorizator","Prime Factorizator","Prímtényezős Felbontás","Primfaktorzerlegung",
+"expansion","Thermal expansion","Hőtágulás","Wärmeausdehnung",
+"exp-linear","Linear","Lineáris","Linear",
+"exp-areal","Areal","Felületi","Flächenhafte",
+"exp-cubic","Cubic","Térfogati","Kubisch",
+"exp-convertandexit","Convert and exit","Átváltás és kilépés","Konvertieren und beenden",
+"convert","Convert","Átváltás","Wechseln",
+"app_title","Bruh Calculator","Bruh Kalkulátor","Bruh Rechner",
+"from","From","Ebből","Von",
+"enter_number","Enter number...","Adj meg egy számot...","Nummer eingeben",
+"factorize","Factorize","Felbontás","Faktorisieren",
+"visualize","Visualize","Levezetés","Visualisieren",
+"number1","Number 1","1. szám","1. Nummer",
+"number2","Number 2","2. szám","2. Nummer",
+"find","Find","Találd meg","Finden",
+"mathematics","Mathematics","Matematika","Mathematik",
+"physics","Physics","Fizika","Physik",
+"to","To","Ebbe","Zu",
+"remarkable_identities","Remarkable Identities","Nevezetes Azonosságok","Bemerkenswerte Identitäten",
+"roundto","Round to","Kerekítsen","Auf",
+"digits","digits","tizedesjegyre","Stellen runden",
+"noround","Don't round","Ne kerekítsen","Nicht runden",
+"language","Language","Nyelv","",
+"convert","Convert","","",
+"enter_number","Enter number...","","",
+"from","From","Ebbe:","",
+"to","To","Ebbe","",
+"plain","Plain","Szimpla","",
+"gcd","Greatest Common Divisor","Legnagyobb közös osztó","",
+"lcm","Least Common Multiplier","Legkisebb közös többszörös","",
+"factorize","Factorize","","",
+"visualize","Visualize","","",
+"number1","Number 1","","",
+"number2","Number 2","","",
+"find","Find","","",
+"system_converter","System Converter","Számrendszer Átváltó","",
+"prime_factorizator","Prime Factorizator","Prímtényezős Felbontás","",
+"app_title","Bruh Calculator","Bruh Számológép","Bruh Rechner",
+"mathematics","Mathematics","","",
+"physics","Physics","","",
+"ballistics","Ballistics","","",
+"expansion","Thermal expansion","Hőtágulás","",
+"anyad","urmom!","","",
+"exp-linear","Linear/Liquid/Gas","Lineáris/Folyadék/Gáz","",
+"exp-areal","Areal","Felületi","",
+"exp-cubic","Cubic","Térfogati","",
+"exp-convertandexit","Convert and exit","Átváltás és kilépés","",
+"exp-exitwoconverting","Exit without converting, but keep measurement unit","Kilépés átváltás nélkül, de tartsa meg a mértékegységet","Beenden ohne Konvertierung",
