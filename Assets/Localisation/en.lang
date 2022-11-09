@@ -1,0 +1,27 @@
+convert:Convert
+app_title:Bruh Calculator
+digits:digits
+enter_number:Enter number...
+expansion:Thermal expansion
+exp-areal:Areal
+exp-convertandexit:Convert and exit
+exp-cubic:Cubic
+exp-exitwoconverting:Exit without converting, but keep measurement unit
+exp-linear:Linear
+factorize:Factorize
+find:Find
+from:From
+gcd:Greatest common divisor
+language:Language
+lcm:Least common multiplier
+mathematics:Mathematics
+noround:Don't round
+number1:Number 1
+number2:Number 2
+plain:Simple
+prime_factorizator:Prime factorizator
+remarkable_identities:Remarkable identities
+roundto:Round to
+system_converter:System converter
+to:To
+visualize:Visualize

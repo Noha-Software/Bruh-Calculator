@@ -15,7 +15,6 @@ public class LocalisationSystem
 	{
 		English = 0,
 		Hungarian = 1,
-		German = 2,
 	}
 
 	/// <summary>
@@ -36,26 +35,24 @@ public class LocalisationSystem
 
 	private static Dictionary<string, string> localisedEN;
 	private static Dictionary<string, string> localisedHU;
-	private static Dictionary<string, string> localisedDE;
 
 	public static bool isInit;
-	public static CSVLoader csvLoader;
+	public static LocalisationLoader locLoader;
 
 	public static void Init()
 	{
 		language = (Language)PlayerPrefs.GetInt("language");
 
-		csvLoader = new CSVLoader();
-		csvLoader.LoadCSV();
+		locLoader = new LocalisationLoader();
+		//locLoader.LoadCSV();
 		UpdateDictionaries();
 		isInit = true;
 	}
 
 	public static void UpdateDictionaries()
 	{
-		localisedEN = csvLoader.GetDictionaryValues(Language.English);
-		localisedHU = csvLoader.GetDictionaryValues(Language.Hungarian);
-		localisedDE = csvLoader.GetDictionaryValues(Language.German);
+		localisedEN = locLoader.GetDictionaryValues(Language.English);
+		localisedHU = locLoader.GetDictionaryValues(Language.Hungarian);
 	}
 
 	/// <summary>
@@ -86,8 +83,6 @@ public class LocalisationSystem
 				return "en";
 			case Language.Hungarian:
 				return "hu";
-			case Language.German:
-				return "de";
 		}
 		return "en";
 	}
@@ -105,8 +100,18 @@ public class LocalisationSystem
 				return localisedEN;
 			case Language.Hungarian:
 				return localisedHU;
-			case Language.German:
-				return localisedDE;
+		}
+		return localisedEN;
+	}
+	public static Dictionary<string, string> GetDictionaryForEditor(Language language = Language.English)
+	{
+		Init();
+		switch (language)
+		{
+			case Language.English:
+				return localisedEN;
+			case Language.Hungarian:
+				return localisedHU;
 		}
 		return localisedEN;
 	}
@@ -129,9 +134,6 @@ public class LocalisationSystem
 			case Language.Hungarian:
 				localisedHU.TryGetValue(key, out value);
 				break;
-			case Language.German:
-				localisedDE.TryGetValue(key, out value);
-				break;
 			default:
 				localisedEN.TryGetValue(key, out value);
 				break;
@@ -146,8 +148,8 @@ public class LocalisationSystem
 	public static string GetLocalisedValue(string key, Language language)
 	{
 		if (!isInit) { Init(); }
-		if (csvLoader == null) { csvLoader = new CSVLoader(); }
-		csvLoader.GetDictionaryValues(language).TryGetValue(key, out string value);
+		if (locLoader == null) { locLoader = new LocalisationLoader(); }
+		locLoader.GetDictionaryValues(language).TryGetValue(key, out string value);
 		return value;
 	}
 	/// <summary>
@@ -158,8 +160,8 @@ public class LocalisationSystem
 	public static string GetLocalisedValue(string key, int languageIndex)
 	{
 		if (!isInit) { Init(); }
-		if (csvLoader == null) { csvLoader = new CSVLoader(); }
-		csvLoader.GetDictionaryValues((Language)languageIndex).TryGetValue(key, out string value);
+		if (locLoader == null) { locLoader = new LocalisationLoader(); }
+		locLoader.GetDictionaryValues((Language)languageIndex).TryGetValue(key, out string value);
 		return value;
 	}
 
@@ -176,14 +178,14 @@ public class LocalisationSystem
 			value.Replace('"', '\"');
 		}
 
-		if (csvLoader == null)
+		if (locLoader == null)
 		{
-			csvLoader = new CSVLoader();
+			locLoader = new LocalisationLoader();
 		}
 
-		csvLoader.LoadCSV();
-		csvLoader.Edit(key, value, language);
-		csvLoader.LoadCSV();
+		//locLoader.LoadCSV();
+		locLoader.Edit(key, value, language);
+		//locLoader.LoadCSV();
 
 		UpdateDictionaries();
 	}
@@ -200,14 +202,14 @@ public class LocalisationSystem
 			value.Replace('"', '\"');
 		}
 
-		if (csvLoader == null)
+		if (locLoader == null)
 		{
-			csvLoader = new CSVLoader();
+			locLoader = new LocalisationLoader();
 		}
 
-		csvLoader.LoadCSV();
-		csvLoader.Edit(key, value, language);
-		csvLoader.LoadCSV();
+		//locLoader.LoadCSV();
+		locLoader.Edit(key, value, language);
+		//locLoader.LoadCSV();
 
 		UpdateDictionaries();
 	}
@@ -218,13 +220,13 @@ public class LocalisationSystem
 	/// <param name="key">Key of entry to remove.</param>
 	public static void Remove(string key)
 	{
-		if (csvLoader == null)
+		if (locLoader == null)
 		{
-			csvLoader = new CSVLoader();
+			locLoader = new LocalisationLoader();
 		}
 
-		csvLoader.Remove(key);
-		csvLoader.LoadCSV();
+		locLoader.Remove(key);
+		//locLoader.LoadCSV();
 
 		UpdateDictionaries();
 	}
@@ -233,15 +235,16 @@ public class LocalisationSystem
 	/// </summary>
 	/// <param name="key">Key of entry to remove.</param>
 	/// <param name="language">Language to remove entry from.</param>
+	[Obsolete]
 	public static void Remove(string key, Language language)
 	{
 		bool[] isEmpty = new bool[GetNumberOfLanguages()];
-		if (csvLoader == null)
+		if (locLoader == null)
 		{
-			csvLoader = new CSVLoader();
+			locLoader = new LocalisationLoader();
 		}
 
-		csvLoader.LoadCSV();
+		//locLoader.LoadCSV();
 
 		for (int i = 0; i < GetNumberOfLanguages(); i++)
 		{
@@ -264,13 +267,13 @@ public class LocalisationSystem
 
 		if (isEmpty.All(x => x))
 		{
-			csvLoader.Remove(key);
+			locLoader.Remove(key);
 		}
 		else
 		{
-			csvLoader.Edit(key, "", language);
+			locLoader.Edit(key, "", language);
 		}
-		csvLoader.LoadCSV();
+		//locLoader.LoadCSV();
 
 		UpdateDictionaries();
 	}

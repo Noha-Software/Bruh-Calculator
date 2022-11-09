@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Text.RegularExpressions;
@@ -8,7 +7,7 @@ using UnityEditor;
 using System.Linq;
 
 // (C) Game Dev Guide, https://youtu.be/c-dzg4M20wY
-// TODO: Implement multi-file localisation
+[Obsolete("Use LocalisationLoader instead")]
 public class CSVLoader
 {
 	TextAsset csvFile;

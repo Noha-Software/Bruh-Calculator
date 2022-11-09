@@ -19,6 +19,7 @@ public class TextLocaliserEditWindow : EditorWindow
 	[MenuItem("Window/Localisation/Text Localiser Edit Window")]
 	public static void Open()
 	{
+		close = false;
 		var window = EditorWindow.GetWindow<TextLocaliserEditWindow>();
 		window.titleContent = new GUIContent("Localiser Window", (Texture)Resources.Load("plus"), "Edit window for easy access to manipulate localisation");
 		window.ShowUtility();
@@ -133,7 +134,7 @@ public class TextLocaliserSearchWindow : EditorWindow
 				{
 					if (EditorUtility.DisplayDialog("Remove Key " + element.Key + "?", "This will remove the element from localisation, are you sure?", "Do it", "Nevermind"))
 					{
-						LocalisationSystem.Remove(element.Key, selectedLanguage);
+						LocalisationSystem.Remove(element.Key);
 						AssetDatabase.Refresh();
 						LocalisationSystem.Init();
 						dictionary = LocalisationSystem.GetDictionaryForEditor();
@@ -166,7 +167,7 @@ public class TextLocaliserSearchWindow : EditorWindow
 				{
 					if (EditorUtility.DisplayDialog("Remove Key " + element.Key + "?", "This will remove the element from localisation, are you sure?", "Do it", "Nevermind"))
 					{
-						LocalisationSystem.Remove(element.Key, selectedLanguage);
+						LocalisationSystem.Remove(element.Key);
 						AssetDatabase.Refresh();
 						LocalisationSystem.Init();
 						dictionary = LocalisationSystem.GetDictionaryForEditor();
