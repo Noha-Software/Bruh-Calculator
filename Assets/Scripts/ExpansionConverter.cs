@@ -25,6 +25,8 @@ public class ExpansionConverter : MonoBehaviour
     static public string[][] measurements = new string[4][];
     static public decimal[][] conversions = new decimal[5][];
 
+    int tryFamily;
+    int tryMeasurement;
     int toFamily;
     int currentFamily;
     int currentMeasurement;

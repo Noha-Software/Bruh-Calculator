@@ -7,6 +7,8 @@ using TMPro;
 public class ExpansionConversionData : MonoBehaviour
 {
     public int power;
+    public int tryfamily;
+    public int tryMeasurement;
     public int toFamily;
     public int toMeasurement;
     public int currentFamily;
