@@ -16,7 +16,7 @@ public class TextLocaliserEditWindow : EditorWindow
 		window.ShowUtility();
 		window.key = key;
 	}
-	[MenuItem("Window/Localisation/Text Localiser Edit Window")]
+	[MenuItem("Localisation/Text Localiser Edit Window")]
 	public static void Open()
 	{
 		close = false;
@@ -102,7 +102,7 @@ public class TextLocaliserSearchWindow : EditorWindow
 {
 	static string value;	// search value
 
-	[MenuItem("Window/Localisation/Text Localiser Search Window")]
+	[MenuItem("Localisation/Text Localiser Search Window")]
 	public static void Open()
 	{
 		var window = EditorWindow.GetWindow<TextLocaliserSearchWindow>();
