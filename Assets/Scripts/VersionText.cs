@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using UnityEditor;
+using TMPro;
 
 [ExecuteInEditMode]
+[RequireComponent(typeof(TextMeshProUGUI))]
 public class VersionText : MonoBehaviour
 {
 #if UNITY_EDITOR
@@ -23,7 +24,7 @@ public class VersionText : MonoBehaviour
 
 	void UpdateVersionText()
 	{
-		GetComponent<Text>().text = PlayerSettings.bundleVersion;
+		GetComponent<TextMeshProUGUI>().text = PlayerSettings.bundleVersion;
 	}
 #endif
 }
