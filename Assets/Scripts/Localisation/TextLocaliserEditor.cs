@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.IO;
 
 #if UNITY_EDITOR
 [ExecuteInEditMode]
@@ -12,7 +12,7 @@ public class TextLocaliserEditWindow : EditorWindow
 	{
 		close = closeOnEdit;
 		var window = EditorWindow.GetWindow<TextLocaliserEditWindow>();
-		window.titleContent = new GUIContent("Localiser Window", (Texture)Resources.Load("plus"), "Edit window for easy access to manipulate localisation");
+		window.titleContent = new GUIContent("Localiser Window", LoadPNG("plus"), "Edit window for easy access to manipulate localisation");
 		window.ShowUtility();
 		window.key = key;
 	}
@@ -21,7 +21,7 @@ public class TextLocaliserEditWindow : EditorWindow
 	{
 		close = false;
 		var window = EditorWindow.GetWindow<TextLocaliserEditWindow>();
-		window.titleContent = new GUIContent("Localiser Window", (Texture)Resources.Load("plus"), "Edit window for easy access to manipulate localisation");
+		window.titleContent = new GUIContent("Localiser Window", LoadPNG("plus"), "Edit window for easy access to manipulate localisation");
 		window.ShowUtility();
 		window.key = "";
 	}
@@ -79,24 +79,41 @@ public class TextLocaliserEditWindow : EditorWindow
 		minSize = new Vector2(460, 250);
 		maxSize = minSize;
 	}
+
+	static Texture2D LoadPNG(string name)
+	{
+		string filePath = Path.Combine(Application.dataPath + "/Textures/", name + ".png");
+
+		Texture2D texture = null;
+		byte[] fileData;
+
+		if (File.Exists(filePath))
+		{
+			fileData = File.ReadAllBytes(filePath);
+			texture = new Texture2D(256, 256);
+			texture.LoadImage(fileData);
+		}
+
+		return texture;
+	}
 }
 
 public class TextLocaliserSearchWindow : EditorWindow
 {
-	static string value; // search value
+	static string value;	// search value
 
 	[MenuItem("Window/Localisation/Text Localiser Search Window")]
 	public static void Open()
 	{
 		var window = EditorWindow.GetWindow<TextLocaliserSearchWindow>();
-		window.titleContent = new GUIContent("Localisation Search", (Texture)Resources.Load("magnify"), "Search window for easy access to localisation fields");
+		window.titleContent = new GUIContent("Localisation Search", LoadPNG("magnify"), "Search window for easy access to localisation fields");
 		value = "";
 		window.Show();
 	}
 	public static void Open(string searchFor)
 	{
 		var window = EditorWindow.GetWindow<TextLocaliserSearchWindow>();
-		window.titleContent = new GUIContent("Localisation Search", (Texture)Resources.Load("magnify"), "Search window for easy access to localisation fields");
+		window.titleContent = new GUIContent("Localisation Search", LoadPNG("magnify"), "Search window for easy access to localisation fields");
 		value = searchFor;
 		window.Show();
 	}
@@ -130,7 +147,7 @@ public class TextLocaliserSearchWindow : EditorWindow
 			{
 				EditorGUILayout.BeginHorizontal("Box");
 
-				if (GUILayout.Button((Texture)Resources.Load("close"), GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
+				if (GUILayout.Button(LoadPNG("close"), GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
 				{
 					if (EditorUtility.DisplayDialog("Remove Key " + element.Key + "?", "This will remove the element from localisation, are you sure?", "Do it", "Nevermind"))
 					{
@@ -144,7 +161,7 @@ public class TextLocaliserSearchWindow : EditorWindow
 				EditorGUILayout.LabelField(element.Key);
 				EditorGUILayout.LabelField(element.Value);
 
-				if (GUILayout.Button((Texture)Resources.Load("edit"), GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
+				if (GUILayout.Button(LoadPNG("edit"), GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
 				{
 					TextLocaliserEditWindow.Open(element.Key, true);
 				}
@@ -163,7 +180,7 @@ public class TextLocaliserSearchWindow : EditorWindow
 			{
 				EditorGUILayout.BeginHorizontal("Box");
 
-				if (GUILayout.Button((Texture)Resources.Load("close"), GUILayout.MaxWidth(20),GUILayout.MaxHeight(20)))
+				if (GUILayout.Button(LoadPNG("close"), GUILayout.MaxWidth(20),GUILayout.MaxHeight(20)))
 				{
 					if (EditorUtility.DisplayDialog("Remove Key " + element.Key + "?", "This will remove the element from localisation, are you sure?", "Do it", "Nevermind"))
 					{
@@ -177,7 +194,7 @@ public class TextLocaliserSearchWindow : EditorWindow
 				EditorGUILayout.LabelField(element.Key);
 				EditorGUILayout.LabelField(element.Value);
 
-				if (GUILayout.Button((Texture)Resources.Load("edit"), GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
+				if (GUILayout.Button(LoadPNG("edit"), GUILayout.MaxWidth(20), GUILayout.MaxHeight(20)))
 				{
 					TextLocaliserEditWindow.Open(element.Key, true);
 				}
@@ -187,6 +204,23 @@ public class TextLocaliserSearchWindow : EditorWindow
 		}
 		EditorGUILayout.EndScrollView();
 		EditorGUILayout.EndVertical();
+	}
+
+	static Texture2D LoadPNG(string name)
+	{
+		string filePath = Path.Combine(Application.dataPath + "/Textures/", name + ".png");
+
+		Texture2D texture = null;
+		byte[] fileData;
+
+		if (File.Exists(filePath))
+		{
+			fileData = File.ReadAllBytes(filePath);
+			texture = new Texture2D(256, 256);
+			texture.LoadImage(fileData);
+		}
+
+		return texture;
 	}
 }
 #endif
