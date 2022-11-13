@@ -29,6 +29,7 @@ public class InfoText : MonoBehaviour
 		string company = PlayerSettings.companyName;
 		return "© " + year + ' ' + company + '\n' + version;
 	}
+#endif
 
 	public void GitHubLink()
 	{
@@ -41,4 +42,3 @@ public class InfoText : MonoBehaviour
 		Application.OpenURL("mailto:noha.software@gmail.com");
 	}
 }
-#endif
