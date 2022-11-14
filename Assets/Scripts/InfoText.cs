@@ -2,13 +2,11 @@
 using UnityEditor;
 using TMPro;
 
-#if UNITY_EDITOR
-
 [ExecuteInEditMode]
 public class InfoText : MonoBehaviour
 {
 	[SerializeField] TextMeshProUGUI infoText;
-
+#if UNITY_EDITOR
 	private void Reset()
 	{
 		infoText.text = GetInformation();
@@ -31,14 +29,16 @@ public class InfoText : MonoBehaviour
 	}
 #endif
 
-	public void GitHubLink()
+	public void GitHub()
 	{
-		Debug.Log("Opening link...");
-		Application.OpenURL("https://github.com/Noha-Software");
+		Application.OpenURL("https://www.github.com/Noha-Software");
 	}
-	public void EmailLink()
+	public void Discord()
 	{
-		Debug.Log("Opening link...");
-		Application.OpenURL("mailto:noha.software@gmail.com");
+		Application.OpenURL("https://discord.gg/fbaB8nFzRS");
+	}
+	public void Email()
+	{
+		Application.OpenURL("mailto://noha.software@gmail.com");
 	}
 }
