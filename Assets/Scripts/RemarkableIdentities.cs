@@ -86,7 +86,7 @@ public class RemarkableIdentities : MonoBehaviour
 			return;
 		}
 
-		//Pascal hÃ¡romszÃ¶g
+		//Pascal háromszög
 		int val = 1, blank, j;
 		for (int i = 0; i < x; i++)
 		{
@@ -131,7 +131,7 @@ public class RemarkableIdentities : MonoBehaviour
 			}
 			else if (((int)c <= 90 && (int)c >= 65) || ((int)c <= 122 && (int)c >= 97) && idxTracker < 2 && (int)c != 94)
 			{
-				if (isIndex) return "ERROR: Use of variable as an exponent is forbidden"; //HibaÃ¼zenet, ha vÃ¡ltozÃ³ kerÃ¼l egy kitevÃµbe               
+				if (isIndex) return "ERROR: Use of variable as an exponent is forbidden"; //Hibaüzenet, ha változó kerül egy kitevõbe               
 				SendToList(list);
 				isVariable = true;
 				currentComponent.Append(c);
@@ -154,7 +154,7 @@ public class RemarkableIdentities : MonoBehaviour
 		}
 		if (isIndex) return "ERROR: The final exponent has been not sealed properly (only one '^' used instead of two)";
 		SendToList(list);
-		return ""; //Ne adjon hibaÃ¼zenetet helyes szintaktika hasznÃ¡latakor
+		return ""; //Ne adjon hibaüzenetet helyes szintaktika használatakor
 	}
 	void FuckMe(int idx, List<string> list) //???
 	{
@@ -367,11 +367,7 @@ public class RemarkableIdentities : MonoBehaviour
 
 		public override string ToString()
 		{
-			if (coefficient == 1 && variables != null {
-				return new string(variables);
-			} else {
-				return coefficient + new string(variables.ToArray());
-			} 
+			return coefficient + new string(variables.ToArray());
 		}
 
 		public Member(int coefficient, params char[] variables)
@@ -442,9 +438,7 @@ public class RemarkableIdentities : MonoBehaviour
 			if (string.IsNullOrEmpty(new string(variables)))
 			{
 				return coefficient.ToString();
-			} else if (coefficient == 1) {
-				return new string(variables);
-			} 
+			}
 
 			List<string> output = new List<string>();
 			output.Add(coefficient.ToString());
