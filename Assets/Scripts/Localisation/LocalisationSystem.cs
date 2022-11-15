@@ -88,6 +88,27 @@ public class LocalisationSystem
 	}
 
 	/// <summary>
+	/// Returns local name of the language (i.e. Hungarian => Magyar)
+	/// </summary>
+	public static string GetLocalName(Language language)
+	{
+		string locname = null;
+		switch (language)
+		{
+			case Language.English:
+				locname = "English";
+				break;
+			case Language.Hungarian:
+				locname = "Magyar";
+				break;
+			default:
+				locname = "-";
+				break;
+		}
+		return locname;
+	}
+
+	/// <summary>
 	/// Get the localised entry database for editor use.
 	/// </summary>
 	/// <returns>Returns a dictionary with a key and value of strings.</returns>

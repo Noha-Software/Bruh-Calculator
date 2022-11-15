@@ -24,6 +24,7 @@ public class InfoText : MonoBehaviour
 	{
 		int year = System.DateTime.Now.Year;
 		string version = PlayerSettings.bundleVersion;
+		PlayerPrefs.SetString("version", version);
 		string company = PlayerSettings.companyName;
 		return "© " + year + ' ' + company + '\n' + version;
 	}

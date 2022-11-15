@@ -10,16 +10,17 @@ public class SettingsWindow : MonoBehaviour
 	[Header("Language Selector")]
 	public TMP_Dropdown languageDropdown;
 	public LocalisationSystem.Language language;
+	List<TMP_Dropdown.OptionData> optionDataList;
 
 	private void Awake()
 	{
 		int languageCache = PlayerPrefs.GetInt("language");
-		List<TMP_Dropdown.OptionData> optionDataList = new List<TMP_Dropdown.OptionData>();
+		optionDataList = new List<TMP_Dropdown.OptionData>();
 		languageDropdown.ClearOptions();
 
 		for (int i = 0; i < Enum.GetNames(typeof(LocalisationSystem.Language)).Length; i++)
 		{
-			optionDataList.Add(new TMP_Dropdown.OptionData(Enum.GetName(typeof(LocalisationSystem.Language), (LocalisationSystem.Language)i)));
+			optionDataList.Add(new TMP_Dropdown.OptionData(LocalisationSystem.GetLocalName((LocalisationSystem.Language)i)));
 		}
 
 		languageDropdown.options = optionDataList;

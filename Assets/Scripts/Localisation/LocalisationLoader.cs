@@ -16,7 +16,7 @@ public class LocalisationLoader
 	string GetFilePath(LocalisationSystem.Language language)
 	{
 		string languageId = LocalisationSystem.GetLanguageID(language);
-		return Path.Combine(Application.streamingAssetsPath + "/Localisation/", languageId + ".lang"); ;
+		return Path.Combine(Application.streamingAssetsPath + "/Localisation/", languageId + ".lang");
 	}
 
 	// triple_why's code from Unity Forums
