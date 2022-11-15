@@ -367,7 +367,14 @@ public class RemarkableIdentities : MonoBehaviour
 
 		public override string ToString()
 		{
-			return coefficient + new string(variables.ToArray());
+			if (coefficient == 1 && variables != null)
+			{
+				return new string(variables);
+			}
+			else
+			{
+				return coefficient + new string(variables.ToArray());
+			}
 		}
 
 		public Member(int coefficient, params char[] variables)
@@ -441,7 +448,9 @@ public class RemarkableIdentities : MonoBehaviour
 			}
 
 			List<string> output = new List<string>();
-			output.Add(coefficient.ToString());
+
+			if (coefficient > 1)
+				output.Add(coefficient.ToString());
 
 			char[] uniqueVariables = variables.Distinct().ToArray();
 			foreach (var variable in uniqueVariables)

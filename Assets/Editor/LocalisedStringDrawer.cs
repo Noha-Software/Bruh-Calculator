@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -44,7 +45,7 @@ public class LocalisedStringDrawer : PropertyDrawer
 		position.width = 17;
 		position.height = 17;
 
-		Texture searchIcon = (Texture)Resources.Load("magnify"); // TODO: Make texture
+		Texture searchIcon = LoadPNG("magnify"); // TODO: Make texture
 		GUIContent searchContent = new GUIContent(searchIcon);
 
 		if(GUI.Button(position, searchContent))
@@ -54,7 +55,7 @@ public class LocalisedStringDrawer : PropertyDrawer
 
 		position.x += position.width + 2;
 
-		Texture storeIcon = (Texture)Resources.Load("plus"); // TODO: Make texture
+		Texture storeIcon = LoadPNG("plus"); // TODO: Make texture
 		GUIContent storeContent = new GUIContent(storeIcon);
 
 		if (GUI.Button(position, storeContent))
@@ -77,5 +78,22 @@ public class LocalisedStringDrawer : PropertyDrawer
 		}
 
 		EditorGUI.EndProperty();
+	}
+
+	static Texture2D LoadPNG(string name)
+	{
+		string filePath = Path.Combine(Application.dataPath + "/Textures/", name + ".png");
+
+		Texture2D texture = null;
+		byte[] fileData;
+
+		if (File.Exists(filePath))
+		{
+			fileData = File.ReadAllBytes(filePath);
+			texture = new Texture2D(256, 256);
+			texture.LoadImage(fileData);
+		}
+
+		return texture;
 	}
 }

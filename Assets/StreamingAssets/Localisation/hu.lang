@@ -1,7 +1,7 @@
 convert:Átváltás
-app_title:Bruh Kalkulátor
+app_title:Bruh Számológép
 digits:tizedesjegyre
-enter_number:Adj meg egy számot...
+enter_number:Szám...
 expansion:Hőtágulás
 exp-areal:Felületi
 exp-convertandexit:Átvált és kilép
@@ -25,5 +25,7 @@ roundto:Kerekítsen
 system_converter:Számrendszer átváltás
 to:Ebbe
 visualize:Levezetés
-calculate:Számítsa kicontact:
+calculate:Számítás
 contact:Keress fel!
+system1:1. számrendszer...
+system2:2. számrendszer...
