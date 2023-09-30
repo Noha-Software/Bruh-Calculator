@@ -73,6 +73,7 @@ public class Updates : MonoBehaviour
 	}
 }
 
+[System.Serializable]
 public class Version
 {
 	public int major, minor, patch;
