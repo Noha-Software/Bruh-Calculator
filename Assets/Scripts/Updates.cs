@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.RemoteConfig;
 using UnityEngine.UI;
+using TMPro;
 
 public class Updates : MonoBehaviour
 {
@@ -16,9 +17,13 @@ public class Updates : MonoBehaviour
 	[SerializeField] Sprite magnify;
 	[SerializeField] Sprite checkmark;
 
+	[SerializeField] TextMeshProUGUI currentText, latestText;
+
 	public bool IsUpToDate()
 	{
 		ConfigManager.FetchConfigs<userAttributes, appAttributes>(new userAttributes(), new appAttributes());
+		currentText.text = "current: " + currentVersion;
+		latestText.text = "latest: " + latestVersion;
 		return currentVersion >= latestVersion;
 	}
 
@@ -49,7 +54,8 @@ public class Updates : MonoBehaviour
 	{
 		latestVersionString = ConfigManager.appConfig.GetString("latest_version");
 		latestVersion = new Version(latestVersionString);
-		currentVersion = new Version(PlayerPrefs.GetString("version"));
+		//currentVersion = new Version(PlayerPrefs.GetString("version"));
+		currentVersion = new Version(Application.version);
 	}
 
 	public void CheckForUpdates()
